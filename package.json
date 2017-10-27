@@ -1,0 +1,22 @@
+{
+  "name": "qollab",
+  "version": "1.0.0",
+  "description": "interactive virtual classroom with collaborative whiteboard",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shannonphu/qollab.git"
+  },
+  "author": "Team Eggertarts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shannonphu/qollab/issues"
+  },
+  "homepage": "https://github.com/shannonphu/qollab#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
