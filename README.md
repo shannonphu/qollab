@@ -1,8 +1,9 @@
 # Qollab
 
 ## Setting up environment for the first time
-1. `brew install docker`
-2. `brew install docker-compose`
+1. Install [Homebrew](https://brew.sh/) if you haven't already. 
+2. `brew install docker`
+3. `brew install docker-compose`
 
 ## Development Workflow
 1. Navigate to the project directory
