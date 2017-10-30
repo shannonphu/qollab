@@ -12,5 +12,5 @@
 3. Go to http://localhost:3000/
 
 ## Pull Request Workflow
-* Make a new branch formatted <your-name>/<feature-name> before submitting a pull request to master.
+* Make a new branch formatted `<your-name>/<feature-name>` before submitting a pull request to master.
 * Notify team that a PR has been made :)
