@@ -17,7 +17,4 @@ RUN rm -rf /usr/bin/mongoperf
 # open ports
 EXPOSE 27017 28017
 
-# run the "mongod" command as the "mongodb" user (drop root privilege)
-# COPY exec.sh /root
-# ENTRYPOINT ["/root/exec.sh"]
 CMD ["mongod"]
