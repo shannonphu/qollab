@@ -1,6 +1,17 @@
-var path;
+var canvas = new fabric.Canvas('draw');
+canvas.isDrawingMode = true;
+canvas.freeDrawingBrush.width = 3;
+
 var strokeHistory = [];
 
+canvas.on('path:created', function(data) {
+	// console.log(JSON.stringify(canvas));
+	// canvas.add(data);
+	strokeHistory.push(data);
+	socket.emit('path:drawn', JSON.stringify(canvas));
+});
+
+/*
 function onMouseDown(event) {
 	path = new Path();
 	path.strokeColor = 'black';
@@ -20,12 +31,4 @@ function onMouseUp(event) {
 	
 	socket.emit('path:drawn', path.exportJSON());
 }
-
-// This handler is placed here because it mixes paperscript with javascript
-// and is not recognized in client-socket-event-handler.js
-socket.on('path:add', function(pathJSON) {
-	console.log("client path:add");
-	console.log(pathJSON);
-	var path = new Path();
-	path.importJSON(pathJSON);
-});
+*/
