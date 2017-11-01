@@ -12,5 +12,9 @@ module.exports = function(server) {
         socket.on('chat message', function(msg){
           console.log('message: ' + msg);
         });
+
+        socket.on('path:drawn', function(pathJSON) {
+            socket.broadcast.emit('path:add', pathJSON);
+        });
     });
 };
