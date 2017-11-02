@@ -16,16 +16,14 @@ module.exports = (function() {
     *   - the actual Lecture mongoDB model
     */
     lectureSchema.statics.insert = function(title, callback) {
-        mongoose.connect('mongodb://db_mongo', () => {
-            let lecture = new Lecture({title: title});
-            lecture.save(function (err, data) {
-                if (err) {
-                    return console.error(err);
-                }
-                
-                callback(lecture);
-                return;
-            });
+        let lecture = new Lecture({title: title});
+        lecture.save(function (err, data) {
+            if (err) {
+                return console.error(err);
+            }
+            
+            callback(lecture);
+            return;
         });
     }
 

@@ -19,16 +19,14 @@ module.exports = (function() {
     *   - the actual Comment mongoDB object
     */
     commentSchema.statics.insert = function(text, callback) {
-        mongoose.connect('mongodb://db_mongo', () => {
-            let comment = new Comment({text: text});
-            comment.save(function (err, data) {
-                if (err) {
-                    return console.error(err);
-                }
-                
-                callback(comment);
-                return;
-            });
+        let comment = new Comment({text: text});
+        comment.save(function (err, data) {
+            if (err) {
+                return console.error(err);
+            }
+            
+            callback(comment);
+            return;
         });
     }
 
