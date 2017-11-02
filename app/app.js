@@ -6,6 +6,7 @@ const socket = require('./server-socket-event-handler')(server);
 
 // Database Models
 const Comment = require('./db/comment.js');
+const Lecture = require('./db/lecture.js');
 
 app.set('view engine', 'hbs');
 app.use(express.static('public'))
