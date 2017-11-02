@@ -23,7 +23,7 @@ module.exports = (function() {
                     return console.error(err);
                 }
                 
-                callback(comment);
+                callback(lecture);
                 return;
             });
         });
