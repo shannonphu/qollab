@@ -39,6 +39,14 @@ module.exports = (function() {
         this.replies.push(text);
     }
 
+    /*
+    * Functionality:
+    *   - increments a particular comment's vote count
+    * Usage:
+    *   someCommentObj.upvote();
+    * Returns:
+    *   - nothing
+    */
     commentSchema.methods.upvote = function() {
         if(this.resolved) {
             return;

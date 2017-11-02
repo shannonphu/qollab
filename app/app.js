@@ -3,11 +3,6 @@ const app = express();
 
 // Database Models
 const Comment = require('./db/comment.js');
-Comment.insert("comment_text", (newComment) => {
-	newComment.upvote();
-	console.log(newComment);
-});
-
 
 app.set('view engine', 'hbs');
 
