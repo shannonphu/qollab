@@ -1,6 +1,12 @@
 const socket = io();
 
 socket.on('connect', function() {
-	socket.emit('chat message', "hi");
+	console.log("A new client connected to the websocket");
 });
 
+socket.on('canvas:update', function(pathJSON) {
+	canvas.clear();
+	canvas.loadFromJSON(pathJSON, function() {
+	  canvas.renderAll();
+	});
+});
