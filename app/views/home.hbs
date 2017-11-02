@@ -1,14 +1,62 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
 	<title>{{title}}</title>
-</head>
-<body>
-	<canvas id="draw" width="900" height="600" style="border: solid 2px black"></canvas>
+	
+	<!--Import Google Icon Font-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
-	<script src="/js/canvas.js"></script>
-	<script type="text/javascript" src="/js/client-socket-event-handler.js"></script>
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+	<!--Import custom.css-->
+	<link type="text/css" rel="stylesheet" href="css/custom.css"  media="screen,projection"/>
+	
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+	<div class="navbar-fixed">
+		<nav class="light-blue lighten-1" role="navigation">
+			<div class="nav-wrapper">
+				<div class="brand-logo center">{{title}}</div>
+				<a href="#" data-activates="mobile-collapse" class="button-collapse"><i class="material-icons">menu</i></a>
+				<ul id="nav-mobile" class="left hide-on-med-and-down">
+					<li><a href="#"><i class="material-icons left">home</i>Qollab</a></li>
+				</ul>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><a href="#"><i class="material-icons left">people</i>Students</a></li>
+					<li><a href="#"><i class="material-icons left">insert_chart</i>Poll</a></li>
+				</ul>
+				<!-- Mobile Collapse Buttons -->
+				<ul class="side-nav" id="mobile-collapse">
+					<li><a href="#"><i class="material-icons left">home</i>Qollab</a></li>
+					<li><a href="#"><i class="material-icons left">people</i>Students</a></li>
+					<li><a href="#"><i class="material-icons left">insert_chart</i>Poll</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	
+	<div id="wrapper" class="row">
+		<div id="left-column" class="column">
+			<canvas id="draw" width="900" height="600" style="border: solid 2px black"></canvas>
+      	</div>
+		<div id="right-column" class="column">
+		</div>
+	</div>
+
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<!-- For Mobile Collapse Buttons -->
+	<script>
+		$(".button-collapse").sideNav();
+	</script>
 </body>
+
 </html>

@@ -8,7 +8,7 @@ const socket = require('./server-socket-event-handler')(server);
 const Comment = require('./db/comment.js');
 
 app.set('view engine', 'hbs');
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
 	res.render('home', {
