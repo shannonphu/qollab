@@ -4,7 +4,8 @@ const app = express();
 const server = http.createServer(app);
 const socket = require('./server-socket-event-handler')(server);
 
-// Database Models
+// Connect to databse and declare database Models
+const db = require('./db/db.js');
 const Comment = require('./db/comment.js');
 const Lecture = require('./db/lecture.js');
 
