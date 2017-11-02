@@ -4,6 +4,9 @@ const app = express();
 const server = http.createServer(app);
 const socket = require('./server-socket-event-handler')(server);
 
+// Database Models
+const Comment = require('./db/comment.js');
+
 app.set('view engine', 'hbs');
 app.use(express.static('public'))
 
