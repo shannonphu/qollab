@@ -32,21 +32,21 @@ module.exports = (function() {
         });
     }
 
-    commentSchema.statics.addReply = function(text) {
+    commentSchema.methods.addReply = function(text) {
         if(this.resolved) {
             return;
         }
         this.replies.push(text);
     }
 
-    commentSchema.statics.upvote = function() {
+    commentSchema.methods.upvote = function() {
         if(this.resolved) {
             return;
         }
         this.votes++;
     }
 
-    commentSchema.statics.resolve = function() {
+    commentSchema.methods.resolve = function() {
         this.resolved = true
     }
 
