@@ -4,6 +4,11 @@
 	<title>{{title}}</title>
 </head>
 <body>
-	{{content}}
+	<canvas id="draw" width="900" height="600" style="border: solid 2px black"></canvas>
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
+	<script src="/js/canvas.js"></script>
+	<script type="text/javascript" src="/js/client-socket-event-handler.js"></script>
 </body>
 </html>
