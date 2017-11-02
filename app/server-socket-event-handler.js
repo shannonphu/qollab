@@ -10,7 +10,7 @@ module.exports = function(server) {
         });
 
         socket.on('path:drawn', function(pathJSON) {
-            socket.broadcast.emit('path:add', pathJSON);
+            socket.broadcast.emit('canvas:update', pathJSON);
         });
     });
 };
