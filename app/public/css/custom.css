@@ -1,0 +1,14 @@
+#wrapper {
+  margin-left: 10px;
+}
+#left-column {
+  float: left;
+  width: 900px;
+}
+#right-column {
+  float: right;
+  width: 200px;
+}
+#cleared {
+  clear: both;
+}
