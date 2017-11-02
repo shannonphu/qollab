@@ -5,8 +5,5 @@ socket.on('connect', function() {
 });
 
 socket.on('canvas:update', function(pathJSON) {
-	canvas.clear();
-	canvas.loadFromJSON(pathJSON, function() {
-	  canvas.renderAll();
-	});
+	canvas.loadFromJSON(pathJSON);
 });
