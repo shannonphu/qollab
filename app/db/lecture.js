@@ -1,8 +1,6 @@
 module.exports = (function() {
     let mongoose = require('mongoose');
 
-    const codeMaxLength = 7;
-
     var lectureSchema = new mongoose.Schema({
         title: { type: String, required: true },
         joinCode: { type: String, required: true }
@@ -20,7 +18,7 @@ module.exports = (function() {
     */
     lectureSchema.statics.insert = function(title, callback) {
         // TODO: check if a lecture already has this code
-        let code = generateCode(codeMaxLength);
+        let code = generateCode();
 
         let lecture = new Lecture({title: title, joinCode: code});
         lecture.save(function (err, data) {
@@ -62,7 +60,7 @@ module.exports = (function() {
     * Functionality:
     *   - generates a 6 digit numerical code randomly
     */
-    let generateCode = function(maxLength) {
+    let generateCode = function() {
         let code = Math.floor(100000 + Math.random() * 900000);
         return code.toString();
     }
