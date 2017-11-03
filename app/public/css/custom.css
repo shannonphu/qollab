@@ -1,14 +1,29 @@
 #wrapper {
-  margin-left: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 1500px;
+	height: 600px;
 }
 #left-column {
-  float: left;
-  width: 900px;
+	float: left;
+	width: 900px;
+	height: 600px;
+}
+#middle-border {
+	width: 100px;
 }
 #right-column {
-  float: right;
-  width: 200px;
+	width: 400px;
+	height: 600px;
+	overflow: auto;
+}
+#draw {
+	width: 900px;
+	height: 600px;
 }
 #cleared {
-  clear: both;
+	clear: both;
+}
+#btn-small {
+    padding: 0 0.5rem;
 }
