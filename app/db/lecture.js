@@ -1,9 +1,13 @@
-module.exports = (function() {
+module.exports = (function () {
     let mongoose = require('mongoose');
+    let Schema = mongoose.Schema;
+    let ObjectId = Schema.ObjectId;
 
-    var lectureSchema = new mongoose.Schema({
+    var lectureSchema = new Schema({
         title: { type: String, required: true },
-        joinCode: { type: String, required: true }
+        joinCode: { type: String, required: true },
+        instructor: { type: String, required: true },
+        students: [{ type: String }]
     });
 
     /*
@@ -16,16 +20,16 @@ module.exports = (function() {
     * Returns:
     *   - the actual Lecture mongoDB model
     */
-    lectureSchema.statics.insert = function(title, callback) {
+    lectureSchema.statics.insert = function (title, instructorId, callback) {
         // TODO: check if a lecture already has this code
         let code = generateCode();
 
-        let lecture = new Lecture({title: title, joinCode: code});
+        let lecture = new Lecture({ title: title, joinCode: code, instructor: instructorId });
         lecture.save(function (err, data) {
             if (err) {
                 throw err;
             }
-            
+
             if (callback) {
                 callback(lecture);
             }
@@ -43,8 +47,8 @@ module.exports = (function() {
     * Returns:
     *   - the actual Lecture mongoDB model
     */
-    lectureSchema.statics.findByJoinCode = function(joinCode, callback) {
-        Lecture.findOne({ joinCode: joinCode }, function(err, lecture) {
+    lectureSchema.statics.findByJoinCode = function (joinCode, callback) {
+        Lecture.findOne({ joinCode: joinCode }, function (err, lecture) {
             if (err) {
                 throw err;
             }
@@ -64,7 +68,7 @@ module.exports = (function() {
     * Functionality:
     *   - generates a 6 digit numerical code randomly
     */
-    let generateCode = function() {
+    let generateCode = function () {
         let code = Math.floor(100000 + Math.random() * 900000);
         return code.toString();
     }

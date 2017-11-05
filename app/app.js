@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require('./db/db.js');
 const Comment = require('./db/comment.js');
 const Lecture = require('./db/lecture.js');
+const User = require('./db/user.js');
 // Creates seed data to populate database
 const seedData = require('./db/seed.js');
 
