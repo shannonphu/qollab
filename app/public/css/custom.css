@@ -1,29 +1,28 @@
 #wrapper {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	width: 1500px;
+	width: 1200px;
 	height: 600px;
 }
 #left-column {
-	float: left;
-	width: 900px;
+	width: 800px;
 	height: 600px;
 }
 #middle-border {
-	width: 100px;
+	width: 50px;
+	height: 600px;
 }
 #right-column {
-	width: 400px;
+	width: 350px;
 	height: 600px;
 	overflow: auto;
-}
-#draw {
-	width: 900px;
-	height: 600px;
 }
 #cleared {
 	clear: both;
 }
-#btn-small {
+
+.btn-small {
     padding: 0 0.5rem;
+}
+.container {
+	margin-top: 20px;
+	margin-left: 75px;
 }

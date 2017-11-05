@@ -44,7 +44,7 @@
 	<div class="container">
 		<div id="wrapper" class="row">
 			<div id="left-column" class="col">
-				<canvas id="draw" width="900" height="600" style="border: solid 2px black"></canvas>
+				<canvas id="draw" width="800px" height="600px" style="border: solid 2px black"></canvas>
 				<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
 				<script src="/js/canvas.js"></script>
@@ -61,7 +61,7 @@
 							       	<input id="comment" type="tel" class="validate">
 							        <label for="comment">Comment</label>
 						        </div>
-								<button id="btn-small" class="btn waves-effect waves-light" type="submit" name="action">Submit
+								<button class="btn-small btn waves-effect waves-light" type="submit" name="action">Submit
 									<i class="material-icons right">send</i>
 								</button>
 							</div>
@@ -138,6 +138,16 @@
 	</script>
 	<!-- For collapsible comment boxes -->
 	<script>
+		// Close all collapsible elements when clicked outside
+		$(document).mousedown(function(e) {
+			if (!$(e.target).parents('.collapsible').length) {
+				$(".collapsible-header").removeClass(function() {
+					return "active";
+				});
+				$(".collapsible").collapsible({accordion: true});
+			}
+		});
+
 		$(document).ready(function(){
 			$('.collapsible').collapsible();
 		});
