@@ -49,6 +49,10 @@ module.exports = (function() {
                 throw err;
             }
 
+            if (lecture == null) {
+                return null;
+            }
+
             if (callback) {
                 callback(lecture);
             }
