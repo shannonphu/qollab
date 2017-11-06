@@ -41,86 +41,81 @@
 		</nav>
 	</div>
 	
-	<div class="container">
-		<div id="wrapper" class="row">
-			<div id="left-column" class="col">
-				<canvas id="draw" width="800px" height="600px" style="border: solid 2px black"></canvas>
-	    </div>
-	    <div id="middle-border" class="col"></div>
-			<div id="right-column" class="col">
-				<ul class="collapsible popout" data-collapsible="accordion">
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>What is the reason for this? Why is it? How Come?</div>
-						<div class="collapsible-body">
-							<div class="row">
-							    <div class="input-field">
-							       	<input id="comment" type="tel" class="validate">
-							        <label for="comment">Comment</label>
-						        </div>
-								<button class="btn-small btn waves-effect waves-light" type="submit" name="action">Submit
-									<i class="material-icons right">send</i>
-								</button>
-							</div>
+	<div class="row">
+		<div id="canvas-column" class="col m8">
+			<canvas id="draw"></canvas>
+		</div>
+		<div id="comments-column" class="col m4">
+			<ul class="collapsible popout" data-collapsible="accordion">
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>What is the reason for this? Why is it? How Come?</div>
+					<div class="collapsible-body">
+						<div class="row">
+								<div class="input-field">
+										<input id="comment" type="tel" class="validate">
+										<label for="comment">Comment</label>
+									</div>
+							<button class="btn-small btn waves-effect waves-light" type="submit" name="action">Submit
+								<i class="material-icons right">send</i>
+							</button>
 						</div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body">
-						    
-						</div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				    <li>
-						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				    </li>
-				</ul>
-			</div>
-			<div id="cleared">
-			</div>
+					</div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body">
+							
+					</div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+			</ul>
 		</div>
 	</div>
 
@@ -152,6 +147,8 @@
 
 		$(document).ready(function(){
 			$('.collapsible').collapsible();
+			// TODO: Calculation repeated in canvas.js to set canvas height.
+			$('#comments-column').height($(window).height() - $('.navbar-fixed').height());
 		});
   	</script>
 </body>

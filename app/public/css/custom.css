@@ -1,28 +1,16 @@
-#wrapper {
-	width: 1200px;
-	height: 600px;
+#comments-column {
+	overflow: scroll;
 }
-#left-column {
-	width: 800px;
-	height: 600px;
-}
-#middle-border {
-	width: 50px;
-	height: 600px;
-}
-#right-column {
-	width: 350px;
-	height: 600px;
-	overflow: auto;
-}
-#cleared {
-	clear: both;
-}
-
 .btn-small {
     padding: 0 0.5rem;
 }
 .container {
 	margin-top: 20px;
 	margin-left: 75px;
+}
+.row {
+	margin-bottom: 0;
+}
+canvas#draw {
+	border: solid 1px lightgray;
 }
