@@ -1,14 +1,28 @@
 #wrapper {
-  margin-left: 10px;
+	width: 1200px;
+	height: 600px;
 }
 #left-column {
-  float: left;
-  width: 900px;
+	width: 800px;
+	height: 600px;
+}
+#middle-border {
+	width: 50px;
+	height: 600px;
 }
 #right-column {
-  float: right;
-  width: 200px;
+	width: 350px;
+	height: 600px;
+	overflow: auto;
 }
 #cleared {
-  clear: both;
+	clear: both;
+}
+
+.btn-small {
+    padding: 0 0.5rem;
+}
+.container {
+	margin-top: 20px;
+	margin-left: 75px;
 }

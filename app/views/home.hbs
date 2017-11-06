@@ -41,14 +41,89 @@
 		</nav>
 	</div>
 	
-	<div id="wrapper" class="row">
-		<div id="left-column" class="column">
-			<canvas id="draw" width="900" height="600" style="border: solid 2px black"></canvas>
-      	</div>
-		<div id="right-column" class="column">
+	<div class="container">
+		<div id="wrapper" class="row">
+			<div id="left-column" class="col">
+				<canvas id="draw" width="800px" height="600px" style="border: solid 2px black"></canvas>
+	    </div>
+	    <div id="middle-border" class="col"></div>
+			<div id="right-column" class="col">
+				<ul class="collapsible popout" data-collapsible="accordion">
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>What is the reason for this? Why is it? How Come?</div>
+						<div class="collapsible-body">
+							<div class="row">
+							    <div class="input-field">
+							       	<input id="comment" type="tel" class="validate">
+							        <label for="comment">Comment</label>
+						        </div>
+								<button class="btn-small btn waves-effect waves-light" type="submit" name="action">Submit
+									<i class="material-icons right">send</i>
+								</button>
+							</div>
+						</div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body">
+						    
+						</div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				    <li>
+						<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+				    </li>
+				</ul>
+			</div>
+			<div id="cleared">
+			</div>
 		</div>
 	</div>
-	
+
 	<!--Import jQuery before materialize.js-->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<!-- Compiled and minified JavaScript -->
@@ -63,6 +138,22 @@
 	<script>
 		$(".button-collapse").sideNav();
 	</script>
+	<!-- For collapsible comment boxes -->
+	<script>
+		// Close all collapsible elements when clicked outside
+		$(document).mousedown(function(e) {
+			if (!$(e.target).parents('.collapsible').length) {
+				$(".collapsible-header").removeClass(function() {
+					return "active";
+				});
+				$(".collapsible").collapsible({accordion: true});
+			}
+		});
+
+		$(document).ready(function(){
+			$('.collapsible').collapsible();
+		});
+  	</script>
 </body>
 
 </html>
