@@ -31,9 +31,13 @@ app.get('/lecture/join', (req, res) => {
 
 app.post('/lecture/join', (req, res) => {
 	Lecture.findByJoinCode(req.body.join_code, (lecture) => {
-		res.render('home', {
-			title: lecture.title
-		});
+		if (lecture) {
+			res.render('home', {
+				title: lecture.title
+			});
+		} else {
+			res.render('lecture_join');
+		}
 	});
 });
 
