@@ -20,21 +20,24 @@ app.use(express.static('public'));
 
 // TODO: Replace root view with a TBD first user view
 app.get('/', (req, res) => {
-	res.render('home', {
-		title: "Home"
-	});
+	res.send("Qollab's landing page.");
 });
 
-app.get('/lecture/join', (req, res) => {
-	res.render('lecture_join');
-});
-
-app.post('/lecture/join', (req, res) => {
-	Lecture.findByJoinCode(req.body.join_code, (lecture) => {
-		res.render('home', {
+app.get('/lecture/:joinCode', (req, res) => {
+	let joinCode = req.params.joinCode;
+	Lecture.findByJoinCode(joinCode, (lecture) => {
+		res.render('lecture', {
 			title: lecture.title
 		});
 	});
+});
+
+app.get('/join', (req, res) => {
+	res.render('lecture_join');
+});
+
+app.post('/join', (req, res) => {
+	res.redirect('lecture/' + req.body.join_code);
 });
 
 server.listen(3000, () => {
