@@ -2,7 +2,8 @@ module.exports = (function() {
     let mongoose = require('mongoose');
 
     var lectureSchema = new mongoose.Schema({
-        title: { type: String, required: true }
+        title: { type: String, required: true },
+        joinCode: { type: String, required: true }
     });
 
     /*
@@ -16,15 +17,52 @@ module.exports = (function() {
     *   - the actual Lecture mongoDB model
     */
     lectureSchema.statics.insert = function(title, callback) {
-        let lecture = new Lecture({title: title});
+        // TODO: check if a lecture already has this code
+        let code = generateCode();
+
+        let lecture = new Lecture({title: title, joinCode: code});
         lecture.save(function (err, data) {
             if (err) {
-                return console.error(err);
+                throw err;
             }
             
-            callback(lecture);
+            if (callback) {
+                callback(lecture);
+            }
             return;
         });
+    }
+
+    /*
+    * Functionality:
+    *   - finds the Lecture associated with this join code
+    * Usage:
+    * Lecture.findByJoinCode(someJoinCode, (lecture) => {
+    *    // do something
+    });
+    * Returns:
+    *   - the actual Lecture mongoDB model
+    */
+    lectureSchema.statics.findByJoinCode = function(joinCode, callback) {
+        Lecture.findOne({ joinCode: joinCode }, function(err, lecture) {
+            if (err) {
+                throw err;
+            }
+
+            if (callback) {
+                callback(lecture);
+            }
+            return;
+        });
+    }
+
+    /*
+    * Functionality:
+    *   - generates a 6 digit numerical code randomly
+    */
+    let generateCode = function() {
+        let code = Math.floor(100000 + Math.random() * 900000);
+        return code.toString();
     }
 
     let Lecture = mongoose.model('Lecture', lectureSchema);

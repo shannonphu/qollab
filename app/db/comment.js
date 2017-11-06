@@ -22,10 +22,13 @@ module.exports = (function() {
         let comment = new Comment({text: text});
         comment.save(function (err, data) {
             if (err) {
-                return console.error(err);
+                throw err;
             }
             
-            callback(comment);
+            if (callback) {
+                callback(comment);
+            }
+        
             return;
         });
     }
