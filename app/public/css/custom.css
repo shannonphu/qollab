@@ -1,15 +1,11 @@
 #comments-column {
-	overflow: scroll;
+	overflow: auto;
 }
 .btn-small {
     padding: 0 0.5rem;
 }
-.container {
-	margin-top: 20px;
-	margin-left: 75px;
-}
 .row {
-	margin-bottom: 0;
+	margin-bottom: 0px;
 }
 canvas#draw {
 	border: solid 1px lightgray;
