@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>{{title}}</title>
+	
+	<!--Import Google Icon Font-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!-- Compiled and minified CSS -->
+ 	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+	<!--Import custom.css-->
+	<link type="text/css" rel="stylesheet" href="css/custom.css"/>
+	
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+	<div class="navbar-fixed">
+		<nav class="light-blue lighten-1" role="navigation">
+			<div class="nav-wrapper">
+				<div class="brand-logo center">{{title}}</div>
+				<a href="#" data-activates="mobile-collapse" class="button-collapse"><i class="material-icons">menu</i></a>
+				<ul id="nav-mobile" class="left hide-on-med-and-down">
+					<li><a href="#"><i class="material-icons left">home</i>Qollab</a></li>
+				</ul>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><a href="#"><i class="material-icons left">people</i>Students</a></li>
+					<li><a href="#"><i class="material-icons left">insert_chart</i>Poll</a></li>
+				</ul>
+				<!-- Mobile Collapse Buttons -->
+				<ul class="side-nav" id="mobile-collapse">
+					<li><a href="#"><i class="material-icons left">home</i>Qollab</a></li>
+					<li><a href="#"><i class="material-icons left">people</i>Students</a></li>
+					<li><a href="#"><i class="material-icons left">insert_chart</i>Poll</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	
+	<div class="row">
+		<div id="canvas-column" class="col m8">
+			<canvas id="draw"></canvas>
+		</div>
+		<div id="comments-column" class="col m4">
+			<ul class="collapsible popout" data-collapsible="accordion">
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>What is the reason for this? Why is it? How Come?</div>
+					<div class="collapsible-body">
+						<div class="row">
+								<div class="input-field">
+										<input id="comment" type="tel" class="validate">
+										<label for="comment">Comment</label>
+									</div>
+							<button class="btn-small btn waves-effect waves-light" type="submit" name="action">Submit
+								<i class="material-icons right">send</i>
+							</button>
+						</div>
+					</div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body">
+							
+					</div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+					<li>
+					<div class="collapsible-header"><i class="material-icons">chat_bubble</i>Question</div>
+					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+					</li>
+			</ul>
+		</div>
+	</div>
+
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
+  	<script type="text/javascript" src="/js/client-socket-event-handler.js"></script>
+  	<script src="/js/canvas.js"></script>
+  	
+	<!-- For Mobile Collapse Buttons -->
+	<script>
+		$(".button-collapse").sideNav();
+	</script>
+	<!-- For collapsible comment boxes -->
+	<script>
+		// Close all collapsible elements when clicked outside
+		$(document).mousedown(function(e) {
+			if (!$(e.target).parents('.collapsible').length) {
+				$(".collapsible-header").removeClass(function() {
+					return "active";
+				});
+				$(".collapsible").collapsible({accordion: true});
+			}
+		});
+
+		$(document).ready(function(){
+			$('.collapsible').collapsible();
+			// TODO: Calculation repeated in canvas.js to set canvas height.
+			$('#comments-column').height($(window).height() - $('.navbar-fixed').height());
+		});
+  	</script>
+</body>
+
+</html>
