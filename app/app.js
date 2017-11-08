@@ -40,6 +40,18 @@ app.post('/join', (req, res) => {
 	res.redirect('lecture/' + req.body.join_code);
 });
 
+app.get('/create', (req, res) => {
+	res.render('lecture_create');
+});
+
+app.post('/create', (req, res) => {
+	Lecture.insert(req.body.lecture_name, (lecture) => {
+		res.render('lecture_create', {
+			code: lecture.joinCode
+		})
+	});
+});
+
 server.listen(3000, () => {
 	console.log("Listening on port 3000");
 });
