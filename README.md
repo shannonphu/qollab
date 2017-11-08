@@ -20,3 +20,53 @@ Then `git clone https://github.com/shannonphu/qollab.git`
 ## Pull Request Workflow
 * Make a new branch formatted `<your-name>/<feature-name>` to submit a pull request to master.
 * Notify team that a PR has been made :)
+* After a pull request is approved, rebase and squash commits before merging into master
+    1. Checkout to master
+    
+    ```shell
+    git checkout master
+    ```
+    2. Pull the most recent changes from master
+    
+    ```shell
+    git pull
+    ```
+
+    3. Check into the branch of the PR
+
+    ```shell
+    git checkout <your branch name>
+    ```
+
+    4. Rebase and squash commits:
+
+    ```shell
+    git rebase -i master
+    ```
+
+    Then you will see something like:
+
+    ```shell
+    pick 07c5abd Introduce OpenPGP and teach basic usage
+    pick de9b1eb Fix PostChecker::Post#urls
+    r 3e7ee36 Hey kids, stop all the highlighting
+    pick fa20af3 git interactive rebase, squash, amend
+    ```
+
+    Leave the first `pick` untouched, and change all others into `squash`. The result is something like:
+      
+    ```shell
+    pick 07c5abd Introduce OpenPGP and teach basic usage
+    squash de9b1eb Fix PostChecker::Post#urls
+    r 3e7ee36 Hey kids, stop all the highlighting
+    squash fa20af3 git interactive rebase, squash, amend
+    ```
+
+    Save and exit. Then you can edit your commit message if needed.
+
+    5. Push changes to GitHub.
+
+    ```shell
+    git push -f
+    ```
+    **Do _NOT_ force push to other people's branches**
