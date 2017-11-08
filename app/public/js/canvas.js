@@ -15,5 +15,11 @@ var canvas = initCanvas();
 
 canvas.on('path:created', (path) => {
 	let pathData = path['path'];
-	socket.emit('path:drawn', JSON.stringify(pathData));
+
+	let pathObj = {
+		"data": pathData,
+		"joinCode": joinCode
+	}
+
+	socket.emit('path:drawn', JSON.stringify(pathObj));
 });

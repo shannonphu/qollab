@@ -22,7 +22,7 @@
 	<div class="navbar-fixed">
 		<nav class="light-blue lighten-1" role="navigation">
 			<div class="nav-wrapper">
-				<div class="brand-logo center">{{title}}</div>
+				<div class="brand-logo center">{{lecture.title}}</div>
 				<a href="#" data-activates="mobile-collapse" class="button-collapse"><i class="material-icons">menu</i></a>
 				<ul id="nav-mobile" class="left hide-on-med-and-down">
 					<li><a href="#"><i class="material-icons left">home</i>Qollab</a></li>
@@ -122,18 +122,9 @@
 	<!--Import jQuery before materialize.js-->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<!-- Compiled and minified JavaScript -->
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
-  	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
-  	<script type="text/javascript" src="/js/client-socket-event-handler.js"></script>
-  	<script src="/js/canvas.js"></script>
-  	
-	<!-- For Mobile Collapse Buttons -->
-	<script>
-		$(".button-collapse").sideNav();
-	</script>
-	<!-- For collapsible comment boxes -->
+		<!-- For collapsible comment boxes -->
 	<script>
 		// Close all collapsible elements when clicked outside
 		$(document).mousedown(function(e) {
@@ -147,10 +138,22 @@
 
 		$(document).ready(function(){
 			$('.collapsible').collapsible();
+			
 			// TODO: Calculation repeated in canvas.js to set canvas height.
 			$('#comments-column').height($(window).height() - $('.navbar-fixed').height());
+
+			// For Mobile Collapse Buttons
+			$(".button-collapse").sideNav();
 		});
-  	</script>
+
+		// Hack to access handlebars join code in external JavaScript files
+		let joinCode = {{lecture.joinCode}};
+  </script>
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.19/fabric.min.js"></script>
+	<script type="text/javascript" src="/js/client-socket-event-handler.js"></script>
+	<script src="/js/canvas.js"></script>
 </body>
 
 </html>

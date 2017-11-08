@@ -27,7 +27,7 @@ app.get('/lecture/:joinCode', (req, res) => {
 	let joinCode = req.params.joinCode;
 	Lecture.findByJoinCode(joinCode, (lecture) => {
 		res.render('lecture', {
-			title: lecture.title
+			lecture: lecture
 		});
 	});
 });
