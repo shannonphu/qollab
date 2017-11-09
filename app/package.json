@@ -21,6 +21,7 @@
     "hbs": "^4.0.1",
     "mongoose": "^4.12.6",
     "socket.io": "^2.0.4",
-    "body-parser": "^1.18.2"
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3"
   }
 }
