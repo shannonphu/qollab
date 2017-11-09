@@ -10,3 +10,11 @@ services:
     build: ./mongo
     ports:
       - "27017:27017"
+  web_client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db_server
+    links:
+      - db_server
