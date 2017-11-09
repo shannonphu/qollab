@@ -53,6 +53,10 @@ app.post('/create', (req, res) => {
 	});
 });
 
-server.listen(3000, () => {
-	console.log("Listening on port 3000");
+app.get('/test', (req, res) => {
+	res.send('test API');
+});
+
+server.listen(3001, () => {
+	console.log("Listening on port 3001");
 });

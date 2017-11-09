@@ -1,9 +1,9 @@
 version: '3'
 services:
-  qollab:
-    build: ./app
+  db_server:
+    build: ./db_api
     ports:
-      - "3000:3000"
+      - "3001:3001"
     links:
       - db_mongo
   db_mongo:
