@@ -14,24 +14,24 @@ module.exports = (function () {
     * Functionality:
     *   - inserts a new Lecture object into our database
     * Usage:
-    *   Lecture.insert("lecture_title", (newLecture) => {
+    *   Lecture.insert("lecture_title", User, (newLecture, user) => {
     *       console.log(newLecture);
     *   });
     * Returns:
     *   - the actual Lecture mongoDB model
     */
-    lectureSchema.statics.insert = function (title, instructorId, callback) {
+    lectureSchema.statics.insert = function (title, instructor, callback) {
         // TODO: check if a lecture already has this code
         let code = generateCode();
 
-        let lecture = new Lecture({ title: title, joinCode: code, instructor: instructorId });
+        let lecture = new Lecture({ title: title, joinCode: code, instructor: instructor.id });
         lecture.save(function (err, data) {
             if (err) {
                 throw err;
             }
 
             if (callback) {
-                callback(lecture);
+                callback(lecture, instructor);
             }
             return;
         });

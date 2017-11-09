@@ -1,11 +1,13 @@
 const express = require('express');
 const http = require('http');
+const cookieParser = require('cookie-parser')
 const app = express();
 const server = http.createServer(app);
 const socket = require('./server-socket-event-handler')(server);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to databse and declare database Models
@@ -34,7 +36,26 @@ app.get('/lecture/:joinCode', (req, res) => {
 });
 
 app.get('/join', (req, res) => {
-	res.render('lecture_join');
+	//  Determine if cookie exists. 
+	// If it exists we will directly join the user into his / her lecture.
+	if (!('userId' in req.cookies)) {
+		res.render('lecture_join');
+	} else {
+		let userId = req.cookies.userId;
+		User.findById(userId, function (err, user) {
+			if (err) {
+				throw err;
+			}
+
+			if (user == null) {
+				console.log(`User ${userId} does not exist.`);
+				res.render('lecture_join');
+			} else {
+				//  use the joincode associated with the current user
+				res.redirect('lecture/' + user.joinCode);
+			}
+		});
+	}
 });
 
 app.post('/join', (req, res) => {
@@ -46,10 +67,27 @@ app.get('/create', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-	Lecture.insert(req.body.lecture_name, (lecture) => {
-		res.render('lecture_create', {
-			code: lecture.joinCode
-		})
+	User.create({}, (err, user) => {
+		if (err) {
+			throw err;
+		}
+		Lecture.insert(req.body.lecture_name, user, (lecture, instructor) => {
+			let joinCode = lecture.joinCode;
+			
+			//  Associate the user with the lecture join code
+			instructor.joinCode = joinCode;
+			instructor.save((err) => {
+				if (err) {
+					throw err;
+				}
+
+				//  Set cookie for the user
+				res.cookie('userId', instructor.id);
+				res.render('lecture_create', {
+					code: joinCode
+				})
+			});
+		});
 	});
 });
 
