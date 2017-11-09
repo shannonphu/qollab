@@ -21,7 +21,7 @@ app.use(express.static('public'));
 
 // TODO: Replace root view with a TBD first user view
 app.get('/', (req, res) => {
-	res.send("Qollab's landing page.");
+	res.render('landing');
 });
 
 app.get('/lecture/:joinCode', (req, res) => {
