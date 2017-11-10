@@ -11,31 +11,17 @@ class Canvas extends Component {
 
     state = {
         lineColor: 'black',
-        lineWidth: 10,
+        lineWidth: 5,
         fillColor: '#68CCCA',
         backgroundColor: 'transparent',
-        shadowWidth: 0,
-        shadowOffset: 0,
         tool: Tools.Pencil,
-        fillWithColor: false,
-        fillWithBackgroundColor: false,
-        drawings: [],
-        canUndo: false,
-        canRedo: false,
         controlledSize: false,
         sketchWidth: 600,
         sketchHeight: 600,
-        stretched: true,
-        stretchedX: false,
-        stretchedY: false,
-        originX: 'left',
-        originY: 'top'
     };
 
     componentDidMount() {
-
         /*eslint-disable no-console*/
-
         (function (console) {
             console.save = function (data, filename) {
                 if (!data) {
@@ -58,23 +44,12 @@ class Canvas extends Component {
         })(console);
 
         /*eslint-enable no-console*/
-
     }
 
     _download() {
         /*eslint-disable no-console*/
-
-        console.save(this._sketch.toDataURL(), 'toDataURL.txt');
-        console.save(JSON.stringify(this._sketch.toJSON()), 'toDataJSON.txt');
-
+        console.save(JSON.stringify(this._sketch.toJSON()), 'canvas.json');
         /*eslint-enable no-console*/
-
-        let { imgDown } = this.refs;
-        let event = new Event('click', {});
-
-        imgDown.href = this._sketch.toDataURL();
-        imgDown.download = 'toPNG.png';
-        imgDown.dispatchEvent(event);
     }
 
     _onSketchChange() {
@@ -88,8 +63,8 @@ class Canvas extends Component {
                 ref={(c) => this._sketch = c}
                 lineColor={this.state.lineColor}
                 lineWidth={this.state.lineWidth}
-                fillColor={this.state.fillWithColor ? this.state.fillColor : 'transparent'}
-                backgroundColor={this.state.fillWithBackgroundColor ? this.state.backgroundColor : 'transparent'}
+                fillColor={ this.state.fillColor }
+                backgroundColor={ this.state.backgroundColor }
                 width={this.state.controlledSize ? this.state.sketchWidth : null}
                 height={this.state.controlledSize ? this.state.sketchHeight : null}
                 defaultDataType="json"
