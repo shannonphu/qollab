@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const socket = require('./server-socket-event-handler')(server);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
@@ -53,10 +52,6 @@ app.post('/create', (req, res) => {
 	});
 });
 
-app.get('/test', (req, res) => {
-	res.send('test API');
-});
-
-server.listen(3001, () => {
-	console.log("Listening on port 3001");
+server.listen(3000, () => {
+	console.log("Listening on port 3000");
 });

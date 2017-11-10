@@ -1,20 +1,18 @@
 version: '3'
 services:
-  db_server:
-    build: ./db_api
-    ports:
-      - "3001:3001"
-    links:
-      - db_mongo
   db_mongo:
     build: ./mongo
     ports:
       - "27017:27017"
-  web_client:
-    build: ./client
+  db_api:
+    build: ./db_api
     ports:
       - "3000:3000"
-    depends_on:
-      - db_server
     links:
-      - db_server
+      - db_mongo
+  socket_api:
+    build: ./socket_api
+    ports:
+      - "3003:3003"
+    links:
+      - db_api
