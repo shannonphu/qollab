@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 // import { Route, Redirect, Switch, Link } from 'react-router-dom'
 
 import Nav from './components/Nav';
-import CanvasContainer from './components/CanvasContainer';
+import Canvas from './components/Canvas';
 
 class App extends Component {
   constructor (props) {
@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className='App'>
           <Nav title="Lecture Title Placeholder" />
-          {<CanvasContainer />}
+          {<Canvas />}
       </div>
     )
   }

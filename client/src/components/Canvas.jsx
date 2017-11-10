@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SketchField, Tools } from 'react-sketch';
 
-class CanvasContainer extends Component {
+class Canvas extends Component {
     constructor(params) {
         super(params);
 
@@ -100,4 +100,4 @@ class CanvasContainer extends Component {
     }
 }
 
-export default CanvasContainer
+export default Canvas
