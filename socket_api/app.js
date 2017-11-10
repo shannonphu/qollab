@@ -9,6 +9,6 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-server.listen(process.env.PORT || 3003, () => {
-	console.log("Listening on port " + process.env.PORT);
+server.listen(3003, () => {
+	console.log("Listening on port 3003");
 });
