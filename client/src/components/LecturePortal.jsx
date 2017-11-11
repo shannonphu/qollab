@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Canvas from './Canvas';
-import CommentList from './CommentList';
+import CommentList from './comments/CommentList';
 
 class LecturePortal extends Component {
 	constructor(props) {
