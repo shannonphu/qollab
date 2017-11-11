@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 class JoinLectureForm extends Component {
     constructor(props) {
@@ -14,15 +15,25 @@ class JoinLectureForm extends Component {
     submitHandler(event) {
         event.preventDefault();
         let joinCode = this.refs.joinCode.value;
-        this.setState({
-            redirect: true,
-            joinCode: joinCode
-        });
+
+        // Check if the input join code exists in the database
+        axios.get('http://localhost:3005/lecture/' + joinCode)
+            .then((response) => {
+                console.log(response.data);
+                this.setState({
+                    redirect: true,
+                    joinCode: joinCode
+                });
+            })
+            .catch((error) => {
+                // TODO: Redirect to 'no lecture found for this join code' view
+                throw error;
+            });
     }
 
     render() {
         if (this.state.redirect) {
-            return(<Redirect to={"/lecture/" + this.state.joinCode} />);
+            return (<Redirect to={"/lecture/" + this.state.joinCode} />);
         } else {
             return (
                 <div className='JoinLectureForm'>
