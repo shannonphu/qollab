@@ -36,7 +36,7 @@ class JoinLectureForm extends Component {
             return (<Redirect to={"/lecture/" + this.state.joinCode} />);
         } else {
             return (
-                <div className='JoinLectureForm'>
+                <div className='JoinLectureForm container'>
                     <center><p>Enter Code Below:</p></center>
                     <div className="row">
                         <div className="input-field col s12"></div>
