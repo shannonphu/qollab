@@ -183,7 +183,6 @@ class SketchField extends Component {
     }
 
     _onObjectAdded(e) {
-        console.log("object added");
         if (!this.state.action) {
             this.setState({ action: true });
             return;
