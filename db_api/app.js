@@ -33,7 +33,6 @@ app.use(function(req, res, next) {
 app.get('/lecture/:joinCode', (req, res) => {
 	let joinCode = req.params.joinCode;
 	Lecture.findByJoinCode(joinCode, (lecture) => {
-		// res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");		
 		res.json(lecture);
 	});
 });
