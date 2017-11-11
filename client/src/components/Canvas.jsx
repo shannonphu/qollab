@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { SketchField, Tools } from 'react-sketch';
+import SketchField from './react-sketch/SketchField';
+import Tools from './react-sketch/tools';
+import io from 'socket.io-client';
+
+let socket;
 
 class Canvas extends Component {
     constructor(params) {
@@ -7,9 +11,19 @@ class Canvas extends Component {
 
         this._download = this._download.bind(this);
         this._onSketchChange = this._onSketchChange.bind(this);
+        this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
+
+        socket = io.connect('http://localhost:3003', { query: 'lectureCode=' + this.state.currentJoinCode });
+
+        socket.on("connect", () => {
+            console.log("client connected");
+        });
+
+        socket.on('canvas:update', (canvasJSON) => this._setCanvasFromJSON(canvasJSON));
     }
 
     state = {
+        currentJoinCode: this.props.match.params.joinCode,
         lineColor: 'black',
         lineWidth: 5,
         fillColor: '#68CCCA',
@@ -20,32 +34,6 @@ class Canvas extends Component {
         sketchHeight: 600,
     };
 
-    componentDidMount() {
-        /*eslint-disable no-console*/
-        (function (console) {
-            console.save = function (data, filename) {
-                if (!data) {
-                    console.error('Console.save: No data');
-                    return;
-                }
-                if (!filename) filename = 'console.json';
-                if (typeof data === 'object') {
-                    data = JSON.stringify(data, undefined, 4)
-                }
-                var blob = new Blob([data], { type: 'text/json' }),
-                    e = document.createEvent('MouseEvents'),
-                    a = document.createElement('a');
-                a.download = filename;
-                a.href = window.URL.createObjectURL(blob);
-                a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-                e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                a.dispatchEvent(e)
-            }
-        })(console);
-
-        /*eslint-enable no-console*/
-    }
-
     _download() {
         /*eslint-disable no-console*/
         console.save(JSON.stringify(this._sketch.toJSON()), 'canvas.json');
@@ -53,6 +41,24 @@ class Canvas extends Component {
     }
 
     _onSketchChange() {
+        let joinCode = this.props.match.params.joinCode;
+        let canvasObj = {
+            "data": this._sketch.toJSON(),
+            "joinCode": joinCode
+        }
+
+        // console.log("sketch changed");
+        socket.emit('path:drawn', JSON.stringify(canvasObj));
+    }
+
+    _setCanvasFromJSON(canvasJSON) {
+        let parsedCanvasJSON = JSON.parse(canvasJSON);
+
+        let updatedLectureJoinCode = parsedCanvasJSON['joinCode'];
+        if (updatedLectureJoinCode === this.state.currentJoinCode) {
+            let canvasData = parsedCanvasJSON['data'];
+            this._sketch.fromJSON(canvasData);
+        }
     }
 
     render() {
@@ -63,8 +69,8 @@ class Canvas extends Component {
                 ref={(c) => this._sketch = c}
                 lineColor={this.state.lineColor}
                 lineWidth={this.state.lineWidth}
-                fillColor={ this.state.fillColor }
-                backgroundColor={ this.state.backgroundColor }
+                fillColor={this.state.fillColor}
+                backgroundColor={this.state.backgroundColor}
                 width={this.state.controlledSize ? this.state.sketchWidth : null}
                 height={this.state.controlledSize ? this.state.sketchHeight : null}
                 defaultDataType="json"
