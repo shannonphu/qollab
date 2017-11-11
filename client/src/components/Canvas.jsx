@@ -24,6 +24,8 @@ class Canvas extends Component {
 
     state = {
         currentJoinCode: this.props.match.params.joinCode,
+
+        // Canvas Styles
         lineColor: 'black',
         lineWidth: 5,
         fillColor: '#68CCCA',
@@ -36,18 +38,17 @@ class Canvas extends Component {
 
     _download() {
         /*eslint-disable no-console*/
-        console.save(JSON.stringify(this._sketch.toJSON()), 'canvas.json');
+        console.save(JSON.stringify(this._canvas.toJSON()), 'canvas.json');
         /*eslint-enable no-console*/
     }
 
     _onSketchChange() {
         let joinCode = this.props.match.params.joinCode;
         let canvasObj = {
-            "data": this._sketch.toJSON(),
+            "data": this._canvas.toJSON(),
             "joinCode": joinCode
         }
 
-        // console.log("sketch changed");
         socket.emit('path:drawn', JSON.stringify(canvasObj));
     }
 
@@ -57,7 +58,7 @@ class Canvas extends Component {
         let updatedLectureJoinCode = parsedCanvasJSON['joinCode'];
         if (updatedLectureJoinCode === this.state.currentJoinCode) {
             let canvasData = parsedCanvasJSON['data'];
-            this._sketch.fromJSON(canvasData);
+            this._canvas.fromJSON(canvasData);
         }
     }
 
@@ -66,13 +67,13 @@ class Canvas extends Component {
             <SketchField
                 name='sketch'
                 className='canvas-area'
-                ref={(c) => this._sketch = c}
+                ref={(c) => this._canvas = c}
                 lineColor={this.state.lineColor}
                 lineWidth={this.state.lineWidth}
                 fillColor={this.state.fillColor}
                 backgroundColor={this.state.backgroundColor}
-                width={this.state.controlledSize ? this.state.sketchWidth : null}
-                height={this.state.controlledSize ? this.state.sketchHeight : null}
+                width={this.state.sketchWidth}
+                height={this.state.sketchHeight}
                 defaultDataType="json"
                 onChange={this._onSketchChange}
                 tool={this.state.tool}
