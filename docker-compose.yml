@@ -4,6 +4,8 @@ services:
     build: ./mongo
     ports:
       - "27017:27017"
+    logging: 
+      driver: "none"
   db_api:
     build: ./db_api
     ports:
@@ -14,11 +16,10 @@ services:
     build: ./socket_api
     ports:
       - "3003:3003"
-    links:
-      - db_api
   web_client:
     build: ./client
     ports:
       - "3000:3000"
     links:
       - socket_api
+      - db_api
