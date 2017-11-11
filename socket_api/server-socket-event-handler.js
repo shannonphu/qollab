@@ -2,7 +2,6 @@
 module.exports = function(server) {
     const io = require('socket.io').listen(server);
 
-    // TODO: map lecture to canvas
     let canvasHistory = {};
 
     io.sockets.on('connection', function (socket) {
