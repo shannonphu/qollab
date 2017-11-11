@@ -6,14 +6,14 @@ import io from 'socket.io-client';
 let socket;
 
 class Canvas extends Component {
-    constructor(params) {
-        super(params);
+    constructor(props) {
+        super(props);
 
         this._download = this._download.bind(this);
         this._onSketchChange = this._onSketchChange.bind(this);
         this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
 
-        socket = io.connect('http://localhost:3003', { query: 'lectureCode=' + this.state.currentJoinCode });
+        socket = io.connect('http://localhost:3003', { query: 'lectureCode=' + this.props.joinCode });
 
         socket.on("connect", () => {
             console.log("client connected");
@@ -23,8 +23,6 @@ class Canvas extends Component {
     }
 
     state = {
-        currentJoinCode: this.props.match.params.joinCode,
-
         // Canvas Styles
         lineColor: 'black',
         lineWidth: 5,
@@ -43,10 +41,9 @@ class Canvas extends Component {
     }
 
     _onSketchChange() {
-        let joinCode = this.props.match.params.joinCode;
         let canvasObj = {
             "data": this._canvas.toJSON(),
-            "joinCode": joinCode
+            "joinCode": this.props.joinCode
         }
 
         socket.emit('path:drawn', JSON.stringify(canvasObj));
@@ -56,7 +53,7 @@ class Canvas extends Component {
         let parsedCanvasJSON = JSON.parse(canvasJSON);
 
         let updatedLectureJoinCode = parsedCanvasJSON['joinCode'];
-        if (updatedLectureJoinCode === this.state.currentJoinCode) {
+        if (updatedLectureJoinCode === this.props.joinCode) {
             let canvasData = parsedCanvasJSON['data'];
             this._canvas.fromJSON(canvasData);
         }

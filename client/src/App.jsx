@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 import Nav from './components/Nav';
-import Canvas from './components/Canvas';
+import LecturePortal from './components/LecturePortal';
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class App extends Component {
         <Nav title="Lecture Title Placeholder" />
 
         <Switch>
-          <Route path='/lecture/:joinCode' component={Canvas} />
+          <Route path='/lecture/:joinCode' component={LecturePortal} />
         </Switch>
       </div>
     )
