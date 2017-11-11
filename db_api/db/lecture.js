@@ -14,7 +14,7 @@ module.exports = (function () {
     * Functionality:
     *   - inserts a new Lecture object into our database
     * Usage:
-    *   Lecture.insert("lecture_title", (newLecture) => {
+    *   Lecture.insert("lecture_title", "instructor_id", (newLecture) => {
     *       console.log(newLecture);
     *   });
     * Returns:
