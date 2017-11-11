@@ -15,6 +15,7 @@ class CommentList extends Component {
                     {this.props.comments.map((comment, index) => (
                         <Comment
                             key={index.toString()}
+                            className="collapsible-header z-depth-3"
                             text={comment.text}
                             replies={comment.replies}
                             votes={comment.votes}

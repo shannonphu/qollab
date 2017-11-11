@@ -11,7 +11,7 @@ class Comment extends Component {
     render() {
         return (
             <li className="Comment">
-                <div className="collapsible-header z-depth-3">
+                <div className={this.props.className}>
                     <ul>
                         <li>
                             <i className="material-icons">chat_bubble</i>
