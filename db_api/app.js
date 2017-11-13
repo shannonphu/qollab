@@ -2,11 +2,11 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const socket = require('./server-socket-event-handler')(server);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Connect to databse and declare database Models
 const db = require('./db/db.js');
@@ -19,40 +19,30 @@ const seedData = require('./db/seed.js');
 app.set('view engine', 'hbs');
 app.use(express.static('public'));
 
-// TODO: Replace root view with a TBD first user view
-app.get('/', (req, res) => {
-	res.render('landing');
+// CORS setting with OPTIONS pre-flight handling
+// * Fixes the No 'Access-Control-Allow-Origin' header is present on the requested resource error
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
+
+    if ('OPTIONS' == req.method) res.send(200);
+    else next();
 });
 
 app.get('/lecture/:joinCode', (req, res) => {
 	let joinCode = req.params.joinCode;
 	Lecture.findByJoinCode(joinCode, (lecture) => {
-		res.render('lecture', {
-			lecture: lecture
-		});
+		res.json(lecture);
 	});
-});
-
-app.get('/join', (req, res) => {
-	res.render('lecture_join');
-});
-
-app.post('/join', (req, res) => {
-	res.redirect('lecture/' + req.body.join_code);
-});
-
-app.get('/create', (req, res) => {
-	res.render('lecture_create');
 });
 
 app.post('/create', (req, res) => {
-	Lecture.insert(req.body.lecture_name, (lecture) => {
-		res.render('lecture_create', {
-			code: lecture.joinCode
-		})
+	Lecture.insert(req.body.lectureName, req.body.instructorId, (lecture) => {
+		res.json(lecture);		
 	});
 });
 
-server.listen(3000, () => {
-	console.log("Listening on port 3000");
+server.listen(3005, () => {
+	console.log("Listening on port 3005");
 });

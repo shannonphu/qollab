@@ -18,7 +18,6 @@
   "homepage": "https://github.com/shannonphu/qollab#readme",
   "dependencies": {
     "express": "^4.16.2",
-    "hbs": "^4.0.1",
     "mongoose": "^4.12.6",
     "socket.io": "^2.0.4",
     "body-parser": "^1.18.2"

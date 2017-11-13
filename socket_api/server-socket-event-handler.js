@@ -2,7 +2,6 @@
 module.exports = function(server) {
     const io = require('socket.io').listen(server);
 
-    // TODO: map lecture to canvas
     let canvasHistory = {};
 
     io.sockets.on('connection', function (socket) {
@@ -10,7 +9,7 @@ module.exports = function(server) {
 
         // Fill canvas if new connection made midway through session
         let joinCode = socket.handshake.query.lectureCode;
-        if (canvasHistory[joinCode] && canvasHistory[joinCode].length > 0) {
+        if (joinCode in canvasHistory) {
             socket.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
         }
 
@@ -19,24 +18,21 @@ module.exports = function(server) {
         });
 
         // Add path to history and update all clients
-        socket.on('path:drawn', function(pathJSON) {
-            let path = JSON.parse(pathJSON);
-            let joinCode = path['joinCode'];
-            let pathData = path['data'];
+        socket.on('path:drawn', function(canvasJSON) {
+            let json = JSON.parse(canvasJSON);
             
-            if (!(joinCode in canvasHistory)) {
-                canvasHistory[joinCode] = [];
-            }
+            let joinCode = json['joinCode'];
+            let canvasData = json['data'];
 
-            canvasHistory[joinCode].push(pathData);
+            canvasHistory[joinCode] = canvasData;
             socket.broadcast.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
         });
     });
 
-    var getCanvasJSON = function(joinCode, pathHistory) {
+    var getCanvasJSON = function(joinCode, canvasJSON) {
         return {
             "joinCode": joinCode,
-            "data": {"objects": pathHistory}
+            "data": canvasJSON
         };
     }
 };
