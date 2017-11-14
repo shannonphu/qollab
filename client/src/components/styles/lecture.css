@@ -1,0 +1,25 @@
+.lecture-container {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+.CommentList {
+}
+.ToolSet {
+	bottom: 12px;
+}
+.btn-small {
+    padding: 0 0.5rem;
+}
+.row {
+	margin-bottom: 0px;
+}
+.material-icons {
+    display: inline-flex;
+    vertical-align: middle;
+}
+.canvas-area {
+	border: solid 1px lightgray;
+}
+li {
+	margin-bottom: 0.5rem;
+}

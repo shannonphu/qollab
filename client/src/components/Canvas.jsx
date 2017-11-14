@@ -63,7 +63,7 @@ class Canvas extends Component {
         return (
             <SketchField
                 name='sketch'
-                className='canvas-area'
+                className='canvas-area z-depth-3'
                 ref={(c) => this._canvas = c}
                 lineColor={this.state.lineColor}
                 lineWidth={this.state.lineWidth}

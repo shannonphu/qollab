@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 
+import Nav from './Nav';
 import Canvas from './Canvas';
 import CommentList from './comments/CommentList';
+import ToolSet from './ToolSet';
+
+require('./styles/lecture.css');
 
 class LecturePortal extends Component {
 	constructor(props) {
@@ -40,9 +44,13 @@ class LecturePortal extends Component {
 		];
 
 		return (
-			<div className='LecturePortal row'>
-				<div className="col m8"><Canvas joinCode={this.state.joinCode} /></div>
-				<div className="col m4"><CommentList comments={comments} /></div>
+			<div className='LecturePortal'>
+				<Nav title="Lecture Title Placeholder" />
+				<ToolSet />
+				<div className="row lecture-container">
+					<div className="col s6 m8"><Canvas joinCode={this.state.joinCode} /></div>
+					<div className="col s6 m4"><CommentList comments={comments} /></div>
+				</div>
 			</div>
 		)
 	}
