@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
@@ -30,4 +31,11 @@ class CommentList extends Component {
     }
 }
 
-export default CommentList
+//get redux source's state and map it to component props
+function mapStateToProps(state) {
+    return {
+        comments: state.comments,
+    }
+}
+
+export default connect(mapStateToProps)(CommentList);
