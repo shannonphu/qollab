@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import Nav from './Nav';
 import Canvas from './Canvas';
 import CommentList from './comments/CommentList';
 import ToolSet from './ToolSet';
