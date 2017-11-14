@@ -45,10 +45,11 @@ class CreateLectureForm extends Component {
             );
         } else {
             return (
-                <div className='CreateLectureForm'>
+                <div className='CreateLectureForm container'>
                     <h3>Create Your Lecture:</h3>
                     <form onSubmit={this.submitHandler}>
                         <input type="text" placeholder="Lecture Name" ref="name" />
+                        <button>Submit</button>
                     </form>
                 </div>
             )
