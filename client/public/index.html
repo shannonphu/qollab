@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!--Import Google Icon Font-->
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    
+
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -19,7 +19,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Qollab</title>
   </head>
   <body>
     <div id="root"></div>
@@ -34,7 +34,32 @@
       To create a production bundle, use `npm run build`.
     -->
     
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <!-- TODO: Migrate to React -->
+    <script>
+      // Close all collapsible elements when clicked outside
+      $(document).mousedown(function(e) {
+        if (!$(e.target).parents('.collapsible').length) {
+          $(".collapsible-header").removeClass(function() {
+            return "active";
+          });
+          $(".collapsible").collapsible({accordion: true});
+        }
+      });
+
+      $(document).ready(function(){
+        $('.collapsible').collapsible();        
+        // For Mobile Collapse Buttons of navigation bar
+        $(".button-collapse").sideNav();
+
+        // Disable collapsibility for certain elements
+        $(".not-collapse").on("click", function(e) { 
+          e.stopPropagation(); 
+        });
+      });
+    </script>
+
   </body>
 </html>
