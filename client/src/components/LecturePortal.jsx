@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import Nav from './Nav';
 import Canvas from './Canvas';
 import CommentList from './comments/CommentList';
 import ToolSet from './ToolSet';
@@ -17,8 +16,7 @@ class LecturePortal extends Component {
 
 	render() {
 		return (
-			<div className='LecturePortal'>
-				<Nav title="Lecture Title Placeholder" />
+			<div className='LecturePortal row'>
 				<ToolSet />
 				<div className="row lecture-container">
 					<div className="col s6 m8"><Canvas joinCode={this.state.joinCode} /></div>

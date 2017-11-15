@@ -13,7 +13,9 @@ class Nav extends Component {
             <nav className="light-blue lighten-1" role="navigation">
                 <div className="nav-wrapper">
                     <div className="brand-logo center">{this.props.title}</div>
-                    <a href="#" data-activates="mobile-collapse" className="button-collapse"><i className="material-icons">menu</i></a>
+                    <a href="#" data-activates="mobile-collapse" className="button-collapse">
+                        <i className="material-icons">menu</i>
+                    </a>
                     <ul id="nav-mobile" className="left hide-on-med-and-down">
                         <li><a href="#"><i className="material-icons left">home</i>Qollab</a></li>
                     </ul>
