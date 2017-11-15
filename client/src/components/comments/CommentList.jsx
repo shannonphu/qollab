@@ -15,7 +15,7 @@ class CommentList extends Component {
             <div className="CommentList">
                 <ul className="collapsible popout" data-collapsible="accordion">
                     <CommentForm className="collapsible-header z-depth-3" />
-                    
+
                     {this.props.comments.map((comment, index) => (
                         <Comment
                             key={index.toString()}
@@ -38,4 +38,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(CommentList);
+export default connect(mapStateToProps, null)(CommentList);

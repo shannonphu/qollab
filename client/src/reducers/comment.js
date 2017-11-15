@@ -1,4 +1,18 @@
-function CommentsReducer() {
+var CommentsReducer = (state = initialComments(), action) => {
+    switch (action.type) {
+		case 'ADD_ANNOTATION':
+			return state;
+		case 'ADD_COMMENT':
+            return [
+				...state,
+				Object.assign({}, action.comment)
+			];
+        default:
+            return state;
+    }
+}
+
+function initialComments() {
 	return [
 		{
 			text: "Question",
