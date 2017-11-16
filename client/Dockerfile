@@ -11,9 +11,6 @@ ENV PATH /src/app/node_modules/.bin:$PATH
 ADD package.json /src/app/package.json
 RUN npm install
 RUN npm install react-scripts@0.9.5 -g
-RUN npm install --save redux
-RUN npm install --save react-redux
-RUN npm install --save-dev redux-devtools
 ADD . /src/app
 
 # start app
