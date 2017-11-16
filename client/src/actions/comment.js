@@ -24,3 +24,10 @@ export const addComment = (comment) => {
         comment: comment
     }
 };
+
+export const upVoteComment = (id) => {
+	return {
+		type: 'UPVOTE_COMMENT',
+		id: id
+	}
+};

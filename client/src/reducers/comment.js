@@ -34,6 +34,15 @@ var CommentsReducer = (state = {
 					Object.assign({}, commentAnnotationObj)
 				]
 			};
+		case 'UPVOTE_COMMENT':
+			return Object.assign({}, state, {
+				comments: state.comments.map((comment) => {
+					if (comment.id===action.id)
+						return Object.assign({}, comment, {votes: comment.votes+1});
+					else
+						return comment;
+				})
+			});
 		default:
 			return state;
 	}
@@ -42,37 +51,42 @@ var CommentsReducer = (state = {
 function initialComments() {
 	return [
 		{
+			id: 0,
 			text: "Question",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
-			votes: 5,
+			votes: 0,
 			resolved: false,
 			annotationId: null
 		},
 		{
+			id: 1,
 			text: "Question 2",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
-			votes: 5,
+			votes: 1,
 			resolved: false,
 			annotationId: null
 		},
 		{
+			id: 2,
 			text: "Question 3",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
-			votes: 5,
+			votes: 2,
 			resolved: false,
 			annotationId: null
 		},
 		{
+			id: 3,
 			text: "Question 4",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
-			votes: 5,
+			votes: 3,
 			resolved: false,
 			annotationId: null
 		},
 		{
+			id: 4,
 			text: "Question 5",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
-			votes: 5,
+			votes: 4,
 			resolved: false,
 			annotationId: null
 		},

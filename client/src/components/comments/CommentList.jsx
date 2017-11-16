@@ -19,11 +19,13 @@ class CommentList extends Component {
                     {this.props.comments.map((comment, index) => (
                         <Comment
                             key={index.toString()}
+                            id={comment.id}
                             className="collapsible-header z-depth-3"
                             text={comment.text}
                             replies={comment.replies}
                             votes={comment.votes}
-                            resolved={comment.resolved} />
+                            resolved={comment.resolved}
+                        />
                     ))}
                 </ul>
             </div>

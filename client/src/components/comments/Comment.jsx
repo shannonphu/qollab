@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import CommentReplyList from './CommentReplyList';
+import * as commentActions from '../../actions/comment';
 
 class Comment extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.upVoteHandler = this.upVoteHandler.bind(this);
+    }
+
+    upVoteHandler() {
+        console.log("Comment: upVoteHandler with id = " + this.props.id);
+        this.props.upVoteComment(this.props.id);
     }
 
     render() {
@@ -19,7 +27,9 @@ class Comment extends Component {
                         </li>
                         <li>
                             <div className="left">
-                                <a href="#"><i className="material-icons not-collapse">thumb_up</i></a>
+                                <a href="#" onMouseDown={this.upVoteHandler} >
+                                    <i className="material-icons not-collapse">thumb_up</i>
+                                </a>
                                 <strong>{this.props.votes}</strong>
                             </div>
                             <div className="right">
@@ -35,4 +45,10 @@ class Comment extends Component {
     }
 }
 
-export default Comment;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        upVoteComment: id => dispatch(commentActions.upVoteComment(id))
+    }
+};
+
+export default connect(null, mapDispatchToProps)(Comment);
