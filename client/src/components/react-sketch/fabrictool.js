@@ -25,6 +25,14 @@ class FabricCanvasTool {
     doMouseOut(event) {
 
     }
+
+    addInstance(event) {
+
+    }
+
+    removeInstance(event) {
+
+    }
 }
 
 export default FabricCanvasTool;
