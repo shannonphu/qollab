@@ -65,20 +65,4 @@ class Rectangle extends FabricCanvasTool {
     };
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         addAnnotationActive: state.commentsReducer.addAnnotationActive
-//     }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId))
-//     }
-// };
-
-// Rectangle.contextTypes = {
-//     store: PropTypes.object
-// };
-// export default connect(mapStateToProps, mapDispatchToProps)(Rectangle);
 export default Rectangle;
