@@ -2,10 +2,13 @@
 
 import ReactDOM from 'react-dom';
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+
 import History from './history';
 import Pencil from './pencil';
 import Rectangle from './rectangle';
 import Tool from './tools';
+import * as commentActions from '../../actions/comment';
 
 const fabric = require('fabric').fabric;
 
@@ -16,7 +19,7 @@ class SketchField extends Component {
 
     static propTypes = {
         // the color of the line
-        lineColor: PropTypes.string,
+        pencilLineColor: PropTypes.string,
         // The width of the line
         lineWidth: PropTypes.number,
         // the fill color of the shape when applicable
@@ -42,7 +45,7 @@ class SketchField extends Component {
     };
 
     static defaultProps = {
-        lineColor: 'black',
+        pencilLineColor: 'black',
         lineWidth: 10,
         fillColor: 'transparent',
         backgroundColor: 'transparent',
@@ -132,7 +135,7 @@ class SketchField extends Component {
     _initTools(fabricCanvas) {
         this._tools = {};
         this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
-        // this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
+        this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
     }
 
     componentWillUnmount() {
@@ -155,12 +158,25 @@ class SketchField extends Component {
 
         //Bring the cursor back to default if it is changed by a tool
         this._fc.defaultCursor = 'default';
-
-        this._selectedTool.configureCanvas(nextProps);
         if (this.props.backgroundColor !== nextProps.backgroundColor) {
             this._backgroundColor(nextProps.backgroundColor)
         }
 
+        // Annotation adding/removing logic from Comment form
+        // If want to add and edit annotation rect, add a Rectangle to the canvas and store the Rect ID
+        // Else turn off editting annotation and remove the canvas Rectangle
+        if (nextProps.addAnnotationActive) {
+            // Only if we just created the Rect in the canvas should we store again.
+            if (!nextProps.activeAnnotationId) {
+                this._selectedTool.configureCanvas(nextProps);                
+                let newAnnotationId = this._selectedTool.addInstance();
+                this.props.storeAnnotationId(newAnnotationId);
+            }
+        } else {
+            this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotationId);
+            this.props.storeAnnotationId(null);
+            this._selectedTool.configureCanvas(nextProps);
+        }
     }
 
     /**
@@ -498,4 +514,17 @@ class SketchField extends Component {
     }
 }
 
-export default SketchField;
+const mapStateToProps = (state) => {
+    return {
+        addAnnotationActive: state.commentsReducer.addAnnotationActive,
+        activeAnnotationId: state.commentsReducer.activeAnnotationId
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SketchField);
