@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SketchField from './react-sketch/SketchField';
 import Tools from './react-sketch/tools';
 import io from 'socket.io-client';
+import { connect } from 'react-redux';
 
 let socket;
 
@@ -24,9 +25,9 @@ class Canvas extends Component {
 
     state = {
         // Canvas Styles
-        lineColor: 'black',
+        pencilLineColor: 'black',
         lineWidth: 5,
-        fillColor: '#68CCCA',
+        fillColor: 'rgba(104, 204, 202, 0.3)',
         backgroundColor: 'transparent',
         tool: Tools.Pencil,
         controlledSize: false,
@@ -65,7 +66,7 @@ class Canvas extends Component {
                 name='sketch'
                 className='canvas-area z-depth-3'
                 ref={(c) => this._canvas = c}
-                lineColor={this.state.lineColor}
+                pencilLineColor={this.state.pencilLineColor}
                 lineWidth={this.state.lineWidth}
                 fillColor={this.state.fillColor}
                 backgroundColor={this.state.backgroundColor}
@@ -73,10 +74,16 @@ class Canvas extends Component {
                 height={this.state.sketchHeight}
                 defaultDataType="json"
                 onChange={this._onSketchChange}
-                tool={this.state.tool}
+                tool={this.props.addAnnotationActive ? Tools.Rectangle : this.state.tool}
             />
         )
     }
 }
 
-export default Canvas
+function mapStateToProps(state) {
+    return {
+        addAnnotationActive: state.commentsReducer.addAnnotationActive
+    }
+}
+
+export default connect(mapStateToProps, null)(Canvas);
