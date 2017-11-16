@@ -21,11 +21,17 @@ class CommentForm extends Component {
             resolved: false,
         };
         this.props.addComment(newComment);
+
+        // Clear textbox
+        this.refs.text.value = null;
     }
 
     annotationCheckboxToggled(event) {
         if (event.target.checked) {
-            this.props.addAnnotation("some_annotation");
+            this.props.addAnnotation();
+        } else {
+            // SketchField.jsx handles storing the new annotation ID
+            this.props.removeAnnotation(this.props.activeAnnotationId);
         }
     }
 
@@ -59,11 +65,19 @@ class CommentForm extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        activeAnnotationId: state.commentsReducer.activeAnnotationId
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAnnotation: annotationName => dispatch(commentActions.addAnnotation(annotationName)),
+        addAnnotation: () => dispatch(commentActions.addAnnotation()),
+        removeAnnotation: annotationId => dispatch(commentActions.removeAnnotation(annotationId)),
+        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
         addComment: comment => dispatch(commentActions.addComment(comment))
     }
 };
 
-export default connect(null, mapDispatchToProps)(CommentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);
