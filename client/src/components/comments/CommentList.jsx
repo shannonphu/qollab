@@ -34,7 +34,7 @@ class CommentList extends Component {
 //get redux source's state and map it to component props
 function mapStateToProps(state) {
     return {
-        comments: state.comments,
+        comments: state.commentsReducer.comments
     }
 }
 
