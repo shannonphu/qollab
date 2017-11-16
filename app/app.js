@@ -67,25 +67,18 @@ app.get('/create', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-	User.create({}, (err, user) => {
-		if (err) {
-			throw err;
-		}
-		Lecture.insert(req.body.lecture_name, user, (lecture, instructor) => {
-			let joinCode = lecture.joinCode;
-			
-			//  Associate the user with the lecture join code
-			instructor.joinCode = joinCode;
-			instructor.save((err) => {
-				if (err) {
-					throw err;
-				}
+	let user = seedData.user;
 
-				//  Set cookie for the user
-				res.cookie('userId', instructor.id);
-				res.render('lecture_create', {
-					code: joinCode
-				})
+	//  Create a new lecture
+	Lecture.insert(req.body.lecture_name, user, (lecture, user) => {
+		let joinCode = lecture.joinCode;
+
+		//  Associate the user with the lecture join code
+		user.updateJoinCode(joinCode, () => {
+			//  Set cookie for the user
+			res.cookie('userId', user.id);
+			res.render('lecture_create', {
+				code: joinCode
 			});
 		});
 	});
