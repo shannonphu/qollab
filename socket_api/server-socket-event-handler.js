@@ -31,9 +31,6 @@ module.exports = function (server, canvasHistory) {
                         let json = action.data;
                         let joinCode = json['joinCode'];
                         let comment = json['comment'];
-                        console.log(json);
-                        console.log(comment);
-                        // canvasHistory[joinCode] = canvasData;
                         socket.broadcast.emit('action', {
                             type: 'SYNC_NEW_COMMENT',
                             comment: comment
