@@ -33,7 +33,8 @@ module.exports = function (server, canvasHistory) {
                         let comment = json['comment'];
                         socket.broadcast.emit('action', {
                             type: 'SYNC_NEW_COMMENT',
-                            comment: comment
+                            comment: comment,
+                            joinCode: joinCode
                         });
                     }
                     break;

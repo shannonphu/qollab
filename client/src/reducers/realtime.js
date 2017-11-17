@@ -34,6 +34,12 @@ var RealtimeReducer = (state = {
                 ]
             };
         case 'SYNC_NEW_COMMENT':
+            // Only update the comments of the lecture session the newly added comment was submitted on
+            let updatedJoinCode = action.joinCode;
+            if (state.lectureCode !== updatedJoinCode) {
+                return state;
+            }
+
             return {
                 ...state,
                 comments: [
