@@ -14,7 +14,7 @@ class CommentList extends Component {
         return (
             <div className="CommentList">
                 <ul className="collapsible popout" data-collapsible="accordion">
-                    <CommentForm className="collapsible-header z-depth-3" />
+                    <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} />
 
                     {this.props.comments.map((comment, index) => (
                         <Comment
@@ -34,7 +34,7 @@ class CommentList extends Component {
 //get redux source's state and map it to component props
 function mapStateToProps(state) {
     return {
-        comments: state.commentsReducer.comments
+        comments: state.realtimeReducer.comments
     }
 }
 
