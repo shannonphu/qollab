@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db_mongo:
+    build: ./mongo
+    ports:
+      - "27017:27017"
+    logging:
+      driver: "none"
+  db_api:
+    build: ./db_api
+    command: npm test
+    ports:
+      - "3005:3005"
+    links:
+      - db_mongo
+  
