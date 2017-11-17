@@ -27,7 +27,7 @@ class Comment extends Component {
                         </li>
                         <li>
                             <div className="left">
-                                <a href="#" onMouseDown={this.upVoteHandler} >
+                                <a onMouseDown={this.upVoteHandler} >
                                     <i className="material-icons not-collapse">thumb_up</i>
                                 </a>
                                 <strong>{this.props.votes}</strong>
