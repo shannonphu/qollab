@@ -13,7 +13,6 @@ const testComment = {
 
 beforeAll(() => {
     mongoose.connect(testDBURL)
-
 });
 
 beforeEach(() => {
@@ -24,33 +23,32 @@ afterAll((done) => {
     mongoose.disconnect(done);
 });
 
-describe('Commenting', () => {
-test('Test creating comment', done => {
-    return Comment.insert(testComment.text, (newComment) => {
-           var query = Comment.findOne({})
-           query.exec(function (err, data) {
-               if (err) throw err;
-               expect(data.text).toEqual(testComment.text)
-               expect(data.resolved).toEqual(testComment.resolved)
-               expect(data.replies.length).toEqual(testComment.replies.length)
-               expect(data.votes).toEqual(testComment.votes)
-               done();
-           })
-       });
-});
+describe('Creating a comment', () => {
+    test('Test creating comment', done => {
+        return Comment.insert(testComment.text, (newComment) => {
+               var query = Comment.findOne({})
+               query.exec(function (err, data) {
+                   if (err) throw err;
+                   expect(data.text).toEqual(testComment.text)
+                   expect(data.resolved).toEqual(testComment.resolved)
+                   expect(data.replies.length).toEqual(testComment.replies.length)
+                   expect(data.votes).toEqual(testComment.votes)
+                   done();
+               })
+           });
+      });
+      
+})
 
-test('Test comment upvoting', () => {
+describe('Interacting with a comment', () => {
     var comment = new Comment({text: "Hi"});
+    comment.addReply("reply1")
     for (var i = 0; i < 5; i++){
         comment.upvote()
     }
-    expect(comment.votes).toBe(5);
-});
-})
-
-describe('Replying to comments', () => {
-    var comment = new Comment({text: "Hi"});
-    comment.addReply("reply1")
+    test('Test comment upvoting', () => {
+        expect(comment.votes).toBe(5);
+    });
     test('Test reply is added', () => {
         expect(comment.replies[0]).toBe("reply1");
     });
@@ -59,10 +57,9 @@ describe('Replying to comments', () => {
         expect(comment.replies.length).toBe(2);
         expect(comment.replies[1]).toBe("reply2");
     });
-
 })
 
-describe('Resolving comments', () => {
+describe('Resolving a comment', () => {
     var comment = new Comment({text: "Hi"});
     comment.upvote();
     comment.resolve();
