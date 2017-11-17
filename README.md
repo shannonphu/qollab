@@ -70,3 +70,62 @@ Then `git clone https://github.com/shannonphu/qollab.git`
     git push -f
     ```
     **Do _NOT_ force push to other people's branches**
+    
+    
+# Test Cases #
+To run:
+```
+docker-compose  -f docker-compose-test.yml up --build
+```
+### Test Suite 1 ###
+Location: db_api/\_\_tests\_\_/comment-test.js <br />
+Purpose: To test commenting functionality
+#### Creating a comment ####
+1. Name: Test creating comment <br />
+   Test: Create and insert a comment into the database <br />
+   Prerequisites: An empty mongoDB instance <br />
+   Expected Result: Comment object retrieved from database is identical to input <br />
+
+#### Interacting with a comment ####
+1. Name: Test comment upvoting <br />
+   Test: Upvote a comment 5 times <br />
+   Prerequisites: A fresh comment object <br />
+   Expected Result: The number of votes is 5 <br />
+2. Name: Test reply is added <br />
+   Test: Use addReply() to reply to a comment <br />
+   Prerequisites: A fresh comment object <br />
+   Expected Result: The only reply to the comment is the input <br />
+3. Name: Test multiple replies <br />
+   Test: Use addReply() to reply to a comment twice <br />
+   Prerequisites: A fresh comment object <br />
+   Expected Result: There are two replies, the last reply is the second reply added. <br />
+
+#### Resolving a comment ####
+1. Name: Test comment marked as resolved <br />
+   Test: Instructor markes comment as resolved <br />
+   Prerequisites: A comment object <br />
+   Expected Result: comment.resolved evaluates to true <br />
+2. Name: Test cannot upvote resolved comment <br />
+   Test: Attempt to upvote a resolved comment <br />
+   Prerequisites: A resolved comment with one upvote <br />
+   Expected Result: The number of upvotes remains at 1  <br />
+3. Name: Test cannot reply to resolved comment <br />
+   Test: Attempt to reply to a resolved comment <br />
+   Prerequisites: A resolved comment with no comments <br />
+   Expected Result: There remains no comments <br />
+
+
+### Test Suite 2 ###
+Location: db_api/\_\_tests\_\_/lecture-test.js <br />
+Purpose: To test creation, storing, join code generation for lecture objects
+
+1. Name: Test creating lecture <br />
+   Test: Create and insert a lecture object into the database <br />
+   Prerequisites: An empty mongoDB instance <br />
+   Expected Result: Lecture object retrieved from database has title, instructor id fields is identical to input, no students, and a random code that is 6 characters long. <br />
+2. Name: Test finding lecture by join code <br />
+   Test: Create a lecture object, generating a join code, then attempting to retrieve that lecture with the findByJoinCode() method. <br />
+   Prerequisites: An empty mongoDB instance <br />
+   Expected Result: Lecture object returned by findByJoinCode() is not null, and all of its data matches the original lecture data.
+
+
