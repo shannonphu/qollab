@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import SketchField from './react-sketch/SketchField';
 import Tools from './react-sketch/tools';
-import io from 'socket.io-client';
 import { connect } from 'react-redux';
 
-let socket;
 
 class Canvas extends Component {
     constructor(props) {
@@ -13,14 +11,6 @@ class Canvas extends Component {
         this._download = this._download.bind(this);
         this._onSketchChange = this._onSketchChange.bind(this);
         this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
-
-        socket = io.connect('http://localhost:3003', { query: 'lectureCode=' + this.props.joinCode });
-
-        socket.on("connect", () => {
-            console.log("client connected");
-        });
-
-        socket.on('canvas:update', (canvasJSON) => this._setCanvasFromJSON(canvasJSON));
     }
 
     state = {
@@ -42,22 +32,9 @@ class Canvas extends Component {
     }
 
     _onSketchChange() {
-        let canvasObj = {
-            "data": this._canvas.toJSON(),
-            "joinCode": this.props.joinCode
-        }
-
-        socket.emit('path:drawn', JSON.stringify(canvasObj));
     }
 
     _setCanvasFromJSON(canvasJSON) {
-        let parsedCanvasJSON = JSON.parse(canvasJSON);
-
-        let updatedLectureJoinCode = parsedCanvasJSON['joinCode'];
-        if (updatedLectureJoinCode === this.props.joinCode) {
-            let canvasData = parsedCanvasJSON['data'];
-            this._canvas.fromJSON(canvasData);
-        }
     }
 
     render() {
@@ -65,6 +42,7 @@ class Canvas extends Component {
             <SketchField
                 name='sketch'
                 className='canvas-area z-depth-3'
+                joinCode={this.props.joinCode}
                 ref={(c) => this._canvas = c}
                 pencilLineColor={this.state.pencilLineColor}
                 lineWidth={this.state.lineWidth}
