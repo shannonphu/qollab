@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
 
+/**
+ * Navigation bar component with a bunch of functionalities.
+ * @class
+ * @augments Component
+ */
 class Nav extends Component {
-
+    /**
+     * Creates a new Navigation object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
   constructor(props) {
     super(props);
     this.state = {};
   }
 
+  /**
+   * Renders the navigation bar
+   * @function
+   */
   render() {
     return (
         <div className="navbar-fixed">

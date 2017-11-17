@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
+/**
+ * JoinLectureForm component, which provides a form to enter a lecture code to join the lecture.
+ * @class
+ * @extends Component
+ */
 class JoinLectureForm extends Component {
+    /**
+     * Creates a new JoinLectureForm object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -12,6 +22,11 @@ class JoinLectureForm extends Component {
         this.submitHandler = this.submitHandler.bind(this)
     }
 
+    /**
+     * Handles submissions for joining lectures
+     * @function
+     * @param {*} event 
+     */
     submitHandler(event) {
         event.preventDefault();
         let joinCode = this.refs.joinCode.value;
@@ -31,6 +46,10 @@ class JoinLectureForm extends Component {
             });
     }
 
+    /**
+     * Renders this form
+     * @function
+     */
     render() {
         if (this.state.redirect) {
             return (<Redirect to={"/lecture/" + this.state.joinCode} />);

@@ -6,12 +6,24 @@ import LecturePortal from './components/LecturePortal';
 import JoinLectureForm from './components/JoinLectureForm';
 import CreateLectureForm from './components/CreateLectureForm';
 
+/**
+ * The root component dealign with URL routing
+ * @class
+ * @augments Component
+ */
 class App extends Component {
+  /**
+   * Creates a new App object
+   * @param {PropTypes.Object} props 
+   */
   constructor(props) {
     super(props)
     this.state = {}
   }
 
+  /**
+   * @function
+   */
   render() {
     return (
       <div className='App'>

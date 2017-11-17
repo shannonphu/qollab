@@ -2,8 +2,17 @@
 import FabricCanvasTool from './fabrictool'
 const fabric = require('fabric').fabric;
 
+/**
+ * A rectangle class for annotation
+ * @class
+ * @augments FabricCanvasTool
+ */
 class Rectangle extends FabricCanvasTool {
 
+    /**
+     * configuration for canvas
+     * @param {Object} props 
+     */
     configureCanvas(props) {
         let canvas = this._canvas;
         canvas.isDrawingMode = canvas.selection = false;
@@ -54,6 +63,10 @@ class Rectangle extends FabricCanvasTool {
         canvas.renderAll();
     }
 
+    /**
+     * Tells the canvas to stop drawing
+     * @param {*} o 
+     */
     doMouseUp(o) {
         this.isDown = false;
     }

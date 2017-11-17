@@ -2,12 +2,26 @@ import React, { Component } from 'react';
 
 import CommentReplyList from './CommentReplyList';
 
+/**
+ * Comments component
+ * @class
+ * @augments Component
+ */
 class Comment extends Component {
+    /**
+     * Creates a new Comment object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
     }
 
+    /**
+     * Renders the comment with its reply list
+     * @function
+     */
     render() {
         return (
             <li className="Comment">

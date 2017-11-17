@@ -1,16 +1,34 @@
 import React, { Component } from 'react';
 
+/**
+ * CommentFrom Component to write and submit a comment
+ * @class
+ * @augments Component
+ */
 class CommentForm extends Component {
+    /**
+     * Creates a new CommentForm component
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
         this.submitHandler = this.submitHandler.bind(this);
     }
 
+    /**
+     * Handles comment submission
+     * @param {*} event 
+     */
     submitHandler(event) {
 
     }
 
+    /**
+     * Renders the comment form
+     * @function
+     */
     render() {
         return (
             <li className="CommentForm">

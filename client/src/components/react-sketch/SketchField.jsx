@@ -11,6 +11,8 @@ const fabric = require('fabric').fabric;
 
 /**
  * Sketch Tool based on FabricJS for React Applications
+ * @class
+ * @augments Component
  */
 class SketchField extends Component {
 
@@ -41,6 +43,10 @@ class SketchField extends Component {
         heightCorrection: PropTypes.number
     };
 
+    /**
+     * Default properties of the sketch
+     * @static
+     */
     static defaultProps = {
         lineColor: 'black',
         lineWidth: 10,
@@ -54,6 +60,11 @@ class SketchField extends Component {
         heightCorrection: 0
     };
 
+    /**
+     * @constructor
+     * @param {Object} props 
+     * @param {*} context 
+     */
     constructor(props, context) {
         super(props, context);
         // internal functions

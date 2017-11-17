@@ -1,3 +1,7 @@
+/**
+ * Module for lecture Mongo DB model
+ * @module lectureDB
+ */
 module.exports = (function () {
     let mongoose = require('mongoose');
     let Schema = mongoose.Schema;
@@ -5,7 +9,7 @@ module.exports = (function () {
 
     /**
      * @summary lecture schema
-     * @var
+     * @var {Schema}
      */
     var lectureSchema = new Schema({
         title: { type: String, required: true },
@@ -16,10 +20,12 @@ module.exports = (function () {
 
     /**
      * @summary inserts a new Lecture object into our database
-     * @param {String} title - the title of the lecture
-     * @param {String} instructorId - the identification of the instructor for this lecture
-     * @param callback field to return
-     * @returns The atual lecture mongoDB model
+     * @callback requestCallback
+     * @param {String} title the title of the lecture
+     * @param {String} instructorId the identification of the instructor for this lecture
+     * @param {requestCallback} callback callback function
+     * @returns {Object} The atual lecture mongoDB model
+     * @memberof module:lectureDB
      * @example
      * Lecture.insert("lecture_title", "instructor_id", (newLecture) => {
      *       console.log(newLecture);
@@ -45,8 +51,11 @@ module.exports = (function () {
     /**
      * @summary finds the Lecture associated with this join code
      * @function
-     * @param {String} joinCode the joining code for the lecture
-     * @returns {Object} The actual lecture mongoDB model
+     * @memberof module:lectureDB
+     * @callback requestCallback
+     * @param {string} joinCode - the joining code for the lecture
+     * @param {requestCallback} callback - The callback function
+     * @returns {Object} - The actual lecture mongoDB model
      * @example
      * Lecture.findByJoinCode(someJoinCode, (lecture) => {
      *    // do something
@@ -72,6 +81,7 @@ module.exports = (function () {
     /**
      * @summary generates a 6 digit numerical code randomly
      * @function
+     * @memberof module:lectureDB
      * @returns {String} the generated code
      */
     let generateCode = function () {

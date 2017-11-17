@@ -1,3 +1,7 @@
+ /**
+  * Reducer for comments
+  * @function
+  */
 function CommentsReducer() {
 	return [
 		{

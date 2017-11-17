@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 
 import CommentReply from './CommentReply';
-
+/**
+ * CommentReplyList components, including a list of replies for a certain comment
+ * @class
+ * @augments Component
+ */
 class CommentReplyList extends Component {
+    /**
+     * Create a new CommentReplyList object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {}
     }
 
+    /**
+     * Renders the comment reply list
+     * @function
+     */
     render() {
         return (
             <div className="CommentReplyList collapsible-body">

@@ -5,7 +5,16 @@ import io from 'socket.io-client';
 
 let socket;
 
+/**
+ * Canvas component, which acts like the blackboard of the classroom.
+ * @class
+ * @augments Component
+ */
 class Canvas extends Component {
+    /**
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
 
@@ -22,6 +31,10 @@ class Canvas extends Component {
         socket.on('canvas:update', (canvasJSON) => this._setCanvasFromJSON(canvasJSON));
     }
 
+    /**
+     * state of the canvas, defining sizes, colors, drawing tools, etc.
+     * @var
+     */
     state = {
         // Canvas Styles
         lineColor: 'black',
@@ -34,12 +47,18 @@ class Canvas extends Component {
         sketchHeight: 600,
     };
 
+    /**
+     * Download the current Canvas
+     */
     _download() {
         /*eslint-disable no-console*/
         console.save(JSON.stringify(this._canvas.toJSON()), 'canvas.json');
         /*eslint-enable no-console*/
     }
 
+    /**
+     * Responds to sketch change and update the change through socket
+     */
     _onSketchChange() {
         let canvasObj = {
             "data": this._canvas.toJSON(),
@@ -49,6 +68,10 @@ class Canvas extends Component {
         socket.emit('path:drawn', JSON.stringify(canvasObj));
     }
 
+    /**
+     * Updates the canvas according to given JSON
+     * @param {*} canvasJSON 
+     */
     _setCanvasFromJSON(canvasJSON) {
         let parsedCanvasJSON = JSON.parse(canvasJSON);
 
@@ -59,6 +82,9 @@ class Canvas extends Component {
         }
     }
 
+    /**
+     * Renders the canvas
+     */
     render() {
         return (
             <SketchField

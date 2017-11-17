@@ -3,7 +3,17 @@ import axios from 'axios';
 
 import JoinLectureForm from './JoinLectureForm';
 
+/**
+ * CreateLectureForm component, which provides a form to create a lecture with a lecture name and a joining code.
+ * @class
+ * @extends Component
+ */
 class CreateLectureForm extends Component {
+    /**
+     * Creates a new CreateLectureForm for creating lectures
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -13,6 +23,10 @@ class CreateLectureForm extends Component {
         this.submitHandler = this.submitHandler.bind(this)
     }
 
+    /**
+     * Handles submissions for creating lectures
+     * @param {*} event 
+     */
     submitHandler(event) {
         event.preventDefault();
         let name = this.refs.name.value;
@@ -35,6 +49,9 @@ class CreateLectureForm extends Component {
         });
     }
 
+    /**
+     * Renders this form
+     */
     render() {
         if (this.state.redirect) {            
             return (

@@ -4,12 +4,26 @@ import { connect } from 'react-redux';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 
+/**
+ * CommentList Component, the list of all comments
+ * @class
+ * @augments Component
+ */
 class CommentList extends Component {
+    /**
+     * Creates a new CommentList Object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {}
     }
 
+    /**
+     * Renders the list of comments
+     * @function
+     */
     render() {
         return (
             <div className="CommentList">
@@ -31,7 +45,10 @@ class CommentList extends Component {
     }
 }
 
-//get redux source's state and map it to component props
+/**
+ * get redux source's state and map it to component props
+ * @param {*} state 
+ */
 function mapStateToProps(state) {
     return {
         comments: state.comments,
