@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/src/components/Canvas.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/src/components/Canvas.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import SketchField from './react-sketch/SketchField';
+import Tools from './react-sketch/tools';
+import io from 'socket.io-client';
+
+let socket;
+
+/**
+ * Canvas component, which acts like the blackboard of the classroom.
+ * @class
+ * @augments Component
+ */
+class Canvas extends Component {
+    /**
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
+    constructor(props) {
+        super(props);
+
+        this._download = this._download.bind(this);
+        this._onSketchChange = this._onSketchChange.bind(this);
+        this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
+
+        socket = io.connect('http://localhost:3003', { query: 'lectureCode=' + this.props.joinCode });
+
+        socket.on("connect", () => {
+            console.log("client connected");
+        });
+
+        socket.on('canvas:update', (canvasJSON) => this._setCanvasFromJSON(canvasJSON));
+    }
+
+    /**
+     * state of the canvas, defining sizes, colors, drawing tools, etc.
+     * @var
+     */
+    state = {
+        // Canvas Styles
+        lineColor: 'black',
+        lineWidth: 5,
+        fillColor: '#68CCCA',
+        backgroundColor: 'transparent',
+        tool: Tools.Pencil,
+        controlledSize: false,
+        sketchWidth: 600,
+        sketchHeight: 600,
+    };
+
+    /**
+     * Download the current Canvas
+     */
+    _download() {
+        /*eslint-disable no-console*/
+        console.save(JSON.stringify(this._canvas.toJSON()), 'canvas.json');
+        /*eslint-enable no-console*/
+    }
+
+    /**
+     * Responds to sketch change and update the change through socket
+     */
+    _onSketchChange() {
+        let canvasObj = {
+            "data": this._canvas.toJSON(),
+            "joinCode": this.props.joinCode
+        }
+
+        socket.emit('path:drawn', JSON.stringify(canvasObj));
+    }
+
+    /**
+     * Updates the canvas according to given JSON
+     * @param {*} canvasJSON 
+     */
+    _setCanvasFromJSON(canvasJSON) {
+        let parsedCanvasJSON = JSON.parse(canvasJSON);
+
+        let updatedLectureJoinCode = parsedCanvasJSON['joinCode'];
+        if (updatedLectureJoinCode === this.props.joinCode) {
+            let canvasData = parsedCanvasJSON['data'];
+            this._canvas.fromJSON(canvasData);
+        }
+    }
+
+    /**
+     * Renders the canvas
+     */
+    render() {
+        return (
+            &lt;SketchField
+                name='sketch'
+                className='canvas-area z-depth-3'
+                ref={(c) => this._canvas = c}
+                lineColor={this.state.lineColor}
+                lineWidth={this.state.lineWidth}
+                fillColor={this.state.fillColor}
+                backgroundColor={this.state.backgroundColor}
+                width={this.state.sketchWidth}
+                height={this.state.sketchHeight}
+                defaultDataType="json"
+                onChange={this._onSketchChange}
+                tool={this.state.tool}
+            />
+        )
+    }
+}
+
+export default Canvas</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-commentDB.html">commentDB</a></li><li><a href="module-lectureDB.html">lectureDB</a></li><li><a href="module-userDB.html">userDB</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Comment.html">Comment</a></li><li><a href="CommentForm.html">CommentForm</a></li><li><a href="CommentList.html">CommentList</a></li><li><a href="CommentReply.html">CommentReply</a></li><li><a href="CommentReplyList.html">CommentReplyList</a></li><li><a href="CreateLectureForm.html">CreateLectureForm</a></li><li><a href="FabricCanvasTool.html">FabricCanvasTool</a></li><li><a href="History.html">History</a></li><li><a href="JoinLectureForm.html">JoinLectureForm</a></li><li><a href="LecturePortal.html">LecturePortal</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Pencil.html">Pencil</a></li><li><a href="Rectangle.html">Rectangle</a></li><li><a href="SketchField.html">SketchField</a></li><li><a href="ToolSet.html">ToolSet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommentsReducer">CommentsReducer</a></li><li><a href="global.html#mapStateToProps">mapStateToProps</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 21:40:09 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
