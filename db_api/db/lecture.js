@@ -20,10 +20,8 @@ module.exports = (function () {
 
     /**
      * @summary inserts a new Lecture object into our database
-     * @callback requestCallback
      * @param {String} title the title of the lecture
      * @param {String} instructorId the identification of the instructor for this lecture
-     * @param {requestCallback} callback callback function
      * @returns {Object} The atual lecture mongoDB model
      * @memberof module:lectureDB
      * @example
@@ -52,9 +50,7 @@ module.exports = (function () {
      * @summary finds the Lecture associated with this join code
      * @function
      * @memberof module:lectureDB
-     * @callback requestCallback
      * @param {string} joinCode - the joining code for the lecture
-     * @param {requestCallback} callback - The callback function
      * @returns {Object} - The actual lecture mongoDB model
      * @example
      * Lecture.findByJoinCode(someJoinCode, (lecture) => {

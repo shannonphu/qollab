@@ -14,9 +14,7 @@ module.exports = (function() {
 
     /**
      * @summary inserts a new Comment object into our database and returns the actual comment mongo DB object
-     * @callback requestCallback
      * @param {String} text - The text of comment
-     * @param {requestCallback} callback - The callback function
      * @memberof module:commentDB
      * @example
      *   Comment.insert("comment_text", (newComment) => {

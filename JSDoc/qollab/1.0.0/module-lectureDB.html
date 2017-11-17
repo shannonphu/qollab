@@ -192,7 +192,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line87">line 87</a>
+        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -243,18 +243,174 @@
 
 
         
+            
+
     
 
     
-        <h3 class="subsection-title">Type Definitions</h3>
+    <h4 class="name" id=".lectureSchema.statics.findByJoinCode"><span class="type-signature">(static) </span>lectureSchema.statics.findByJoinCode<span class="signature">(joinCode)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+    <p class="summary">finds the Lecture associated with this join code</p>
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>joinCode</code></td>
+            
+
+            <td class="type">
+            
                 
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the joining code for the lecture</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
 
     
 
     
-    <h4 class="name" id=".requestCallback"><span class="type-signature"></span>requestCallback<span class="signature">(title, instructorId, callback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The actual lecture mongoDB model
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Lecture.findByJoinCode(someJoinCode, (lecture) => {
+   // do something
+     });</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".lectureSchema.statics.insert"><span class="type-signature">(static) </span>lectureSchema.statics.insert<span class="signature">(title, instructorId)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -339,29 +495,6 @@
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">requestCallback</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">callback function</td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -399,7 +532,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line21">line 21</a>
+        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -456,192 +589,9 @@
 
 
 
-            
-                
-
-    
-
-    
-    <h4 class="name" id=".requestCallback"><span class="type-signature"></span>requestCallback<span class="signature">(joinCode, callback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
-
-    
-    <p class="summary">finds the Lecture associated with this join code</p>
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
         
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
-        <tr>
-            
-                <td class="name"><code>joinCode</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the joining code for the lecture</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">requestCallback</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The callback function</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db_api_db_lecture.js.html">db_api/db/lecture.js</a>, <a href="db_api_db_lecture.js.html#line51">line 51</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    - The actual lecture mongoDB model
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>Lecture.findByJoinCode(someJoinCode, (lecture) => {
-   // do something
-     });</code></pre>
-
-
-
-            
     
 
     
@@ -661,7 +611,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 21:40:09 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 23:10:02 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
