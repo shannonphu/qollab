@@ -1,38 +1,32 @@
 // Handles socket connections and event callbacks
-module.exports = function(server) {
+module.exports = function (server, canvasHistory) {
     const io = require('socket.io').listen(server);
 
-    let canvasHistory = {};
-
     io.sockets.on('connection', function (socket) {
-    	console.log("A connection was made");
+        console.log("A connection was made");
 
-        // Fill canvas if new connection made midway through session
-        let joinCode = socket.handshake.query.lectureCode;
-        if (joinCode in canvasHistory) {
-            socket.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
-        }
-
-        socket.on('disconnect', function(){
-          console.log('A user disconnected');
+        socket.on('disconnect', function () {
+            console.log('A user disconnected');
         });
 
-        // Add path to history and update all clients
-        socket.on('path:drawn', function(canvasJSON) {
-            let json = JSON.parse(canvasJSON);
-            
-            let joinCode = json['joinCode'];
-            let canvasData = json['data'];
-
-            canvasHistory[joinCode] = canvasData;
-            socket.broadcast.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
+        socket.on('action', (action) => {
+            switch (action.type) {
+                case 'socket/CANVAS_UPDATED':
+                    let json = action.canvasJSON;
+                    let joinCode = json['joinCode'];
+                    let canvasData = json['data'];
+                    canvasHistory[joinCode] = canvasData;
+                    socket.broadcast.emit('action', {
+                        type: 'LOAD_CANVAS_FROM_JSON',
+                        canvasJSON: {
+                            "joinCode": joinCode,
+                            "data": canvasData
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
         });
     });
-
-    var getCanvasJSON = function(joinCode, canvasJSON) {
-        return {
-            "joinCode": joinCode,
-            "data": canvasJSON
-        };
-    }
 };
