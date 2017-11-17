@@ -22,8 +22,9 @@ class CommentForm extends Component {
         };
         this.props.addComment(newComment);
 
-        // Clear textbox
+        // Clear textbox and checkbox
         this.refs.text.value = null;
+        this.refs.annotationWanted.checked = false;
     }
 
     annotationCheckboxToggled(event) {

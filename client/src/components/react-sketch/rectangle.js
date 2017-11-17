@@ -35,8 +35,7 @@ class Rectangle extends FabricCanvasTool {
             };
         })(this.rect.toObject);
     
-        // TODO: Generate random id w/ mongoose IDs possibly?
-        this.rect._id = '123456';       
+        this.rect._id = this.randomID(); 
 
         this._canvas.add(this.rect);
 
