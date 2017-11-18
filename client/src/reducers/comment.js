@@ -35,14 +35,18 @@ var CommentsReducer = (state = {
 				]
 			};
 		case 'UPVOTE_COMMENT':
-			return Object.assign({}, state, {
-				comments: state.comments.map((comment) => {
-					if (comment.id===action.id)
-						return Object.assign({}, comment, {votes: comment.votes+1});
+			return {
+				...state,
+				comments : state.comments.map((comment, index) => {
+					if (index === action.id)
+						return {
+							...comment,
+							votes: comment.votes + 1
+						};
 					else
 						return comment;
 				})
-			});
+			};
 		default:
 			return state;
 	}
@@ -51,7 +55,6 @@ var CommentsReducer = (state = {
 function initialComments() {
 	return [
 		{
-			id: 0,
 			text: "Question",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
 			votes: 0,
@@ -59,7 +62,6 @@ function initialComments() {
 			annotationId: null
 		},
 		{
-			id: 1,
 			text: "Question 2",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
 			votes: 1,
@@ -67,7 +69,6 @@ function initialComments() {
 			annotationId: null
 		},
 		{
-			id: 2,
 			text: "Question 3",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
 			votes: 2,
@@ -75,7 +76,6 @@ function initialComments() {
 			annotationId: null
 		},
 		{
-			id: 3,
 			text: "Question 4",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
 			votes: 3,
@@ -83,7 +83,6 @@ function initialComments() {
 			annotationId: null
 		},
 		{
-			id: 4,
 			text: "Question 5",
 			replies: ["Reply 1", "Reply 2", "Reply 3"],
 			votes: 4,

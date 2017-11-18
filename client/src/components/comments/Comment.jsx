@@ -12,7 +12,6 @@ class Comment extends Component {
     }
 
     upVoteHandler() {
-        console.log("Comment: upVoteHandler with id = " + this.props.id);
         this.props.upVoteComment(this.props.id);
     }
 
