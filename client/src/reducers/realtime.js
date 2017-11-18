@@ -52,6 +52,19 @@ var RealtimeReducer = (state = {
                     Object.assign({}, action.comment)
                 ]
             };
+        case 'UPVOTE_COMMENT':
+			return {
+				...state,
+				comments : state.comments.map((comment, index) => {
+					if (index === action.id)
+						return {
+							...comment,
+							votes: comment.votes + 1
+						};
+					else
+						return comment;
+				})
+			};
         default:
             return state;
     }
