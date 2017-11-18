@@ -60,7 +60,7 @@ class Canvas extends Component {
 
 function mapStateToProps(state) {
     return {
-        addAnnotationActive: state.commentsReducer.addAnnotationActive
+        addAnnotationActive: state.annotationReducer.addAnnotationActive
     }
 }
 
