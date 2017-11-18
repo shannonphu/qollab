@@ -1,4 +1,4 @@
-var CommentsReducer = (state = {
+var AnnotationReducer = (state = {
 	addAnnotationActive: false,
 	activeAnnotationId: null
 }, action) => {
@@ -26,4 +26,4 @@ var CommentsReducer = (state = {
 	}
 }
 
-export default CommentsReducer;
+export default AnnotationReducer;

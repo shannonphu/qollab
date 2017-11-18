@@ -9,7 +9,7 @@ import History from './history';
 import Pencil from './pencil';
 import Rectangle from './rectangle';
 import Tool from './tools';
-import * as commentActions from '../../actions/comment';
+import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
 
 const fabric = require('fabric').fabric;
@@ -537,16 +537,16 @@ class SketchField extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        addAnnotationActive: state.commentsReducer.addAnnotationActive,
-        activeAnnotationId: state.commentsReducer.activeAnnotationId,
+        addAnnotationActive: state.annotationReducer.addAnnotationActive,
+        activeAnnotationId: state.annotationReducer.activeAnnotationId,
         canvasJSON: state.realtimeReducer.canvasJSON,
-        updatedJoinCode: state.realtimeReducer.joinCode // ?
+        updatedJoinCode: state.realtimeReducer.joinCode
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
+        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
         storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import CommentsReducer from './comment.js';
+import AnnotationReducer from './annotation.js';
 import RealtimeReducer from './realtime.js';
 
 const reducers =  combineReducers({
-	commentsReducer: CommentsReducer,
+	annotationReducer: AnnotationReducer,
 	realtimeReducer: RealtimeReducer
 });
 

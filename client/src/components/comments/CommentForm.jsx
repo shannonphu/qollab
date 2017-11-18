@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as commentActions from '../../actions/comment';
+import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
 
 class CommentForm extends Component {
@@ -70,15 +70,15 @@ class CommentForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        activeAnnotationId: state.commentsReducer.activeAnnotationId
+        activeAnnotationId: state.annotationReducer.activeAnnotationId
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAnnotation: () => dispatch(commentActions.addAnnotation()),
-        removeAnnotation: annotationId => dispatch(commentActions.removeAnnotation(annotationId)),
-        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
+        addAnnotation: () => dispatch(annotationActions.addAnnotation()),
+        removeAnnotation: annotationId => dispatch(annotationActions.removeAnnotation(annotationId)),
+        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         syncNewComment: (comment, joinCode) => dispatch({
             type: "socket/COMMENT_ADDED",
