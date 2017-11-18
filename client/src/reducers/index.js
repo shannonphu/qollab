@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import CommentsReducer from './comment.js';
-import CanvasReducer from './canvas.js';
+import RealtimeReducer from './realtime.js';
 
 const reducers =  combineReducers({
 	commentsReducer: CommentsReducer,
-	canvasReducer: CanvasReducer,
+	realtimeReducer: RealtimeReducer
 });
 
 export default reducers;

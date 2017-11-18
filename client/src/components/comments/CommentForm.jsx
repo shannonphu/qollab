@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as commentActions from '../../actions/comment';
+import * as realtimeActions from '../../actions/realtime';
 
 class CommentForm extends Component {
     constructor(props) {
@@ -20,7 +21,8 @@ class CommentForm extends Component {
             votes: 0,
             resolved: false,
         };
-        this.props.addComment(newComment);
+        this.props.addCommentToList(newComment);
+        this.props.syncNewComment(newComment, this.props.lectureCode);
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
@@ -77,7 +79,14 @@ const mapDispatchToProps = (dispatch) => {
         addAnnotation: () => dispatch(commentActions.addAnnotation()),
         removeAnnotation: annotationId => dispatch(commentActions.removeAnnotation(annotationId)),
         storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
-        addComment: comment => dispatch(commentActions.addComment(comment))
+        addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
+        syncNewComment: (comment, joinCode) => dispatch({
+            type: "socket/COMMENT_ADDED",
+            data: {
+                comment: comment,
+                joinCode: joinCode
+            }
+        })
     }
 };
 
