@@ -28,9 +28,20 @@ server.listen(3003, () => {
 app.get('/canvas/:code', (req, res) => {
 	let code = req.params.code;
 	if (code in canvas) {
-		let json = canvas[code];
+		let json = canvas[code]["canvas"];
 		res.send(json);
 	} else {
 		res.send(null);
+	}
+});
+
+// Gets comments stored on server for this lecture code
+app.get('/comments/:code', (req, res) => {
+	let code = req.params.code;
+	if (code in canvas) {
+		let json = canvas[code]["comments"];
+		res.send(json);
+	} else {
+		res.send([]);
 	}
 });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import CommentReplyList from './CommentReplyList';
-import * as commentActions from '../../actions/comment';
+import * as realtimeActions from '../../actions/realtime';
 
 class Comment extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class Comment extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        upVoteComment: id => dispatch(commentActions.upVoteComment(id))
+        upVoteComment: id => dispatch(realtimeActions.upVoteComment(id))
     }
 };
 

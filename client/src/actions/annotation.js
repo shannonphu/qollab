@@ -17,17 +17,3 @@ export const removeAnnotation = (annotationId) => {
         annotationId: annotationId
     }
 };
-
-export const addComment = (comment) => {
-    return {
-        type: 'ADD_COMMENT',
-        comment: comment
-    }
-};
-
-export const upVoteComment = (id) => {
-	return {
-		type: 'UPVOTE_COMMENT',
-		id: id
-	}
-};

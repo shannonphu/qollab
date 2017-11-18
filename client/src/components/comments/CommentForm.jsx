@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as commentActions from '../../actions/comment';
+import * as annotationActions from '../../actions/annotation';
+import * as realtimeActions from '../../actions/realtime';
 
 class CommentForm extends Component {
     constructor(props) {
@@ -20,7 +21,8 @@ class CommentForm extends Component {
             votes: 0,
             resolved: false,
         };
-        this.props.addComment(newComment);
+        this.props.addCommentToList(newComment);
+        this.props.syncNewComment(newComment, this.props.lectureCode);
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
@@ -68,16 +70,23 @@ class CommentForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        activeAnnotationId: state.commentsReducer.activeAnnotationId
+        activeAnnotationId: state.annotationReducer.activeAnnotationId
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAnnotation: () => dispatch(commentActions.addAnnotation()),
-        removeAnnotation: annotationId => dispatch(commentActions.removeAnnotation(annotationId)),
-        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
-        addComment: comment => dispatch(commentActions.addComment(comment))
+        addAnnotation: () => dispatch(annotationActions.addAnnotation()),
+        removeAnnotation: annotationId => dispatch(annotationActions.removeAnnotation(annotationId)),
+        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
+        addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
+        syncNewComment: (comment, joinCode) => dispatch({
+            type: "socket/COMMENT_ADDED",
+            data: {
+                comment: comment,
+                joinCode: joinCode
+            }
+        })
     }
 };
 

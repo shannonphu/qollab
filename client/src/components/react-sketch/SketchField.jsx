@@ -9,8 +9,8 @@ import History from './history';
 import Pencil from './pencil';
 import Rectangle from './rectangle';
 import Tool from './tools';
-import * as commentActions from '../../actions/comment';
-import * as canvasActions from '../../actions/canvas';
+import * as annotationActions from '../../actions/annotation';
+import * as realtimeActions from '../../actions/realtime';
 
 const fabric = require('fabric').fabric;
 
@@ -537,17 +537,17 @@ class SketchField extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        addAnnotationActive: state.commentsReducer.addAnnotationActive,
-        activeAnnotationId: state.commentsReducer.activeAnnotationId,
-        canvasJSON: state.canvasReducer.canvasJSON,
-        updatedJoinCode: state.canvasReducer.joinCode
+        addAnnotationActive: state.annotationReducer.addAnnotationActive,
+        activeAnnotationId: state.annotationReducer.activeAnnotationId,
+        canvasJSON: state.realtimeReducer.canvasJSON,
+        updatedJoinCode: state.realtimeReducer.joinCode
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        storeAnnotationId: annotationId => dispatch(commentActions.storeAnnotationId(annotationId)),
-        storeJoinCode: joinCode => dispatch(canvasActions.storeJoinCode(joinCode)),
+        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
+        storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {
                 data: canvasJSON,
