@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
+import * as realtimeActions from '../../actions/realtime';
 
 class CommentList extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+
+        // Query for current comments based on lecture code when initially joining
+        axios.get('http://localhost:3003/comments/' + this.props.joinCode)
+            .then((response) => {
+                this.props.setInitialComments(response.data);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     render() {
@@ -38,4 +48,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, null)(CommentList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setInitialComments: (comments) => dispatch(realtimeActions.setInitialComments(comments))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

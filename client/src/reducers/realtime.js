@@ -1,5 +1,5 @@
 var RealtimeReducer = (state = {
-    comments: initialComments(),
+    comments: [],
     lectureCode: null,
     canvasJSON: null
 }, action) => {
@@ -21,6 +21,11 @@ var RealtimeReducer = (state = {
                 ...state,
                 joinCode: joinCode,
                 canvasJSON: canvasJSON
+            }
+        case 'SET_INITIAL_COMMENTS':
+            return {
+                ...state,
+                comments: action.comments
             }
         case 'ADD_COMMENT':
             // Update client-side props
@@ -50,41 +55,6 @@ var RealtimeReducer = (state = {
         default:
             return state;
     }
-}
-
-function initialComments() {
-    return [
-        {
-            text: "Question",
-            replies: ["Reply 1", "Reply 2", "Reply 3"],
-            votes: 5,
-            resolved: false,
-        },
-        {
-            text: "Question 2",
-            replies: ["Reply 1", "Reply 2", "Reply 3"],
-            votes: 5,
-            resolved: false,
-        },
-        {
-            text: "Question 3",
-            replies: ["Reply 1", "Reply 2", "Reply 3"],
-            votes: 5,
-            resolved: false,
-        },
-        {
-            text: "Question 4",
-            replies: ["Reply 1", "Reply 2", "Reply 3"],
-            votes: 5,
-            resolved: false,
-        },
-        {
-            text: "Question 5",
-            replies: ["Reply 1", "Reply 2", "Reply 3"],
-            votes: 5,
-            resolved: false,
-        },
-    ]
 }
 
 export default RealtimeReducer;
