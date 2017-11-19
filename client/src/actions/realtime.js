@@ -32,3 +32,10 @@ export const upVoteComment = (id) => {
 		id: id
 	}
 };
+
+export const resolveComment = (id) => {
+    return {
+        type: "RESOLVE_COMMENT",
+        id: id
+    }
+};
