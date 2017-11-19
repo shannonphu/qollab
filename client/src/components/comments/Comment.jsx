@@ -48,7 +48,7 @@ class Comment extends Component {
                         </ul>
                     </div>
 
-                    <CommentReplyList replies={this.props.replies}/>
+                    <CommentReplyList replies={this.props.replies} id={this.props.id} />
                 </li>
             );
         }

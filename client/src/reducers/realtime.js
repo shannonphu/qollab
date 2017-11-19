@@ -53,7 +53,6 @@ var RealtimeReducer = (state = {
                 ]
             };
         case 'UPVOTE_COMMENT':
-            console.log(state);
 			return {
 				...state,
 				comments: state.comments.map((comment, index) => {
@@ -67,7 +66,6 @@ var RealtimeReducer = (state = {
 				})
             };
         case 'RESOLVE_COMMENT':
-            console.log(state);
             return {
                 ...state,
                 comments: state.comments.map((comment, index) => {
@@ -75,6 +73,21 @@ var RealtimeReducer = (state = {
                         return {
                             ...comment,
                             resolved: true
+                        };
+                    else
+                        return comment
+                })
+            }
+        case 'REPLY_COMMENT':
+            return {
+                ...state,
+                comments: state.comments.map((comment, index) => {
+                    if (index === action.id)
+                        return {
+                            ...comment,
+                            replies: [
+                                ...comment.replies, action.reply
+                            ]
                         };
                     else
                         return comment
