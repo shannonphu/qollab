@@ -17,8 +17,8 @@ class CommentForm extends Component {
         event.preventDefault();
 
         let newCommentText = this.refs.text.value;
-        let commentAnnotationId = this.props.activeAnnotationId;
-        this.store(newCommentText, commentAnnotationId)
+        let commentAnnotation = this.props.activeAnnotation;
+        this.store(newCommentText, commentAnnotation)
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
@@ -30,7 +30,7 @@ class CommentForm extends Component {
             this.props.addAnnotation();
         } else {
             // SketchField.jsx handles storing the new annotation ID
-            this.props.removeAnnotation(this.props.activeAnnotationId);
+            this.props.removeAnnotation(this.props.activeAnnotation);
         }
     }
 
@@ -38,7 +38,7 @@ class CommentForm extends Component {
         axios.post('http://localhost:3005/comment/create', {
             joinCode: this.props.lectureCode,
             text: commentText,
-            annotationId: commentAnnotationId
+            annotation: commentAnnotation
         })
             .then((response) => {
                 console.log(response);
@@ -83,15 +83,14 @@ class CommentForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        activeAnnotationId: state.annotationReducer.activeAnnotationId
+        activeAnnotation: state.annotationReducer.activeAnnotation
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         addAnnotation: () => dispatch(annotationActions.addAnnotation()),
-        removeAnnotation: annotationId => dispatch(annotationActions.removeAnnotation(annotationId)),
-        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
+        removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         syncNewComment: (comment, joinCode) => dispatch({
             type: "socket/COMMENT_ADDED",

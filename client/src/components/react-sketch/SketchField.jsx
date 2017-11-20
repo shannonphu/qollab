@@ -74,12 +74,14 @@ class SketchField extends Component {
         this._onMouseOut = this._onMouseOut.bind(this);
         this._onMouseDown = this._onMouseDown.bind(this);
         this._onMouseMove = this._onMouseMove.bind(this);
-        this._onObjectAdded = this._onObjectAdded.bind(this);
-        this._onObjectMoving = this._onObjectMoving.bind(this);
+        this._onPathAdded = this._onPathAdded.bind(this);
+        this._onRectMoving = this._onRectMoving.bind(this);
         this._onObjectRemoved = this._onObjectRemoved.bind(this);
         this._onObjectScaling = this._onObjectScaling.bind(this);
         this._onObjectModified = this._onObjectModified.bind(this);
         this._onObjectRotating = this._onObjectRotating.bind(this);
+
+        this._freezeSubmittedAnnotations = this._freezeSubmittedAnnotations.bind(this);
 
         // Link this canvas to this join code in the Redux store
         this.props.storeJoinCode(props.joinCode);
@@ -122,13 +124,13 @@ class SketchField extends Component {
         this._history = new History(undoSteps);
 
         // Events binding
-        canvas.on('path:created', this._onObjectAdded);
+        canvas.on('path:created', this._onPathAdded);
         canvas.on('object:modified', this._onObjectModified);
         canvas.on('object:removed', this._onObjectRemoved);
         canvas.on('mouse:down', this._onMouseDown);
         canvas.on('mouse:move', this._onMouseMove);
         canvas.on('mouse:up', this._onMouseUp);
-        canvas.on('object:moving', this._onObjectMoving);
+        canvas.on('object:moving', this._onRectMoving);
         canvas.on('object:scaling', this._onObjectScaling);
         canvas.on('object:rotating', this._onObjectRotating);
 
@@ -186,15 +188,34 @@ class SketchField extends Component {
         // Else turn off editting annotation and remove the canvas Rectangle
         if (nextProps.addAnnotationActive) {
             // Only if we just created the Rect in the canvas should we store again.
-            if (!nextProps.activeAnnotationId) {
+            if (!nextProps.activeAnnotation) {
                 this._selectedTool.configureCanvas(nextProps);
-                let newAnnotationId = this._selectedTool.addInstance();
-                this.props.storeAnnotationId(newAnnotationId);
+                let newAnnotation = this._selectedTool.addInstance();
+                this.props.storeAnnotation(newAnnotation);
             }
         } else {
-            this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotationId);
-            this.props.storeAnnotationId(null);
+            this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotation);
+            this.props.storeAnnotation(null);
             this._selectedTool.configureCanvas(nextProps);
+        }
+
+        this._freezeSubmittedAnnotations();
+    }
+
+    _freezeSubmittedAnnotations() {
+        let annotationIds = new Set();
+        for (let i = 0; i < this.props.comments.length; i++) {
+            annotationIds.add(this.props.comments[i].annotation._id);
+        }
+
+        let canvasObjs = this._fc.getObjects();
+        for (let i = 0; i < canvasObjs.length; i++) {
+            let canvasObj = canvasObjs[i];
+            if (canvasObj.type === "rect" && annotationIds.has(canvasObj._id)) {
+                canvasObj.hasControls = false;
+                canvasObj.selectable = false;
+                canvasObj.evented = false;
+            }
         }
     }
 
@@ -217,7 +238,7 @@ class SketchField extends Component {
         }
     }
 
-    _onObjectAdded(e) {
+    _onPathAdded(e) {
         if (!this.state.action) {
             this.setState({ action: true });
             return;
@@ -247,8 +268,13 @@ class SketchField extends Component {
         this._history.keep([obj, prevState, currState]);
     }
 
-    _onObjectMoving(e) {
+    _onRectMoving(e) {
+        if (e.target.type !== "rect") {
+            return;
+        }
 
+        console.log(e.target.toJSON());
+        this.props.storeAnnotation(e.target.toJSON());
     }
 
     _onObjectScaling(e) {
@@ -538,15 +564,16 @@ class SketchField extends Component {
 const mapStateToProps = (state) => {
     return {
         addAnnotationActive: state.annotationReducer.addAnnotationActive,
-        activeAnnotationId: state.annotationReducer.activeAnnotationId,
+        activeAnnotation: state.annotationReducer.activeAnnotation,
         canvasJSON: state.realtimeReducer.canvasJSON,
-        updatedJoinCode: state.realtimeReducer.joinCode
+        updatedJoinCode: state.realtimeReducer.joinCode,
+        comments: state.realtimeReducer.comments
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
+        storeAnnotation: annotation => dispatch(annotationActions.storeAnnotation(annotation)),
         storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {

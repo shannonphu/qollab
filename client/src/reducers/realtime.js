@@ -31,8 +31,6 @@ var RealtimeReducer = (state = {
             // Update client-side props
             return {
                 ...state,
-                addAnnotationActive: false,
-                activeAnnotationId: null,
                 comments: [
                     ...state.comments,
                     Object.assign({}, action.comment)

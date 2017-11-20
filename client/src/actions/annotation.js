@@ -4,16 +4,16 @@ export const addAnnotation = () => {
     }
 };
 
-export const storeAnnotationId = (annotationId) => {
+export const storeAnnotation = (annotation) => {
     return {
-        type: 'STORE_ANNOTATION_ID',
-        annotationId: annotationId
+        type: 'STORE_ANNOTATION',
+        annotation: annotation
     }
 };
 
-export const removeAnnotation = (annotationId) => {
+export const removeAnnotation = (annotation) => {
     return {
         type: 'REMOVE_ANNOTATION',
-        annotationId: annotationId
+        annotation: annotation
     }
 };

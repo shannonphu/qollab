@@ -1,25 +1,25 @@
 var AnnotationReducer = (state = {
 	addAnnotationActive: false,
-	activeAnnotationId: null
+	activeAnnotation: null
 }, action) => {
 	switch (action.type) {
 		case 'ADD_ANNOTATION':
 			return {
 				...state,
 				addAnnotationActive: true,
-				activeAnnotationId: null
+				activeAnnotation: null
 			};
-		case 'STORE_ANNOTATION_ID':
+		case 'STORE_ANNOTATION':
 			return {
 				...state,
-				addAnnotationActive: action.annotationId ? true : false,
-				activeAnnotationId: action.annotationId
+				addAnnotationActive: action.annotation ? true : false,
+				activeAnnotation: action.annotation
 			};
 		case 'REMOVE_ANNOTATION':
 			return {
 				...state,
 				addAnnotationActive: false,
-				activeAnnotationId: action.annotationId
+				activeAnnotation: action.annotation
 			};
 		default:
 			return state;
