@@ -9,44 +9,56 @@ class Comment extends Component {
         super(props);
         this.state = {};
         this.upVoteHandler = this.upVoteHandler.bind(this);
+        this.resolveHandler = this.resolveHandler.bind(this);
     }
 
     upVoteHandler() {
         this.props.upVoteComment(this.props.id);
     }
 
-    render() {
-        return (
-            <li className="Comment">
-                <div className={this.props.className}>
-                    <ul>
-                        <li>
-                            <i className="material-icons">chat_bubble</i>
-                            <span>{this.props.text}</span>
-                        </li>
-                        <li>
-                            <div className="left">
-                                <a onMouseDown={this.upVoteHandler} >
-                                    <i className="material-icons not-collapse">thumb_up</i>
-                                </a>
-                                <strong>{this.props.votes}</strong>
-                            </div>
-                            <div className="right">
-                                <a href="#"><i className="material-icons not-collapse">check</i></a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+    resolveHandler() {
+        this.props.resolveComment(this.props.id);
+    }
 
-                <CommentReplyList replies={this.props.replies}/>
-            </li>
-        );
+    render() {
+        if (this.props.resolved) {
+            return (null);
+        } else {
+            return (
+                <li className="Comment">
+                    <div className={this.props.className}>
+                        <ul>
+                            <li>
+                                <i className="material-icons">chat_bubble</i>
+                                <span>{this.props.text}</span>
+                            </li>
+                            <li>
+                                <div className="left">
+                                    <a onMouseDown={this.upVoteHandler} >
+                                        <i className="material-icons not-collapse">thumb_up</i>
+                                    </a>
+                                    <strong>{this.props.votes}</strong>
+                                </div>
+                                <div className="right">
+                                    <a onMouseDown={this.resolveHandler} >
+                                        <i className="material-icons not-collapse">check</i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <CommentReplyList replies={this.props.replies} id={this.props.id} />
+                </li>
+            );
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        upVoteComment: id => dispatch(realtimeActions.upVoteComment(id))
+        upVoteComment: id => dispatch(realtimeActions.upVoteComment(id)),
+        resolveComment: id => dispatch(realtimeActions.resolveComment(id))
     }
 };
 
