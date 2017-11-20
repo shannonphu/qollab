@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
@@ -15,14 +16,9 @@ class CommentForm extends Component {
     submitHandler(event) {
         event.preventDefault();
 
-        let newComment = {
-            text: this.refs.text.value,
-            replies: [],
-            votes: 0,
-            resolved: false,
-        };
-        this.props.addCommentToList(newComment);
-        this.props.syncNewComment(newComment, this.props.lectureCode);
+        let newCommentText = this.refs.text.value;
+        let commentAnnotationId = this.props.activeAnnotationId;
+        this.store(newCommentText, commentAnnotationId)
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
@@ -36,6 +32,23 @@ class CommentForm extends Component {
             // SketchField.jsx handles storing the new annotation ID
             this.props.removeAnnotation(this.props.activeAnnotationId);
         }
+    }
+
+    store(commentText, commentAnnotationId) {
+        axios.post('http://localhost:3005/comment/create', {
+            joinCode: this.props.lectureCode,
+            text: commentText,
+            annotationId: commentAnnotationId
+        })
+            .then((response) => {
+                console.log(response);
+                let newComment = response.data;
+                this.props.addCommentToList(newComment);
+                this.props.syncNewComment(newComment, this.props.lectureCode);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     render() {
