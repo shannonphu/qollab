@@ -11,6 +11,7 @@ import Rectangle from './rectangle';
 import Tool from './tools';
 import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
+import { ANNOTATION_STATE } from '../../reducers/annotation';
 
 const fabric = require('fabric').fabric;
 
@@ -183,39 +184,35 @@ class SketchField extends Component {
             this.fromJSON(nextProps.canvasJSON);
         }
 
-        // Annotation adding/removing logic from Comment form
-        // If want to add and edit annotation rect, add a Rectangle to the canvas and store the Rect ID
-        // Else turn off editting annotation and remove the canvas Rectangle
-        if (nextProps.addAnnotationActive) {
-            // Only if we just created the Rect in the canvas should we store again.
-            if (!nextProps.activeAnnotation) {
+        // Annotation adding/removing/submitting logic from Comment form using the state design pattern
+        // [State: editing] If want to add and edit annotation rect, add a Rectangle to the canvas and store the Rect ID
+        // [State: submiting] If form submitted, freeze the current annotation being editted
+        // [State: removing] Remove the canvas Rectangle currently being editted
+        switch (nextProps.annotationState) {
+            case ANNOTATION_STATE.EDITING:
                 this._selectedTool.configureCanvas(nextProps);
                 let newAnnotation = this._selectedTool.addInstance();
                 this.props.storeAnnotation(newAnnotation);
-            }
-        } else {
-            this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotation);
-            this.props.storeAnnotation(null);
-            this._selectedTool.configureCanvas(nextProps);
+                this.props.setNeutralAnnotationState();
+                break;
+            case ANNOTATION_STATE.SUBMITING:
+                this._tools[Tool.Rectangle].freezeInstance(this.props.activeAnnotation);
+                this.props.setNeutralAnnotationState();
+                break;
+            case ANNOTATION_STATE.REMOVING:
+                this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotation);
+                this._selectedTool.configureCanvas(nextProps);
+                this.props.setNeutralAnnotationState();
+                break;
+            default:
+                break;
         }
-
-        this._freezeSubmittedAnnotations();
     }
 
     _freezeSubmittedAnnotations() {
         let annotationIds = new Set();
         for (let i = 0; i < this.props.comments.length; i++) {
-            annotationIds.add(this.props.comments[i].annotation._id);
-        }
-
-        let canvasObjs = this._fc.getObjects();
-        for (let i = 0; i < canvasObjs.length; i++) {
-            let canvasObj = canvasObjs[i];
-            if (canvasObj.type === "rect" && annotationIds.has(canvasObj._id)) {
-                canvasObj.hasControls = false;
-                canvasObj.selectable = false;
-                canvasObj.evented = false;
-            }
+            this._tools[Tool.Rectangle].freezeInstance(this.props.comments[i].annotation._id)
         }
     }
 
@@ -273,7 +270,6 @@ class SketchField extends Component {
             return;
         }
 
-        console.log(e.target.toJSON());
         this.props.storeAnnotation(e.target.toJSON());
     }
 
@@ -563,8 +559,8 @@ class SketchField extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        addAnnotationActive: state.annotationReducer.addAnnotationActive,
         activeAnnotation: state.annotationReducer.activeAnnotation,
+        annotationState: state.annotationReducer.annotationState,
         canvasJSON: state.realtimeReducer.canvasJSON,
         updatedJoinCode: state.realtimeReducer.joinCode,
         comments: state.realtimeReducer.comments
@@ -574,6 +570,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         storeAnnotation: annotation => dispatch(annotationActions.storeAnnotation(annotation)),
+        setNeutralAnnotationState: () => dispatch(annotationActions.setNeutralAnnotationState()),
         storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {

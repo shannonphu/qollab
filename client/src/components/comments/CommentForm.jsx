@@ -34,7 +34,7 @@ class CommentForm extends Component {
         }
     }
 
-    store(commentText, commentAnnotationId) {
+    store(commentText, commentAnnotation) {
         axios.post('http://localhost:3005/comment/create', {
             joinCode: this.props.lectureCode,
             text: commentText,
@@ -45,6 +45,7 @@ class CommentForm extends Component {
                 let newComment = response.data;
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
+                this.props.submitAnnotation(commentAnnotation);                
             })
             .catch((error) => {
                 throw error;
@@ -90,6 +91,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         addAnnotation: () => dispatch(annotationActions.addAnnotation()),
+        submitAnnotation: annotation => dispatch(annotationActions.submitAnnotation(annotation)),
         removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         syncNewComment: (comment, joinCode) => dispatch({
