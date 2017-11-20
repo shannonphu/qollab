@@ -1,6 +1,6 @@
-export const ANNOTATION_STATE  = {
-    EDITING: 'EDITING',
-    SUBMITING: 'SUBMITING',
+export const ANNOTATION_STATE = {
+	EDITING: 'EDITING',
+	SUBMITING: 'SUBMITING',
 	REMOVING: 'REMOVING',
 	NONE: 'NONE'
 };
@@ -23,18 +23,17 @@ let AnnotationReducer = (state = {
 		case 'SUBMITTED_ANNOTATION':
 			return {
 				...state,
-				activeAnnotation: null,
 				annotationState: ANNOTATION_STATE.SUBMITING
 			}
 		case 'REMOVE_ANNOTATION':
 			return {
 				...state,
-				annotationState: ANNOTATION_STATE.REMOVING,
-				activeAnnotation: null
+				annotationState: ANNOTATION_STATE.REMOVING
 			};
 		case 'SET_NEUTRAL_ANNOTATION_STATE':
 			return {
 				...state,
+				activeAnnotation: null,
 				annotationState: ANNOTATION_STATE.NONE
 			}
 		default:
