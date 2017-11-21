@@ -23,6 +23,7 @@ class CommentForm extends Component {
         };
         this.props.addCommentToList(newComment);
         this.props.syncNewComment(newComment, this.props.lectureCode);
+        this.props.onSubmitComment();
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
