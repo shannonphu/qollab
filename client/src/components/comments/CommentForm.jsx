@@ -48,7 +48,7 @@ class CommentForm extends Component {
                             <label htmlFor="annotationWanted">Add Annotation</label>
                         </div>
                         <div className="row input-field">
-                            <input id="add_comment" type="text" ref="text"  autocomplete="off" className="materialize-textarea"/>
+                            <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea"/>
                             <label for="add_comment">Add New Comment</label>
                         </div>
                         <div className="row">

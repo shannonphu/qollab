@@ -39,7 +39,7 @@ class CommentReplyList extends Component {
 
                 <form className="row" onSubmit={this.handleSubmit}>
                     <div className="input-field">
-                        <input id="comment" type="tel" className="validate" value={this.state.value} onChange={this.handleChange} />
+                        <input id="comment" type="tel" className="validate" autoComplete="off" value={this.state.value} onChange={this.handleChange} />
                         <label htmlFor="comment">Comment</label>
                     </div>
                     <button className="btn-small btn waves-effect waves-light" type="submit" name="action">
