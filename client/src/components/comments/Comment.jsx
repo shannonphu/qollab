@@ -41,7 +41,7 @@ class Comment extends Component {
                                 </div>
                                 <div className="right">
                                     <a onMouseDown={this.resolveHandler} >
-                                        <i className="material-icons not-collapse">check</i>
+                                        <i className="material-icons not-collapse">close</i>
                                     </a>
                                 </div>
                             </li>
