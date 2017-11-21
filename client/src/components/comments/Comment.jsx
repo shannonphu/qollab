@@ -27,7 +27,7 @@ class Comment extends Component {
             return (
                 <li className="Comment">
                     <div className={this.props.className}>
-                        <ul>
+                        <ul style={{ "width": "100%" }}>
                             <li>
                                 <i className="material-icons">chat_bubble</i>
                                 <span>{this.props.text}</span>

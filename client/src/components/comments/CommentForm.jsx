@@ -42,26 +42,19 @@ class CommentForm extends Component {
         return (
             <li className="CommentForm">
                 <div className={this.props.className}>
-                    <ul style={{ "width": "100%" }}>
-                        <form onSubmit={this.submitHandler}>
-                            <li className="row">
-                                <i className="col s2 material-icons">chat_bubble</i>
-                                <div className="col s9">
-                                    <input type="text" ref="text" />
-                                    <label htmlFor="text">Comment</label>
-                                </div>
-                            </li>
-                            <li className="row">
-                                <div className="col s9">
-                                    <input type="checkbox" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
-                                    <label htmlFor="annotationWanted">Add Annotation</label>
-                                </div>
-                                <div className="col s3">
-                                    <button>Submit</button>
-                                </div>
-                            </li>
-                        </form>
-                    </ul>
+                    <form onSubmit={this.submitHandler} style={{ "width": "100%" }}>
+                        <div className="row">
+                            <input type="checkbox" className="filled-in" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
+                            <label htmlFor="annotationWanted">Add Annotation</label>
+                        </div>
+                        <div className="row input-field">
+                            <input id="add_comment" type="text" ref="text"  autocomplete="off" className="materialize-textarea"/>
+                            <label for="add_comment">Add New Comment</label>
+                        </div>
+                        <div className="row">
+                            <button className="btn-small btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </li>
         );
