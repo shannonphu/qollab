@@ -41,7 +41,6 @@ class CommentForm extends Component {
             annotation: commentAnnotation
         })
             .then((response) => {
-                console.log(response);
                 let newComment = response.data;
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
