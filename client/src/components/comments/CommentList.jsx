@@ -38,8 +38,8 @@ class CommentList extends Component {
     }
 
     render() {
-        const addCommentButton = this.state.commentFormShown ? null : <AddCommentButton onClick={() => this.handleAddCommentClicked()}/>;
-        const commentForm = this.state.commentFormShown ? <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} onSubmitComment={() => this.handleSubmitComment()}/> : null;
+        const addCommentButton = this.state.commentFormShown ? null : <AddCommentButton onClick={this.handleAddCommentClicked}/>;
+        const commentForm = this.state.commentFormShown ? <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} onSubmitComment={this.handleSubmitComment}/> : null;
         return (
             <div className="CommentList">
                 {addCommentButton}
