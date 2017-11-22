@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-import AddCommentButton from './AddCommentButton';
+import AddCommentToggle from './AddCommentToggle';
 import * as realtimeActions from '../../actions/realtime';
 
 class CommentList extends Component {
@@ -27,7 +27,7 @@ class CommentList extends Component {
 
     handleAddCommentClicked() {
         this.setState({
-            commentFormShown: true
+            commentFormShown: !this.state.commentFormShown
         })
     }
 
@@ -38,11 +38,10 @@ class CommentList extends Component {
     }
 
     render() {
-        const addCommentButton = this.state.commentFormShown ? null : <AddCommentButton onClick={this.handleAddCommentClicked}/>;
         const commentForm = this.state.commentFormShown ? <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} onSubmitComment={this.handleSubmitComment}/> : null;
         return (
             <div className="CommentList">
-                {addCommentButton}
+                <AddCommentToggle onClick={this.handleAddCommentClicked} commentFormShown={this.state.commentFormShown}/>
                 <ul className="collapsible popout" data-collapsible="accordion">
                     {commentForm}
                     {this.props.comments.map((comment, index) => (
