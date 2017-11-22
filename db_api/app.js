@@ -44,7 +44,7 @@ app.post('/create', (req, res) => {
 
 // Store new comment inside a lecture
 app.post('/comment/create', (req, res) => {	
-	Lecture.addComment(req.body.joinCode, req.body.text, req.body.annotationId, (comment) => {
+	Lecture.addComment(req.body.joinCode, req.body.text, JSON.stringify(req.body.annotation), (comment) => {
 		res.send(comment);
 	});
 });

@@ -42,19 +42,15 @@ class Rectangle extends FabricCanvasTool {
         // Give all rectangles a z-index
         this.rect.moveTo(1); 
 
-        return this.rect._id;
+        return this.rect.toJSON();
     }
 
-    removeInstance(id) {
-        let objects = this._canvas.getObjects();
-        let target = null;
-        for (let i = 0; i < objects.length; i++) {
-            let shape = objects[i];
-            if (shape._id === id) {
-                target = shape;
-                break;
-            }
+    removeInstance(annotation) {
+        if (!annotation) {
+            return false;
         }
+
+        let target = this._findInstance(annotation._id);
         if (target != null) {
             this._canvas.remove(target);
             return true;
@@ -62,6 +58,28 @@ class Rectangle extends FabricCanvasTool {
     
         return false;
     };
+
+    freezeInstance(rect) {
+        let target = this._findInstance(rect._id);
+        if (target != null) {
+            target.evented = false;
+            target.selectable = false;
+            target.hasControls = false;
+        }   
+    }
+
+    _findInstance(id) {
+        let objects = this._canvas.getObjects();
+        let target = null;
+        for (let i = 0; i < objects.length; i++) {
+            let shape = objects[i];
+            if (shape._id === id) {
+                return shape;
+            }
+        }
+
+        return null;
+    }
 }
 
 export default Rectangle;

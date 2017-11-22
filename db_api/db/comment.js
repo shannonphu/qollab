@@ -3,16 +3,16 @@ module.exports = (function() {
 
     var commentSchema = new mongoose.Schema({
         text: { type: String, required: true },
-        annotationId: {type: String, default: null },
+        annotation: {type: String, default: null },
         resolved: { type: Boolean, default: false },
         replies: [String],
         votes: { type: Number, default: 0 }
     });
 
-    commentSchema.statics.create = (text, annotationId) => {
+    commentSchema.statics.create = (text, annotation) => {
         let comment = new Comment({
             text: text,
-            annotationId: annotationId
+            annotation: annotation
         });
 
         return comment;
@@ -22,14 +22,14 @@ module.exports = (function() {
     * Functionality:
     *   - inserts a new Comment object into our database
     * Usage:
-    *   Comment.insert("comment_text", "annotation_id", (newComment) => {
+    *   Comment.insert("comment_text", annotationJSON, (newComment) => {
     *       console.log(newComment);
     *   });
     * Returns:
     *   - the actual Comment mongoDB object
     */
-    commentSchema.statics.insert = function(text, annotationId, callback) {
-        let comment = commentSchema.create(text, annotationId);
+    commentSchema.statics.insert = function(text, annotation, callback) {
+        let comment = commentSchema.create(text, annotation);
         comment.save(function (err, data) {
             if (err) {
                 throw err;
