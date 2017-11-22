@@ -16,7 +16,7 @@ class CommentReplyList extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.replyComment(this.props.id, this.state.value);
+        this.props.replyComment(this.props.commentId, this.state.value);
         this.setState({value: ""});
     }
 
