@@ -1,3 +1,7 @@
+const commentDefinition = require('./comment.js');
+const commentSchema = commentDefinition.schema;
+const Comment = commentDefinition.model;
+
 module.exports = (function () {
     let mongoose = require('mongoose');
     let Schema = mongoose.Schema;
@@ -5,9 +9,10 @@ module.exports = (function () {
 
     var lectureSchema = new Schema({
         title: { type: String, required: true },
-        joinCode: { type: String, required: true },
+        joinCode: { type: String, required: true, unique: true },
         instructor: { type: String, required: true },
-        students: [{ type: String }]
+        students: [{ type: String }],
+        comments: [commentSchema]
     });
 
     /*
@@ -62,6 +67,19 @@ module.exports = (function () {
             }
             return;
         });
+    }
+
+    lectureSchema.statics.addComment = (joinCode, commentText, annotationId, callback) => {
+        let comment = Comment.create(commentText, annotationId);
+        Lecture.findOneAndUpdate(
+            { "joinCode": joinCode },
+            { "$push": { "comments": comment } },
+            { safe: true, upsert: true, new: true },
+            (err, lecture) => {
+                if (callback) {
+                    callback(comment);
+                }
+            });
     }
 
     /*
