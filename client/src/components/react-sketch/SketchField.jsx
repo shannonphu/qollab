@@ -82,8 +82,6 @@ class SketchField extends Component {
         this._onObjectModified = this._onObjectModified.bind(this);
         this._onObjectRotating = this._onObjectRotating.bind(this);
 
-        this._freezeSubmittedAnnotations = this._freezeSubmittedAnnotations.bind(this);
-
         // Link this canvas to this join code in the Redux store
         this.props.storeJoinCode(props.joinCode);
         // Get the canvas data that currently stored on the server in case we entered a session mid-way
@@ -206,13 +204,6 @@ class SketchField extends Component {
                 break;
             default:
                 break;
-        }
-    }
-
-    _freezeSubmittedAnnotations() {
-        let annotationIds = new Set();
-        for (let i = 0; i < this.props.comments.length; i++) {
-            this._tools[Tool.Rectangle].freezeInstance(this.props.comments[i].annotation._id)
         }
     }
 

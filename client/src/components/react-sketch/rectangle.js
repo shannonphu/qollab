@@ -60,12 +60,20 @@ class Rectangle extends FabricCanvasTool {
     };
 
     freezeInstance(rect) {
+        if (!rect) {
+            return false;
+        }
+
         let target = this._findInstance(rect._id);
         if (target != null) {
             target.evented = false;
             target.selectable = false;
             target.hasControls = false;
-        }   
+
+            return true;
+        }
+
+        return false;
     }
 
     _findInstance(id) {
