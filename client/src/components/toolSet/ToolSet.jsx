@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ShowResolvedCommentToggle from './ShowResolvedCommentsToggle';
 
 class ToolSet extends Component {
 
@@ -14,6 +15,7 @@ class ToolSet extends Component {
                 <i className="large material-icons">more_vert</i>
             </a>
             <ul>
+                <li><ShowResolvedCommentToggle/></li>
                 <li><a className="btn-floating orange"><i className="material-icons">lock_open</i></a></li>
                 <li><a className="btn-floating red"><i className="material-icons">delete</i></a></li>
                 <li><a className="btn-floating green"><i className="material-icons">edit</i></a></li>

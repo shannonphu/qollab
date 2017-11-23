@@ -21,9 +21,16 @@ class Comment extends Component {
     }
 
     render() {
-        if (this.props.resolved) {
+        if (this.props.resolved && !this.props.showResolvedCommentsToggled) {
             return (null);
         } else {
+
+            const resolveButton = this.props.resolved ? <span>RESOLVED</span> : (
+                <a onMouseDown={this.resolveHandler} >
+                    <i className="material-icons not-collapse">check</i>
+                </a>
+            );
+
             return (
                 <li className="Comment">
                     <div className={this.props.className}>
@@ -40,9 +47,7 @@ class Comment extends Component {
                                     <strong>{this.props.votes}</strong>
                                 </div>
                                 <div className="right">
-                                    <a onMouseDown={this.resolveHandler} >
-                                        <i className="material-icons not-collapse">close</i>
-                                    </a>
+                                    {resolveButton}
                                 </div>
                             </li>
                         </ul>
@@ -55,6 +60,12 @@ class Comment extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        showResolvedCommentsToggled: state.realtimeReducer.showResolvedCommentsToggled
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         upVoteComment: id => dispatch(realtimeActions.upVoteComment(id)),
@@ -62,4 +73,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

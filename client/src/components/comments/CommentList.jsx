@@ -41,7 +41,7 @@ class CommentList extends Component {
         const commentForm = this.state.commentFormShown ? <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} onSubmitComment={this.handleSubmitComment}/> : null;
         return (
             <div className="CommentList">
-                <AddCommentToggle onClick={this.handleAddCommentClicked} commentFormShown={this.state.commentFormShown}/>
+                <AddCommentToggle onClick={this.handleAddCommentClicked} commentFormShown={this.state.commentFormShown} />
                 <ul className="collapsible popout" data-collapsible="accordion">
                     {commentForm}
                     {this.props.comments.map((comment, index) => (
