@@ -34,7 +34,7 @@ class LecturePortal extends Component {
 				<ToolSet />
 				<div className="row lecture-container">
 					<div className="col s6 m8"><Canvas joinCode={this.state.joinCode} /></div>
-					<div className="col s6 m4"><CommentList /></div>
+					<div className="col s6 m4"><CommentList joinCode={this.state.joinCode} /></div>
 				</div>
 			</div>
 		)

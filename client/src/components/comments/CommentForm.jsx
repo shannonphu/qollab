@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+
+import * as annotationActions from '../../actions/annotation';
+import * as realtimeActions from '../../actions/realtime';
 
 /**
  * CommentFrom Component to write and submit a comment
@@ -15,6 +20,7 @@ class CommentForm extends Component {
         super(props);
         this.state = {};
         this.submitHandler = this.submitHandler.bind(this);
+        this.annotationCheckboxToggled = this.annotationCheckboxToggled.bind(this);
     }
 
     /**
@@ -22,7 +28,41 @@ class CommentForm extends Component {
      * @param {*} event 
      */
     submitHandler(event) {
+        event.preventDefault();
 
+        let newCommentText = this.refs.text.value;
+        let commentAnnotation = this.props.activeAnnotation;
+        this.store(newCommentText, commentAnnotation)
+
+        // Clear textbox and checkbox
+        this.refs.text.value = null;
+        this.refs.annotationWanted.checked = false;
+    }
+
+    annotationCheckboxToggled(event) {
+        if (event.target.checked) {
+            this.props.addAnnotation();
+        } else {
+            // SketchField.jsx handles storing the new annotation ID
+            this.props.removeAnnotation(this.props.activeAnnotation);
+        }
+    }
+
+    store(commentText, commentAnnotation) {
+        axios.post('http://localhost:3005/comment/create', {
+            joinCode: this.props.lectureCode,
+            text: commentText,
+            annotation: commentAnnotation
+        })
+            .then((response) => {
+                let newComment = response.data;
+                this.props.addCommentToList(newComment);
+                this.props.syncNewComment(newComment, this.props.lectureCode);
+                this.props.submitAnnotation(commentAnnotation);                
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     /**
@@ -44,7 +84,7 @@ class CommentForm extends Component {
                             </li>
                             <li className="row">
                                 <div className="col s9">
-                                    <input type="checkbox" id="annotationWanted" ref="annotationWanted" />
+                                    <input type="checkbox" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
                                     <label htmlFor="annotationWanted">Add Annotation</label>
                                 </div>
                                 <div className="col s3">
@@ -59,4 +99,26 @@ class CommentForm extends Component {
     }
 }
 
-export default CommentForm;
+function mapStateToProps(state) {
+    return {
+        activeAnnotation: state.annotationReducer.activeAnnotation
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addAnnotation: () => dispatch(annotationActions.addAnnotation()),
+        submitAnnotation: annotation => dispatch(annotationActions.submitAnnotation(annotation)),
+        removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
+        addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
+        syncNewComment: (comment, joinCode) => dispatch({
+            type: "socket/COMMENT_ADDED",
+            data: {
+                comment: comment,
+                joinCode: joinCode
+            }
+        })
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);

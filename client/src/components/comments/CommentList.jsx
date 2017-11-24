@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
+import * as realtimeActions from '../../actions/realtime';
 
 /**
  * CommentList Component, the list of all comments
@@ -17,7 +19,15 @@ class CommentList extends Component {
      */
     constructor(props) {
         super(props)
-        this.state = {}
+
+        // Query for current comments based on lecture code when initially joining
+        axios.get('http://localhost:3003/comments/' + this.props.joinCode)
+            .then((response) => {
+                this.props.setInitialComments(response.data);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     /**
@@ -28,16 +38,18 @@ class CommentList extends Component {
         return (
             <div className="CommentList">
                 <ul className="collapsible popout" data-collapsible="accordion">
-                    <CommentForm className="collapsible-header z-depth-3" />
-                    
+                    <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} />
+
                     {this.props.comments.map((comment, index) => (
                         <Comment
                             key={index.toString()}
+                            id={index}
                             className="collapsible-header z-depth-3"
                             text={comment.text}
                             replies={comment.replies}
                             votes={comment.votes}
-                            resolved={comment.resolved} />
+                            resolved={comment.resolved}
+                        />
                     ))}
                 </ul>
             </div>
@@ -51,8 +63,14 @@ class CommentList extends Component {
  */
 function mapStateToProps(state) {
     return {
-        comments: state.comments,
+        comments: state.realtimeReducer.comments
     }
 }
 
-export default connect(mapStateToProps)(CommentList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setInitialComments: (comments) => dispatch(realtimeActions.setInitialComments(comments))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 /**
  * Module for lecture Mongo DB model
  * @module lectureDB
  */
+=======
+const commentDefinition = require('./comment.js');
+const commentSchema = commentDefinition.schema;
+const Comment = commentDefinition.model;
+
+>>>>>>> master
 module.exports = (function () {
     let mongoose = require('mongoose');
     let Schema = mongoose.Schema;
@@ -13,9 +20,10 @@ module.exports = (function () {
      */
     var lectureSchema = new Schema({
         title: { type: String, required: true },
-        joinCode: { type: String, required: true },
+        joinCode: { type: String, required: true, unique: true },
         instructor: { type: String, required: true },
-        students: [{ type: String }]
+        students: [{ type: String }],
+        comments: [commentSchema]
     });
 
     /**
@@ -74,12 +82,32 @@ module.exports = (function () {
         });
     }
 
+<<<<<<< HEAD
     /**
      * @summary generates a 6 digit numerical code randomly
      * @function
      * @memberof module:lectureDB
      * @returns {String} the generated code
      */
+=======
+    lectureSchema.statics.addComment = (joinCode, commentText, annotationId, callback) => {
+        let comment = Comment.create(commentText, annotationId);
+        Lecture.findOneAndUpdate(
+            { "joinCode": joinCode },
+            { "$push": { "comments": comment } },
+            { safe: true, upsert: true, new: true },
+            (err, lecture) => {
+                if (callback) {
+                    callback(comment);
+                }
+            });
+    }
+
+    /*
+    * Functionality:
+    *   - generates a 6 digit numerical code randomly
+    */
+>>>>>>> master
     let generateCode = function () {
         let code = Math.floor(100000 + Math.random() * 900000);
         return code.toString();

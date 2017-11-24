@@ -7,10 +7,20 @@ module.exports = (function() {
 
     var commentSchema = new mongoose.Schema({
         text: { type: String, required: true },
+        annotation: {type: String, default: null },
         resolved: { type: Boolean, default: false },
         replies: [String],
         votes: { type: Number, default: 0 }
     });
+
+    commentSchema.statics.create = (text, annotation) => {
+        let comment = new Comment({
+            text: text,
+            annotation: annotation
+        });
+
+        return comment;
+    }
 
     /**
      * @summary inserts a new Comment object into our database and returns the actual comment mongo DB object
@@ -21,8 +31,8 @@ module.exports = (function() {
      *       console.log(newComment);
      *   });
      */
-    commentSchema.statics.insert = function(text, callback) {
-        let comment = new Comment({text: text});
+    commentSchema.statics.insert = function(text, annotation, callback) {
+        let comment = commentSchema.create(text, annotation);
         comment.save(function (err, data) {
             if (err) {
                 throw err;
@@ -74,5 +84,9 @@ module.exports = (function() {
     }
 
     let Comment = mongoose.model('Comment', commentSchema);
-    return Comment;
+    
+    return {
+        schema: commentSchema,
+        model: Comment
+    };
 }());

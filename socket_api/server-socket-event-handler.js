@@ -1,38 +1,53 @@
 // Handles socket connections and event callbacks
-module.exports = function(server) {
+module.exports = function (server, canvasHistory) {
     const io = require('socket.io').listen(server);
 
-    let canvasHistory = {};
-
     io.sockets.on('connection', function (socket) {
-    	console.log("A connection was made");
+        console.log("A connection was made");
 
-        // Fill canvas if new connection made midway through session
-        let joinCode = socket.handshake.query.lectureCode;
-        if (joinCode in canvasHistory) {
-            socket.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
-        }
-
-        socket.on('disconnect', function(){
-          console.log('A user disconnected');
+        socket.on('disconnect', function () {
+            console.log('A user disconnected');
         });
 
-        // Add path to history and update all clients
-        socket.on('path:drawn', function(canvasJSON) {
-            let json = JSON.parse(canvasJSON);
-            
-            let joinCode = json['joinCode'];
-            let canvasData = json['data'];
+        socket.on('action', (action) => {
+            switch (action.type) {
+                case 'socket/CANVAS_UPDATED':
+                    {
+                        let json = action.canvasJSON;
+                        let joinCode = json['joinCode'];
+                        let canvasData = json['data'];
+                        canvasHistory[joinCode]["canvas"] = canvasData;
+                        socket.broadcast.emit('action', {
+                            type: 'LOAD_CANVAS_FROM_JSON',
+                            canvasJSON: {
+                                "joinCode": joinCode,
+                                "data": canvasData
+                            }
+                        });
+                    }
+                    break;
+                case 'socket/COMMENT_ADDED':
+                    {
+                        let json = action.data;
+                        let joinCode = json['joinCode'];
+                        let comment = json['comment'];
+                        
+                        // Add new comment to comment history
+                        if (!(joinCode in canvasHistory)) {
+                            canvasHistory[joinCode] = { comments: [] }
+                        }
+                        canvasHistory[joinCode]["comments"].push(comment);
 
-            canvasHistory[joinCode] = canvasData;
-            socket.broadcast.emit('canvas:update', JSON.stringify(getCanvasJSON(joinCode, canvasHistory[joinCode])));
+                        socket.broadcast.emit('action', {
+                            type: 'SYNC_NEW_COMMENT',
+                            comment: comment,
+                            joinCode: joinCode
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
         });
     });
-
-    var getCanvasJSON = function(joinCode, canvasJSON) {
-        return {
-            "joinCode": joinCode,
-            "data": canvasJSON
-        };
-    }
 };

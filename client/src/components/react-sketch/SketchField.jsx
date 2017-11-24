@@ -2,10 +2,16 @@
 
 import ReactDOM from 'react-dom';
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+
 import History from './history';
 import Pencil from './pencil';
 import Rectangle from './rectangle';
 import Tool from './tools';
+import * as annotationActions from '../../actions/annotation';
+import * as realtimeActions from '../../actions/realtime';
+import { ANNOTATION_STATE } from '../../reducers/annotation';
 
 const fabric = require('fabric').fabric;
 
@@ -18,7 +24,7 @@ class SketchField extends Component {
 
     static propTypes = {
         // the color of the line
-        lineColor: PropTypes.string,
+        pencilLineColor: PropTypes.string,
         // The width of the line
         lineWidth: PropTypes.number,
         // the fill color of the shape when applicable
@@ -48,7 +54,7 @@ class SketchField extends Component {
      * @static
      */
     static defaultProps = {
-        lineColor: 'black',
+        pencilLineColor: 'black',
         lineWidth: 10,
         fillColor: 'transparent',
         backgroundColor: 'transparent',
@@ -80,12 +86,26 @@ class SketchField extends Component {
         this._onMouseOut = this._onMouseOut.bind(this);
         this._onMouseDown = this._onMouseDown.bind(this);
         this._onMouseMove = this._onMouseMove.bind(this);
-        this._onObjectAdded = this._onObjectAdded.bind(this);
-        this._onObjectMoving = this._onObjectMoving.bind(this);
+        this._onPathAdded = this._onPathAdded.bind(this);
+        this._onRectMoving = this._onRectMoving.bind(this);
         this._onObjectRemoved = this._onObjectRemoved.bind(this);
         this._onObjectScaling = this._onObjectScaling.bind(this);
         this._onObjectModified = this._onObjectModified.bind(this);
         this._onObjectRotating = this._onObjectRotating.bind(this);
+
+        this._freezeSubmittedAnnotations = this._freezeSubmittedAnnotations.bind(this);
+
+        // Link this canvas to this join code in the Redux store
+        this.props.storeJoinCode(props.joinCode);
+        // Get the canvas data that currently stored on the server in case we entered a session mid-way
+        // and there is data to sync with.
+        axios.get('http://localhost:3003/canvas/' + props.joinCode)
+            .then((response) => {
+                this.fromJSON(response.data);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     state = {
@@ -116,13 +136,13 @@ class SketchField extends Component {
         this._history = new History(undoSteps);
 
         // Events binding
-        canvas.on('path:created', this._onObjectAdded);
+        canvas.on('path:created', this._onPathAdded);
         canvas.on('object:modified', this._onObjectModified);
         canvas.on('object:removed', this._onObjectRemoved);
         canvas.on('mouse:down', this._onMouseDown);
         canvas.on('mouse:move', this._onMouseMove);
         canvas.on('mouse:up', this._onMouseUp);
-        canvas.on('object:moving', this._onObjectMoving);
+        canvas.on('object:moving', this._onRectMoving);
         canvas.on('object:scaling', this._onObjectScaling);
         canvas.on('object:rotating', this._onObjectRotating);
 
@@ -143,7 +163,7 @@ class SketchField extends Component {
     _initTools(fabricCanvas) {
         this._tools = {};
         this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
-        // this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
+        this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
     }
 
     componentWillUnmount() {
@@ -166,12 +186,45 @@ class SketchField extends Component {
 
         //Bring the cursor back to default if it is changed by a tool
         this._fc.defaultCursor = 'default';
-
-        this._selectedTool.configureCanvas(nextProps);
         if (this.props.backgroundColor !== nextProps.backgroundColor) {
             this._backgroundColor(nextProps.backgroundColor)
         }
 
+        // Load from canvas if it was updated by another client
+        if (this.props.joinCode === nextProps.updatedJoinCode && this.props.canvasJSON !== nextProps.canvasJSON) {
+            this.fromJSON(nextProps.canvasJSON);
+        }
+
+        // Annotation adding/removing/submitting logic from Comment form using the state design pattern
+        // [State: editing] If want to add and edit annotation rect, add a Rectangle to the canvas and store the Rect ID
+        // [State: submiting] If form submitted, freeze the current annotation being editted
+        // [State: removing] Remove the canvas Rectangle currently being editted
+        switch (nextProps.annotationState) {
+            case ANNOTATION_STATE.EDITING:
+                this._selectedTool.configureCanvas(nextProps);
+                let newAnnotation = this._selectedTool.addInstance();
+                this.props.storeAnnotation(newAnnotation);
+                this.props.setNeutralAnnotationState();
+                break;
+            case ANNOTATION_STATE.SUBMITING:
+                this._tools[Tool.Rectangle].freezeInstance(this.props.activeAnnotation);
+                this.props.setNeutralAnnotationState();
+                break;
+            case ANNOTATION_STATE.REMOVING:
+                this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotation);
+                this._selectedTool.configureCanvas(nextProps);
+                this.props.setNeutralAnnotationState();
+                break;
+            default:
+                break;
+        }
+    }
+
+    _freezeSubmittedAnnotations() {
+        let annotationIds = new Set();
+        for (let i = 0; i < this.props.comments.length; i++) {
+            this._tools[Tool.Rectangle].freezeInstance(this.props.comments[i].annotation._id)
+        }
     }
 
     /**
@@ -193,7 +246,7 @@ class SketchField extends Component {
         }
     }
 
-    _onObjectAdded(e) {
+    _onPathAdded(e) {
         if (!this.state.action) {
             this.setState({ action: true });
             return;
@@ -203,6 +256,8 @@ class SketchField extends Component {
         let state = JSON.stringify(obj);
         // object, previous state, current state
         this._history.keep([obj, state, state]);
+
+        this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
 
         if (this.props.onChange) {
             let onChange = this.props.onChange;
@@ -221,8 +276,12 @@ class SketchField extends Component {
         this._history.keep([obj, prevState, currState]);
     }
 
-    _onObjectMoving(e) {
+    _onRectMoving(e) {
+        if (e.target.type !== "rect") {
+            return;
+        }
 
+        this.props.storeAnnotation(e.target.toJSON());
     }
 
     _onObjectScaling(e) {
@@ -509,4 +568,28 @@ class SketchField extends Component {
     }
 }
 
-export default SketchField;
+const mapStateToProps = (state) => {
+    return {
+        activeAnnotation: state.annotationReducer.activeAnnotation,
+        annotationState: state.annotationReducer.annotationState,
+        canvasJSON: state.realtimeReducer.canvasJSON,
+        updatedJoinCode: state.realtimeReducer.joinCode,
+        comments: state.realtimeReducer.comments
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        storeAnnotation: annotation => dispatch(annotationActions.storeAnnotation(annotation)),
+        setNeutralAnnotationState: () => dispatch(annotationActions.setNeutralAnnotationState()),
+        storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
+        canvasUpdated: (canvasJSON, joinCode) => dispatch({
+            type: "socket/CANVAS_UPDATED", canvasJSON: {
+                data: canvasJSON,
+                joinCode: joinCode
+            }
+        })
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SketchField);

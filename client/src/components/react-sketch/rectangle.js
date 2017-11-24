@@ -1,5 +1,5 @@
 /*eslint no-unused-vars: 0*/
-import FabricCanvasTool from './fabrictool'
+import FabricCanvasTool from './fabrictool';
 const fabric = require('fabric').fabric;
 
 /**
@@ -17,58 +17,77 @@ class Rectangle extends FabricCanvasTool {
         let canvas = this._canvas;
         canvas.isDrawingMode = canvas.selection = false;
         canvas.forEachObject((o) => o.selectable = o.evented = false);
-        this._width = props.lineWidth;
-        this._color = props.lineColor;
-        this._fill = props.fillColor;
+        this._width = 3;
+        this._color = 'darkgrey';
+        this._fill = 'rgba(104, 204, 202, 0.3)';
     }
 
-    doMouseDown(o) {
-        let canvas = this._canvas;
-        this.isDown = true;
-        let pointer = canvas.getPointer(o.e);
-        this.startX = pointer.x;
-        this.startY = pointer.y;
+    addInstance(o) {
         this.rect = new fabric.Rect({
-            left: this.startX,
-            top: this.startY,
-            originX: 'left',
-            originY: 'top',
-            width: pointer.x - this.startX,
-            height: pointer.y - this.startY,
+            width: 300,
+            height: 200,
+            fill: this._fill,
             stroke: this._color,
             strokeWidth: this._width,
-            fill: this._fill,
-            //fill: 'rgba(255,0,0,0.5)',
-            transparentCorners: false,
-            selectable: false,
-            evented: false,
-            angle: 0
+            hasRotatingPoint: false,
+            hasControls: true,
+            hasBorders: true,
+            selectable: true,
+            evented: true
         });
-        canvas.add(this.rect);
+
+        this.rect.toObject = (function(toObject) {
+            return function() {
+              return fabric.util.object.extend(toObject.call(this), {
+                _id: this._id
+              });
+            };
+        })(this.rect.toObject);
+    
+        this.rect._id = this.randomID(); 
+
+        this._canvas.add(this.rect);
+
+        // Give all rectangles a z-index
+        this.rect.moveTo(1); 
+
+        return this.rect.toJSON();
     }
 
-    doMouseMove(o) {
-        if (!this.isDown) return;
-        let canvas = this._canvas;
-        let pointer = canvas.getPointer(o.e);
-        if (this.startX > pointer.x) {
-            this.rect.set({left: Math.abs(pointer.x)});
+    removeInstance(annotation) {
+        if (!annotation) {
+            return false;
         }
-        if (this.startY > pointer.y) {
-            this.rect.set({top: Math.abs(pointer.y)});
+
+        let target = this._findInstance(annotation._id);
+        if (target != null) {
+            this._canvas.remove(target);
+            return true;
         }
-        this.rect.set({width: Math.abs(this.startX - pointer.x)});
-        this.rect.set({height: Math.abs(this.startY - pointer.y)});
-        this.rect.setCoords();
-        canvas.renderAll();
+    
+        return false;
+    };
+
+    freezeInstance(rect) {
+        let target = this._findInstance(rect._id);
+        if (target != null) {
+            target.evented = false;
+            target.selectable = false;
+            target.hasControls = false;
+        }   
     }
 
-    /**
-     * Tells the canvas to stop drawing
-     * @param {*} o 
-     */
-    doMouseUp(o) {
-        this.isDown = false;
+    _findInstance(id) {
+        let objects = this._canvas.getObjects();
+        let target = null;
+        for (let i = 0; i < objects.length; i++) {
+            let shape = objects[i];
+            if (shape._id === id) {
+                return shape;
+            }
+        }
+
+        return null;
     }
 }
 
