@@ -4,7 +4,17 @@ import { connect } from 'react-redux';
 import CommentReplyList from './CommentReplyList';
 import * as realtimeActions from '../../actions/realtime';
 
+/**
+ * Comments component
+ * @class
+ * @augments Component
+ */
 class Comment extends Component {
+    /**
+     * Creates a new Comment object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -20,6 +30,10 @@ class Comment extends Component {
         this.props.resolveComment(this.props.id);
     }
 
+    /**
+     * Renders the comment with its reply list
+     * @function
+     */
     render() {
         if (this.props.resolved) {
             return (null);

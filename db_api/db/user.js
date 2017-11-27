@@ -1,5 +1,6 @@
 /**
- * @module Mongoose Model for user
+ * Mongoose Model for user
+ * @module userDB
  */
 
 module.exports = (function () {

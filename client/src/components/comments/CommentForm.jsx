@@ -5,7 +5,17 @@ import axios from 'axios';
 import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
 
+/**
+ * CommentFrom Component to write and submit a comment
+ * @class
+ * @augments Component
+ */
 class CommentForm extends Component {
+    /**
+     * Creates a new CommentForm component
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -13,6 +23,10 @@ class CommentForm extends Component {
         this.annotationCheckboxToggled = this.annotationCheckboxToggled.bind(this);
     }
 
+    /**
+     * Handles comment submission
+     * @param {*} event 
+     */
     submitHandler(event) {
         event.preventDefault();
 
@@ -51,6 +65,10 @@ class CommentForm extends Component {
             });
     }
 
+    /**
+     * Renders the comment form
+     * @function
+     */
     render() {
         return (
             <li className="CommentForm">

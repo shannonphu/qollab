@@ -1,7 +1,13 @@
 /**
  * Maintains the history of an object
+ * @class
  */
 class History {
+    /**
+     * @constructor
+     * @param {int} undoLimit 
+     * @param {boolean} debug 
+     */
     constructor(undoLimit = 10, debug = false) {
         this.undoLimit = undoLimit;
         this.undoList = [];
@@ -33,7 +39,7 @@ class History {
      *
      * This method will set the object as current value and will push the previous "current" object to the undo history
      *
-     * @param obj
+     * @param {Object} obj
      */
     keep(obj) {
         try {

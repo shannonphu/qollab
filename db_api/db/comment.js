@@ -1,3 +1,7 @@
+/**
+ * Module for comment mongo DB object
+ * @module commentDB
+ */
 module.exports = (function() {
     let mongoose = require('mongoose');
 
@@ -18,16 +22,15 @@ module.exports = (function() {
         return comment;
     }
 
-    /*
-    * Functionality:
-    *   - inserts a new Comment object into our database
-    * Usage:
-    *   Comment.insert("comment_text", annotationJSON, (newComment) => {
-    *       console.log(newComment);
-    *   });
-    * Returns:
-    *   - the actual Comment mongoDB object
-    */
+    /**
+     * @summary inserts a new Comment object into our database and returns the actual comment mongo DB object
+     * @param {String} text - The text of comment
+     * @memberof module:commentDB
+     * @example
+     *   Comment.insert("comment_text", (newComment) => {
+     *       console.log(newComment);
+     *   });
+     */
     commentSchema.statics.insert = function(text, annotation, callback) {
         let comment = commentSchema.create(text, annotation);
         comment.save(function (err, data) {
@@ -43,6 +46,13 @@ module.exports = (function() {
         });
     }
 
+    /**
+     * @summary pushes a reply text to the reply list of the comment
+     * @param {String} text - The text of reply
+     * @memberof module:commentDB
+     * @example
+     *   someCommentObj.addreply();
+     */
     commentSchema.methods.addReply = function(text) {
         if(this.resolved) {
             return;
@@ -50,13 +60,11 @@ module.exports = (function() {
         this.replies.push(text);
     }
 
-    /*
-    * Functionality:
-    *   - increments a particular comment's vote count
-    * Usage:
-    *   someCommentObj.upvote();
-    * Returns:
-    *   - nothing
+    /**
+     * @summary increments a particular comment's vote count
+     * @memberof module:commentDB
+     * @example
+     *   someCommentObj.upvote();
     */
     commentSchema.methods.upvote = function() {
         if(this.resolved) {
@@ -65,6 +73,12 @@ module.exports = (function() {
         this.votes++;
     }
 
+    /**
+     * @summary mark a comment/question as resolved
+     * @memberof module:commentDB
+     * @example
+     *      somecommentObj.resolve();
+     */
     commentSchema.methods.resolve = function() {
         this.resolved = true
     }

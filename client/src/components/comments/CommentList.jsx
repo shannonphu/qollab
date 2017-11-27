@@ -6,7 +6,17 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import * as realtimeActions from '../../actions/realtime';
 
+/**
+ * CommentList Component, the list of all comments
+ * @class
+ * @augments Component
+ */
 class CommentList extends Component {
+    /**
+     * Creates a new CommentList Object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
 
@@ -20,6 +30,10 @@ class CommentList extends Component {
             });
     }
 
+    /**
+     * Renders the list of comments
+     * @function
+     */
     render() {
         return (
             <div className="CommentList">
@@ -43,7 +57,10 @@ class CommentList extends Component {
     }
 }
 
-//get redux source's state and map it to component props
+/**
+ * get redux source's state and map it to component props
+ * @param {*} state 
+ */
 function mapStateToProps(state) {
     return {
         comments: state.realtimeReducer.comments

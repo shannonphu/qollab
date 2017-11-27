@@ -3,8 +3,17 @@ import { connect } from 'react-redux';
 
 import CommentReply from './CommentReply';
 import * as realtimeActions from '../../actions/realtime';
-
+/**
+ * CommentReplyList components, including a list of replies for a certain comment
+ * @class
+ * @augments Component
+ */
 class CommentReplyList extends Component {
+    /**
+     * Create a new CommentReplyList object
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -24,6 +33,10 @@ class CommentReplyList extends Component {
         this.setState({value: event.target.value});
     }
 
+    /**
+     * Renders the comment reply list
+     * @function
+     */
     render() {
         return (
             <div className="CommentReplyList collapsible-body">

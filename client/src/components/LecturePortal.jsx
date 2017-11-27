@@ -6,7 +6,17 @@ import ToolSet from './ToolSet';
 
 require('./styles/lecture.css');
 
+/**
+ * LecturePortal component, including the Canvas and the comment list.
+ * @class
+ * @extends Component
+ */
 class LecturePortal extends Component {
+	/**
+	 * Creates a new LecturePortal
+	 * @constructor
+	 * @param {PropTypes.Object} props 
+	 */
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -14,6 +24,10 @@ class LecturePortal extends Component {
 		}
 	}
 
+	/**
+	 * Renders the lecture portal
+	 * @function
+	 */
 	render() {
 		return (
 			<div className='LecturePortal row'>

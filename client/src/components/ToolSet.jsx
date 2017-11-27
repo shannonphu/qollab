@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 
+/**
+ * Toolset component including deleting or editing on Canvas.
+ * @class
+ * @augments Component
+ */
 class ToolSet extends Component {
 
+    /**
+     * Creates a new ToolSet object
+     * @constructor
+     * @param {Object} props 
+     */
   constructor(props) {
     super(props);
     this.state = {};
   }
 
+  /**
+   * Renders the ToolSet
+   * @function
+   */
   render() {
     return (
         <div className="ToolSet fixed-action-btn">

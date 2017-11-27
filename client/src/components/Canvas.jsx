@@ -4,7 +4,16 @@ import Tools from './react-sketch/tools';
 import { connect } from 'react-redux';
 import { ANNOTATION_STATE } from '../reducers/annotation';
 
+/**
+ * Canvas component, which acts like the blackboard of the classroom.
+ * @class
+ * @augments Component
+ */
 class Canvas extends Component {
+    /**
+     * @constructor
+     * @param {PropTypes.Object} props 
+     */
     constructor(props) {
         super(props);
 
@@ -13,6 +22,10 @@ class Canvas extends Component {
         this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
     }
 
+    /**
+     * state of the canvas, defining sizes, colors, drawing tools, etc.
+     * @var
+     */
     state = {
         // Canvas Styles
         pencilLineColor: 'black',
@@ -25,18 +38,31 @@ class Canvas extends Component {
         sketchHeight: 600,
     };
 
+    /**
+     * Download the current Canvas
+     */
     _download() {
         /*eslint-disable no-console*/
         console.save(JSON.stringify(this._canvas.toJSON()), 'canvas.json');
         /*eslint-enable no-console*/
     }
 
+    /**
+     * Responds to sketch change and update the change through socket
+     */
     _onSketchChange() {
     }
 
+    /**
+     * Updates the canvas according to given JSON
+     * @param {*} canvasJSON 
+     */
     _setCanvasFromJSON(canvasJSON) {
     }
 
+    /**
+     * Renders the canvas
+     */
     render() {
         return (
             <SketchField
