@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
+import * as commentsActions from '../../actions/comments';
 
 class CommentForm extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class CommentForm extends Component {
         };
         this.props.addCommentToList(newComment);
         this.props.syncNewComment(newComment, this.props.lectureCode);
-        this.props.onSubmitComment();
+        this.props.setCommentFormShown(false);
 
         // Clear textbox and checkbox
         this.refs.text.value = null;
@@ -40,31 +41,36 @@ class CommentForm extends Component {
     }
 
     render() {
-        return (
-            <li className="CommentForm">
-                <div className={this.props.className}>
-                    <form onSubmit={this.submitHandler} style={{ "width": "100%" }}>
-                        <div className="row">
-                            <input type="checkbox" className="filled-in" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
-                            <label htmlFor="annotationWanted">Add Annotation</label>
-                        </div>
-                        <div className="row input-field">
-                            <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea"/>
-                            <label htmlFor="add_comment">Write a comment...</label>
-                        </div>
-                        <div className="row">
-                            <button className="btn-small btn waves-effect waves-light" type="submit" name="action">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </li>
-        );
+        if (!this.props.commentFormShown) {
+            return(null);
+        } else {
+            return (
+                <li className="CommentForm">
+                    <div className={this.props.className}>
+                        <form onSubmit={this.submitHandler} style={{ "width": "100%" }}>
+                            <div className="row">
+                                <input type="checkbox" className="filled-in" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
+                                <label htmlFor="annotationWanted">Add Annotation</label>
+                            </div>
+                            <div className="row input-field">
+                                <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea"/>
+                                <label htmlFor="add_comment">Write a comment...</label>
+                            </div>
+                            <div className="row">
+                                <button className="btn-small btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            );
+        }
     }
 }
 
 function mapStateToProps(state) {
     return {
-        activeAnnotationId: state.annotationReducer.activeAnnotationId
+        activeAnnotationId: state.annotationReducer.activeAnnotationId,
+        commentFormShown: state.commentsReducer.commentFormShown
     }
 }
 
@@ -74,6 +80,7 @@ const mapDispatchToProps = (dispatch) => {
         removeAnnotation: annotationId => dispatch(annotationActions.removeAnnotation(annotationId)),
         storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
+        setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({
             type: "socket/COMMENT_ADDED",
             data: {
