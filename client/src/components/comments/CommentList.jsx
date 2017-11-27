@@ -31,6 +31,7 @@ class CommentList extends Component {
                             key={comment._id}
                             id={comment._id}
                             className="collapsible-header z-depth-3"
+                            lectureCode={this.props.joinCode}
                             text={comment.text}
                             replies={comment.replies}
                             votes={comment.votes}
