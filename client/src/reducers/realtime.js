@@ -33,7 +33,7 @@ var RealtimeReducer = (state = {
                 ...state,
                 comments: [
                     ...state.comments,
-                    Object.assign({}, action.comment)
+                    action.comment
                 ]
             };
         case 'SYNC_NEW_COMMENT':
@@ -47,48 +47,54 @@ var RealtimeReducer = (state = {
                 ...state,
                 comments: [
                     ...state.comments,
-                    Object.assign({}, action.comment)
+                    action.comment
                 ]
             };
         case 'UPVOTE_COMMENT':
-			return {
-				...state,
-				comments: state.comments.map((comment, index) => {
-					if (index === action.id)
-						return {
-							...comment,
-							votes: comment.votes + 1
-						};
-					else
-						return comment;
-				})
+            return {
+                ...state,
+                comments: state.comments.map((comment) => {
+                    if (comment._id === action.id) {
+                        return {
+                            ...comment,
+                            votes: comment.votes + 1
+                        };
+                    }
+                    else {
+                        return comment;
+                    }
+                })
             };
         case 'RESOLVE_COMMENT':
             return {
                 ...state,
-                comments: state.comments.map((comment, index) => {
-                    if (index === action.id)
+                comments: state.comments.map((comment) => {
+                    if (comment._id === action.id) {
                         return {
                             ...comment,
                             resolved: true
                         };
-                    else
-                        return comment
+                    }
+                    else {
+                        return comment;
+                    }
                 })
             }
         case 'REPLY_COMMENT':
             return {
                 ...state,
-                comments: state.comments.map((comment, index) => {
-                    if (index === action.id)
+                comments: state.comments.map((comment) => {
+                    if (comment._id === action.id) {
                         return {
                             ...comment,
                             replies: [
                                 ...comment.replies, action.reply
                             ]
                         };
-                    else
-                        return comment
+                    }
+                    else {
+                        return comment;
+                    }
                 })
             }
         default:
