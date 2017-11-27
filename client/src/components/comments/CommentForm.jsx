@@ -50,7 +50,7 @@ class CommentForm extends Component {
                         </div>
                         <div className="row input-field">
                             <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea"/>
-                            <label for="add_comment">Write a comment...</label>
+                            <label htmlFor="add_comment">Write a comment...</label>
                         </div>
                         <div className="row">
                             <button className="btn-small btn waves-effect waves-light" type="submit" name="action">Submit</button>

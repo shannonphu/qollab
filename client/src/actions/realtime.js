@@ -47,10 +47,3 @@ export const replyComment = (id, reply) => {
         reply: reply
     }
 }
-
-export const toggleShowResolvedComments = () => {
-    console.log("aevcaev");
-    return {
-        type: 'TOGGLE_SHOW_RESOLVED_COMMENTS'
-    }
-}

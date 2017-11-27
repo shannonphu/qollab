@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as realtimeActions from '../../actions/realtime';
+import * as commentsActions from '../../actions/comments';
 
 class ShowResolvedCommentsToggle extends Component {
     render() {
@@ -14,13 +14,13 @@ class ShowResolvedCommentsToggle extends Component {
 
 function mapStateToProps(state) {
     return {
-        showResolvedCommentsToggled: state.realtimeReducer.showResolvedCommentsToggled
+        showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        toggleShowResolvedComments: () => dispatch(realtimeActions.toggleShowResolvedComments())
+        toggleShowResolvedComments: () => dispatch(commentsActions.toggleShowResolvedComments())
     }
 };
 
