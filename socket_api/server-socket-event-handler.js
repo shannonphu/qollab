@@ -16,6 +16,9 @@ module.exports = function (server, canvasHistory) {
                         let json = action.canvasJSON;
                         let joinCode = json['joinCode'];
                         let canvasData = json['data'];
+                        if (!(joinCode in canvasHistory)) {
+                            canvasHistory[joinCode] = {}
+                        }
                         canvasHistory[joinCode]["canvas"] = canvasData;
                         socket.broadcast.emit('action', {
                             type: 'LOAD_CANVAS_FROM_JSON',
