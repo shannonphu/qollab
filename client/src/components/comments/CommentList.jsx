@@ -29,8 +29,8 @@ class CommentList extends Component {
                     <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} />
                     {this.props.comments.map((comment, index) => (
                         <Comment
-                            key={index.toString()}
-                            id={index}
+                            key={comment._id}
+                            id={comment._id}
                             className="collapsible-header z-depth-3"
                             text={comment.text}
                             replies={comment.replies}

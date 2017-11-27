@@ -4,16 +4,29 @@ export const addAnnotation = () => {
     }
 };
 
-export const storeAnnotationId = (annotationId) => {
+export const storeAnnotation = (annotation) => {
     return {
-        type: 'STORE_ANNOTATION_ID',
-        annotationId: annotationId
+        type: 'STORE_ANNOTATION',
+        annotation: annotation
     }
 };
 
-export const removeAnnotation = (annotationId) => {
+export const submitAnnotation = (annotation) => {
+    return {
+        type: 'SUBMITTED_ANNOTATION',
+        annotation: annotation
+    }
+};
+
+export const removeAnnotation = (annotation) => {
     return {
         type: 'REMOVE_ANNOTATION',
-        annotationId: annotationId
+        annotation: annotation
+    }
+};
+
+export const setNeutralAnnotationState = () => {
+    return {
+        type: 'SET_NEUTRAL_ANNOTATION_STATE'
     }
 };

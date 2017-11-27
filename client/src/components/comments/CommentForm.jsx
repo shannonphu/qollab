@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
@@ -16,14 +17,10 @@ class CommentForm extends Component {
     submitHandler(event) {
         event.preventDefault();
 
-        let newComment = {
-            text: this.refs.text.value,
-            replies: [],
-            votes: 0,
-            resolved: false,
-        };
-        this.props.addCommentToList(newComment);
-        this.props.syncNewComment(newComment, this.props.lectureCode);
+        let newCommentText = this.refs.text.value;
+        let commentAnnotation = this.props.activeAnnotation;
+        this.store(newCommentText, commentAnnotation);
+
         this.props.setCommentFormShown(false);
 
         // Clear textbox and checkbox
@@ -36,8 +33,25 @@ class CommentForm extends Component {
             this.props.addAnnotation();
         } else {
             // SketchField.jsx handles storing the new annotation ID
-            this.props.removeAnnotation(this.props.activeAnnotationId);
+            this.props.removeAnnotation(this.props.activeAnnotation);
         }
+    }
+
+    store(commentText, commentAnnotation) {
+        axios.post('http://localhost:3005/comment/create', {
+            joinCode: this.props.lectureCode,
+            text: commentText,
+            annotation: commentAnnotation
+        })
+            .then((response) => {
+                let newComment = response.data;
+                this.props.addCommentToList(newComment);
+                this.props.syncNewComment(newComment, this.props.lectureCode);
+                this.props.submitAnnotation(commentAnnotation);                
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     render() {
@@ -69,7 +83,7 @@ class CommentForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        activeAnnotationId: state.annotationReducer.activeAnnotationId,
+        activeAnnotation: state.annotationReducer.activeAnnotation,
         commentFormShown: state.commentsReducer.commentFormShown
     }
 }
@@ -77,8 +91,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         addAnnotation: () => dispatch(annotationActions.addAnnotation()),
-        removeAnnotation: annotationId => dispatch(annotationActions.removeAnnotation(annotationId)),
-        storeAnnotationId: annotationId => dispatch(annotationActions.storeAnnotationId(annotationId)),
+        submitAnnotation: annotation => dispatch(annotationActions.submitAnnotation(annotation)),
+        removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({

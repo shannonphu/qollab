@@ -10,7 +10,6 @@ app.use(bodyParser.json());
 
 // Connect to databse and declare database Models
 const db = require('./db/db.js');
-const Comment = require('./db/comment.js');
 const Lecture = require('./db/lecture.js');
 const User = require('./db/user.js');
 // Creates seed data to populate database
@@ -26,7 +25,7 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 
-    if ('OPTIONS' == req.method) res.send(200);
+    if ('OPTIONS' == req.method) res.sendStatus(200);
     else next();
 });
 
@@ -40,6 +39,13 @@ app.get('/lecture/:joinCode', (req, res) => {
 app.post('/create', (req, res) => {
 	Lecture.insert(req.body.lectureName, req.body.instructorId, (lecture) => {
 		res.json(lecture);		
+	});
+});
+
+// Store new comment inside a lecture
+app.post('/comment/create', (req, res) => {	
+	Lecture.addComment(req.body.joinCode, req.body.text, JSON.stringify(req.body.annotation), (comment) => {
+		res.send(comment);
 	});
 });
 
