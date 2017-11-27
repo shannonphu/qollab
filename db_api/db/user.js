@@ -7,16 +7,16 @@ module.exports = (function () {
 
     var userSchema = new mongoose.Schema();
 
-    /*
-    * Functionality:
-    *   - inserts a new User object into our database
-    * Usage:
-    *   User.insert((newUser) => {
-    *       console.log(newUser);
-    *   });
-    * Returns:
-    *   - the actual User mongoDB model
-    */
+    /**
+     * @summary inserts a new User object into our database
+     * @param {function} callback to execute after inserting user into database
+     * @returns {Object} The atual user mongoDB object
+     * @memberof module:userDB
+     * @example
+     * User.insert((newUser) => {
+     *      console.log(newUser);
+     * });
+     */
     userSchema.statics.insert = function (callback) {
         let user = new User();
         user.save(function (err, data) {
