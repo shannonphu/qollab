@@ -85,6 +85,10 @@ var RealtimeReducer = (state = {
                 })
             }
         case 'REPLY_COMMENT':
+            if (action.lectureCode !== state.lectureCode) {
+                return state;
+            }
+
             return {
                 ...state,
                 comments: state.comments.map((comment) => {

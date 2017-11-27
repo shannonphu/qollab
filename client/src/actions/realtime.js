@@ -41,10 +41,11 @@ export const resolveComment = (id) => {
     }
 };
 
-export const replyComment = (id, reply) => {
+export const replyComment = (id, lectureCode, reply) => {
     return {
         type: "REPLY_COMMENT",
         id: id,
+        lectureCode: lectureCode,
         reply: reply
     }
 }

@@ -52,7 +52,7 @@ class Comment extends Component {
                         </ul>
                     </div>
 
-                    <CommentReplyList replies={this.props.replies} commentId={this.props.id} />
+                    <CommentReplyList replies={this.props.replies} commentId={this.props.id} lectureCode={this.props.lectureCode} />
                 </li>
             );
         }

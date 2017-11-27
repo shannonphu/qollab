@@ -60,6 +60,29 @@ module.exports = function (server, canvasHistory) {
                         });
                     }
                     break;
+                case 'socket/COMMENT_REPLY_ADDED':
+                    {
+                        let json = action.data;
+                        let lectureCode = json['lectureCode'];
+                        let commentID = json['commentID'];
+                        let replyText = json['reply'];
+
+                        let comments = canvasHistory[lectureCode]["comments"];
+                        for (let i = 0; i < comments.length; i++) {
+                            if (comments[i].id === commentID) {
+                                comments[i].replies.push(replyText);
+                                break;
+                            }
+                        }
+
+                        socket.broadcast.emit('action', {
+                            type: 'REPLY_COMMENT',
+                            id: commentID,
+                            lectureCode: lectureCode,
+                            reply: replyText
+                        });
+                    }
+                    break;
                 default:
                     break;
             }
