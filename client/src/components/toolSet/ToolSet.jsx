@@ -16,9 +16,7 @@ class ToolSet extends Component {
             </a>
             <ul>
                 <li><ShowResolvedCommentToggle/></li>
-                <li><a className="btn-floating orange"><i className="material-icons">lock_open</i></a></li>
-                <li><a className="btn-floating red"><i className="material-icons">delete</i></a></li>
-                <li><a className="btn-floating green"><i className="material-icons">edit</i></a></li>
+                {/* TODO: Add more functionality to the toolset. If there is only one funcionality, replace the toolset button. */}
             </ul>
         </div>
     );
