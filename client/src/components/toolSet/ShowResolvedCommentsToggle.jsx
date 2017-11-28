@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTooltip from 'react-tooltip'
+import { findDOMNode } from 'react-dom';
+import $ from 'jquery'; 
 
 import * as commentsActions from '../../actions/comments';
 
@@ -11,6 +13,10 @@ class ShowResolvedCommentsToggle extends Component {
         this.getTooltipContent = this.getTooltipContent.bind(this);
     }
 
+    componentDidMount() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+    }
+
     getTooltipContent() {
         return (this.props.showResolvedCommentsToggled) ? "Hide Resolved Comments" : "Show Resolved Comments";
     }
@@ -18,7 +24,7 @@ class ShowResolvedCommentsToggle extends Component {
     render() {
         const icon = this.props.showResolvedCommentsToggled ? <i className="material-icons">visibility_off</i> : <i className="material-icons">visibility</i>;
         return(
-            <div className="ShowResolvedCommentsToggle">
+            <div ref="disableTextSelect" className="ShowResolvedCommentsToggle">
                 <a data-tip data-for="ShowResolvedCommentsToggleTooltip" onClick={this.props.toggleShowResolvedComments} className="btn-floating yellow">
                     {icon}
                 </a>

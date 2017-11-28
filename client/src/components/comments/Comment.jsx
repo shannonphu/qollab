@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
+import $ from 'jquery'; 
 
 import CommentReplyList from './CommentReplyList';
 import * as realtimeActions from '../../actions/realtime';
@@ -12,6 +14,14 @@ class Comment extends Component {
         this.resolveHandler = this.resolveHandler.bind(this);
     }
 
+    componentDidMount() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+    }
+
+    componentDidUpdate() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);        
+    }
+    
     upVoteHandler() {
         this.props.upVoteComment(this.props.id);
     }
@@ -39,7 +49,7 @@ class Comment extends Component {
                                 <i className="material-icons">chat_bubble</i>
                                 <span>{this.props.text}</span>
                             </li>
-                            <li>
+                            <li ref="disableTextSelect">
                                 <div className="left">
                                     <a onMouseDown={this.upVoteHandler} >
                                         <i className="material-icons not-collapse">thumb_up</i>
