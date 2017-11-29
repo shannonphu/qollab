@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
+import $ from 'jquery'; 
 
 import CommentReplyList from './CommentReplyList';
 import * as realtimeActions from '../../actions/realtime';
@@ -12,6 +14,14 @@ class Comment extends Component {
         this.resolveHandler = this.resolveHandler.bind(this);
     }
 
+    componentDidMount() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+    }
+
+    componentDidUpdate() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);        
+    }
+    
     upVoteHandler() {
         // Increases vote count for this client's comment UI
         this.props.upVoteComment(this.props.id, this.props.lectureCode);
@@ -25,18 +35,25 @@ class Comment extends Component {
     }
 
     render() {
-        if (this.props.resolved) {
+        if (this.props.resolved && !this.props.showResolvedCommentsToggled) {
             return (null);
         } else {
+
+            const resolveButton = this.props.resolved ? <span>RESOLVED</span> : (
+                <a onMouseDown={this.resolveHandler} >
+                    <i className="material-icons not-collapse">check</i>
+                </a>
+            );
+
             return (
                 <li className="Comment">
                     <div className={this.props.className}>
-                        <ul>
+                        <ul style={{ "width": "100%" }}>
                             <li>
                                 <i className="material-icons">chat_bubble</i>
                                 <span>{this.props.text}</span>
                             </li>
-                            <li>
+                            <li ref="disableTextSelect">
                                 <div className="left">
                                     <a onMouseDown={this.upVoteHandler} >
                                         <i className="material-icons not-collapse">thumb_up</i>
@@ -44,9 +61,7 @@ class Comment extends Component {
                                     <strong>{this.props.votes}</strong>
                                 </div>
                                 <div className="right">
-                                    <a onMouseDown={this.resolveHandler} >
-                                        <i className="material-icons not-collapse">check</i>
-                                    </a>
+                                    {resolveButton}
                                 </div>
                             </li>
                         </ul>
@@ -56,6 +71,12 @@ class Comment extends Component {
                 </li>
             );
         }
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled
     }
 }
 
@@ -73,4 +94,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

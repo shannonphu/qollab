@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Canvas from './Canvas';
 import CommentList from './comments/CommentList';
-import ToolSet from './ToolSet';
+import ToolSet from './toolSet/ToolSet';
 
 require('./styles/lecture.css');
 

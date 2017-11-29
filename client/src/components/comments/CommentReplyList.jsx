@@ -8,21 +8,21 @@ class CommentReplyList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: ""
+            reply: ""
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmitReply = this.handleSubmitReply.bind(this);
+        this.handleReplyValueChange = this.handleReplyValueChange.bind(this);
     }
 
-    handleSubmit(event) {
+    handleSubmitReply(event) {
         event.preventDefault();
-        this.props.replyComment(this.props.commentId, this.props.lectureCode, this.state.value);
-        this.props.syncReplyComment(this.props.commentId, this.props.lectureCode, this.state.value);
-        this.setState({ value: "" });
+        this.props.replyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
+        this.props.syncReplyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
+        this.setState({ reply: "" });
     }
 
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    handleReplyValueChange(event) {
+        this.setState({reply: event.target.value});
     }
 
     render() {
@@ -38,10 +38,10 @@ class CommentReplyList extends Component {
                     </tbody>
                 </table>
 
-                <form className="row" onSubmit={this.handleSubmit}>
+                <form className="row" onSubmit={this.handleSubmitReply}>
                     <div className="input-field">
-                        <input id="comment" type="tel" className="validate" value={this.state.value} onChange={this.handleChange} />
-                        <label htmlFor="comment">Comment</label>
+                        <input id="reply" type="tel" className="validate" autoComplete="off" value={this.state.reply} onChange={this.handleReplyValueChange} />
+                        <label htmlFor="reply">Write a reply...</label>
                     </div>
                     <button className="btn-small btn waves-effect waves-light" type="submit" name="action">
                         Submit<i className="material-icons right">send</i>

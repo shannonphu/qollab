@@ -4,12 +4,13 @@ import axios from 'axios';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
+import AddCommentToggle from './AddCommentToggle';
 import * as realtimeActions from '../../actions/realtime';
 
 class CommentList extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
+        this.state = {};
         // Query for current comments based on lecture code when initially joining
         axios.get('http://localhost:3003/comments/' + this.props.joinCode)
             .then((response) => {
@@ -23,9 +24,9 @@ class CommentList extends Component {
     render() {
         return (
             <div className="CommentList">
+                <AddCommentToggle />
                 <ul className="collapsible popout" data-collapsible="accordion">
                     <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} />
-
                     {this.props.comments.map((comment, index) => (
                         <Comment
                             key={comment._id}
