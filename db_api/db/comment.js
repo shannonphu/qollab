@@ -38,8 +38,6 @@ module.exports = (function () {
             if (callback) {
                 callback(comment);
             }
-
-            return;
         });
     }
 
