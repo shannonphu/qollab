@@ -1,8 +1,7 @@
 var RealtimeReducer = (state = {
     comments: [],
     lectureCode: null,
-    canvasJSON: null,
-    showResolvedCommentsToggled: false
+    canvasJSON: null
 }, action) => {
     switch (action.type) {
         case 'STORE_JOIN_CODE':
@@ -97,11 +96,6 @@ var RealtimeReducer = (state = {
                         return comment;
                     }
                 })
-            }
-        case 'TOGGLE_SHOW_RESOLVED_COMMENTS':
-            return {
-                ...state,
-                showResolvedCommentsToggled: !state.showResolvedCommentsToggled
             }
         default:
             return state;

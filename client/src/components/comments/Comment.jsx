@@ -72,7 +72,7 @@ class Comment extends Component {
 
 function mapStateToProps(state) {
     return {
-        showResolvedCommentsToggled: state.realtimeReducer.showResolvedCommentsToggled
+        showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled
     }
 }
 
