@@ -14,9 +14,6 @@ const Lecture = require('./db/lecture.js');
 // Creates seed data to populate database
 const seedData = require('./db/seed.js');
 
-app.set('view engine', 'hbs');
-app.use(express.static('public'));
-
 // CORS setting with OPTIONS pre-flight handling
 // * Fixes the No 'Access-Control-Allow-Origin' header is present on the requested resource error
 app.use(function(req, res, next) {
