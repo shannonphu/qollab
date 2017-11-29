@@ -26,10 +26,11 @@ export const canvasUpdated = (canvasJSON) => {
     }
 };
 
-export const upVoteComment = (id) => {
+export const upVoteComment = (id, lectureCode) => {
 	return {
 		type: 'UPVOTE_COMMENT',
-		id: id
+        id: id,
+        joinCode: lectureCode
 	}
 };
 
@@ -40,10 +41,11 @@ export const resolveComment = (id) => {
     }
 };
 
-export const replyComment = (id, reply) => {
+export const replyComment = (id, lectureCode, reply) => {
     return {
         type: "REPLY_COMMENT",
         id: id,
+        lectureCode: lectureCode,
         reply: reply
     }
 }

@@ -23,7 +23,11 @@ class Comment extends Component {
     }
     
     upVoteHandler() {
-        this.props.upVoteComment(this.props.id);
+        // Increases vote count for this client's comment UI
+        this.props.upVoteComment(this.props.id, this.props.lectureCode);
+
+        // Sends event to socket server to sync across all clients
+        this.props.syncUpvote(this.props.id, this.props.lectureCode);
     }
 
     resolveHandler() {
@@ -63,7 +67,7 @@ class Comment extends Component {
                         </ul>
                     </div>
 
-                    <CommentReplyList replies={this.props.replies} commentId={this.props.id} />
+                    <CommentReplyList replies={this.props.replies} commentId={this.props.id} lectureCode={this.props.lectureCode} />
                 </li>
             );
         }
@@ -78,8 +82,15 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        upVoteComment: id => dispatch(realtimeActions.upVoteComment(id)),
-        resolveComment: id => dispatch(realtimeActions.resolveComment(id))
+        upVoteComment: (commentID, joinCode) => dispatch(realtimeActions.upVoteComment(commentID, joinCode)),
+        resolveComment: id => dispatch(realtimeActions.resolveComment(id)),
+        syncUpvote: (commentID, joinCode) => dispatch({
+            type: "socket/COMMENT_UPVOTED",
+            data: {
+                commentID: commentID,
+                joinCode: joinCode
+            }
+        })
     }
 };
 

@@ -16,8 +16,9 @@ class CommentReplyList extends Component {
 
     handleSubmitReply(event) {
         event.preventDefault();
-        this.props.replyComment(this.props.commentId, this.state.reply);
-        this.setState({reply: ""});
+        this.props.replyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
+        this.props.syncReplyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
+        this.setState({ reply: "" });
     }
 
     handleReplyValueChange(event) {
@@ -53,7 +54,15 @@ class CommentReplyList extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        replyComment: (id, reply) => dispatch(realtimeActions.replyComment(id, reply))
+        replyComment: (id, lectureCode, reply) => dispatch(realtimeActions.replyComment(id, lectureCode, reply)),
+        syncReplyComment: (commentID, lectureCode, reply) => dispatch({
+            type: "socket/COMMENT_REPLY_ADDED",
+            data: {
+                commentID: commentID,
+                lectureCode: lectureCode,
+                reply: reply
+            }
+        })
     }
 };
 

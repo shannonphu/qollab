@@ -1,13 +1,19 @@
 const Lecture = require('./lecture.js');
-const mongoose = require('mongoose');
+const User = require('./user.js');
 
-// Seed data for mock lectures
-Lecture.insert("Lecture 1", mongoose.Types.ObjectId(), (newLecture) => {
-	console.log("Inserted new lecture with code " + newLecture.joinCode);
-	console.log('Instructor Id is ' + newLecture.instructor);
-});
+// Seed data for mock users and lectures
+User.insert((instructor_1) => {
+	Lecture.insert("COM SCI 130", instructor_1.id, (newLecture) => {
+		console.log("Inserted new lecture with code " + newLecture.joinCode);
+		console.log('Instructor Id is ' + newLecture.instructor);
 
-Lecture.insert("Lecture 2", mongoose.Types.ObjectId(), (newLecture) => {
-	console.log("Inserted new lecture with code " + newLecture.joinCode);
-	console.log('Instructor Id is ' + newLecture.instructor);
+		instructor_1.addLecture(newLecture);
+	});
+
+	Lecture.insert("COM SCI 181", instructor_1.id, (newLecture) => {
+		console.log("Inserted new lecture with code " + newLecture.joinCode);
+		console.log('Instructor Id is ' + newLecture.instructor);
+
+		instructor_1.addLecture(newLecture);
+	});
 });
