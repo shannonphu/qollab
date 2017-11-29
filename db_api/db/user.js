@@ -43,9 +43,9 @@ module.exports = (function () {
      * 
      * });
      */
-    userSchema.methods.addLecture = function (lecture, callback) {
+    userSchema.statics.addLecture = function (id, lecture, callback) {
         User.findOneAndUpdate(
-            { _id : this._id },
+            { "_id" : id },
             { $push: { "lectures": lecture._id } },
             { safe: true, upsert: true, new: true },
             function (err, user) {

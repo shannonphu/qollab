@@ -7,14 +7,14 @@ User.insert((instructor_1) => {
 		console.log("Inserted new lecture with code " + newLecture.joinCode);
 		console.log('Instructor Id is ' + newLecture.instructor);
 
-		instructor_1.addLecture(newLecture);
+		User.addLecture(instructor_1.id, newLecture);
 	});
 
 	Lecture.insert("COM SCI 181", instructor_1.id, (newLecture) => {
 		console.log("Inserted new lecture with code " + newLecture.joinCode);
 		console.log('Instructor Id is ' + newLecture.instructor);
 
-		instructor_1.addLecture(newLecture);
+		User.addLecture(instructor_1.id, newLecture);
 
 		Lecture.addComment(newLecture.joinCode, "some text", null);
 		Lecture.addComment(newLecture.joinCode, "some text 2", null, () => {

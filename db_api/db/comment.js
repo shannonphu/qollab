@@ -36,7 +36,7 @@ module.exports = (function () {
             }
 
             if (callback) {
-                callback(comment);
+                callback(data);
             }
         });
     }
@@ -46,7 +46,7 @@ module.exports = (function () {
             if (err) {
                 throw err;
             }
-            
+
             if (callback) {
                 callback(comment);
             }
@@ -80,7 +80,7 @@ module.exports = (function () {
                 if (err) {
                     throw err;
                 }
-
+                
                 if (callback) {
                     callback(comment);
                 }
