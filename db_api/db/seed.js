@@ -15,5 +15,12 @@ User.insert((instructor_1) => {
 		console.log('Instructor Id is ' + newLecture.instructor);
 
 		instructor_1.addLecture(newLecture);
+
+		Lecture.addComment(newLecture.joinCode, "some text", null);
+		Lecture.addComment(newLecture.joinCode, "some text 2", null, () => {
+			Lecture.getComments(newLecture.joinCode, (comments) => {
+				console.log(comments);
+			});
+		});
 	});
 });
