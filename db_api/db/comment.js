@@ -29,7 +29,7 @@ module.exports = (function() {
     *   - the actual Comment mongoDB object
     */
     commentSchema.statics.insert = function(text, annotation, callback) {
-        let comment = commentSchema.create(text, annotation);
+        let comment = Comment.create(text, annotation);
         comment.save(function (err, data) {
             if (err) {
                 throw err;

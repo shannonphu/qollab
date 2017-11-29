@@ -4,15 +4,13 @@ const Comment = commentDefinition.model;
 
 module.exports = (function () {
     let mongoose = require('mongoose');
-    let Schema = mongoose.Schema;
-    let ObjectId = Schema.ObjectId;
 
-    var lectureSchema = new Schema({
+    var lectureSchema = new mongoose.Schema({
         title: { type: String, required: true },
         joinCode: { type: String, required: true, unique: true },
         instructor: { type: String, required: true },
         students: [{ type: String }],
-        comments: [commentSchema]
+        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }]
     });
 
     /*
@@ -36,7 +34,7 @@ module.exports = (function () {
             }
 
             if (callback) {
-                callback(lecture);
+                callback(data);
             }
             return;
         });
@@ -69,15 +67,54 @@ module.exports = (function () {
         });
     }
 
-    lectureSchema.statics.addComment = (joinCode, commentText, annotationId, callback) => {
-        let comment = Comment.create(commentText, annotationId);
-        Lecture.findOneAndUpdate(
-            { "joinCode": joinCode },
-            { "$push": { "comments": comment } },
-            { safe: true, upsert: true, new: true },
-            (err, lecture) => {
+    /**
+     * @summary Adds a comment to the lecture object
+     * @param {String} Join code for the lecture we want to add the comment to
+     * @param {String} Comment text for new comment
+     * @param {String} Annotation ID for annotation linked to comment
+     * @param {function} Callback method to execute after DB queries
+     * @returns {Comment} 
+     * @memberof module:lectureDB
+     * @example
+     * Lecture.addComment("join_code", "comment_text", "annotation_id", (comment) => {
+     * 
+     * });
+     */
+    lectureSchema.statics.addComment = (joinCode, commentText, annotation, callback) => {
+        Comment.insert(commentText, annotation, (comment) => {
+            Lecture.findOneAndUpdate(
+                { "joinCode": joinCode },
+                { "$push": { "comments": comment._id } },
+                { safe: true, upsert: true, new: true },
+                (err, lecture) => {
+                    if (callback) {
+                        callback(comment);
+                    }
+                });
+        });
+    }
+
+    /**
+     * @summary Gets all comments in this lecture
+     * @param {String} Join code for the lecture we want to add the comment to
+     * @param {function} Callback method to execute after DB queries
+     * @returns {[Comment]} 
+     * @memberof module:lectureDB
+     * @example
+     * Lecture.getComments("join_code", (comments) => {
+     * 
+     * });
+     */
+    lectureSchema.statics.getComments = (joinCode, callback) => {
+        Lecture.findOne({ "joinCode": joinCode })
+            .populate('comments')
+            .exec(function (err, lecture) {
+                if (err) {
+                    throw err;
+                }
+
                 if (callback) {
-                    callback(comment);
+                    callback(lecture.comments);
                 }
             });
     }
