@@ -51,6 +51,10 @@ var RealtimeReducer = (state = {
                 ]
             };
         case 'UPVOTE_COMMENT':
+            if (!action.joinCode || action.joinCode !== state.lectureCode) {
+                return state;
+            }
+
             return {
                 ...state,
                 comments: state.comments.map((comment) => {
