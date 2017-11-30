@@ -28,9 +28,7 @@ class Comment extends Component {
         axios.post('http://localhost:3005/comment/upvote', {
             commentID: this.props.id
         })
-            .then((response) => {
-                let comment = response.data
-
+            .then(() => {
                 // Increases vote count for this client's comment UI
                 this.props.upVoteComment(this.props.id, this.props.lectureCode);
 
@@ -43,7 +41,15 @@ class Comment extends Component {
     }
 
     resolveHandler() {
-        this.props.resolveComment(this.props.id);
+        axios.post('http://localhost:3005/comment/resolve', {
+            commentID: this.props.id
+        })
+            .then(() => {
+                this.props.resolveComment(this.props.id);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     render() {
