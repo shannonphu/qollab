@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import CommentReply from './CommentReply';
 import * as realtimeActions from '../../actions/realtime';
@@ -16,9 +17,25 @@ class CommentReplyList extends Component {
 
     handleSubmitReply(event) {
         event.preventDefault();
-        this.props.replyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
-        this.props.syncReplyComment(this.props.commentId, this.props.lectureCode, this.state.reply);
-        this.setState({ reply: "" });
+        this.store();        
+    }
+
+    store() {
+        let commentId = this.props.commentId;
+        
+        axios.post('http://localhost:3005/comment/reply', {
+            commentID: commentId,
+            replyText: this.state.reply
+        })
+            .then((response) => {
+                let lectureCode = this.props.lectureCode;
+                this.props.replyComment(commentId, lectureCode, this.state.reply);
+                this.props.syncReplyComment(commentId, lectureCode, this.state.reply);
+                this.setState({ reply: "" });                
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     handleReplyValueChange(event) {

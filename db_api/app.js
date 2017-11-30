@@ -49,6 +49,18 @@ app.post('/comment/create', (req, res) => {
 	});
 });
 
+app.post('/comment/reply', (req, res) => {
+	Comment.getByID(req.body.commentID, (comment) => {
+		if (!comment.resolved) {
+			Comment.addReply(req.body.commentID, req.body.replyText, (comment) => {
+				res.send(comment);
+			});
+		} else {
+			res.send(comment);
+		}
+	})
+});
+
 app.post('/comment/upvote', (req, res) => {
 	Comment.getByID(req.body.commentID, (comment) => {
 		if (!comment.resolved) {

@@ -53,11 +53,33 @@ module.exports = (function () {
         });
     }
 
-    commentSchema.methods.addReply = function (text) {
-        if (this.resolved) {
-            return;
-        }
-        this.replies.push(text);
+    /**
+     * @summary adds text reply to comment
+     * @param {String} the comment's ID that we want to reply to
+     * @param {String} the reply text
+     * @param {function} callback to execute after replying to the comment
+     * @returns {Comment} comment just upvoted
+     * @memberof module:commentDB
+     * @example
+     * Comment.addReply(commentId, "This is a reply.", (comment) => {
+     * 
+     * });
+     */
+    commentSchema.statics.addReply = function (id, text, callback) {
+        Comment.findOneAndUpdate(
+            { "_id" : id },
+            { $push: { "replies": text } },
+            { safe: true, upsert: true, new: true },
+            function (err, comment) {
+                if (err) {
+                    throw err;
+                }
+
+                if (callback) {
+                    callback(comment);
+                }
+            }
+        );
     }
 
     /**
