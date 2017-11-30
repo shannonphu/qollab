@@ -42,11 +42,32 @@ app.post('/create', (req, res) => {
 	});
 });
 
+// Gets comments stored for this lecture code
+app.get('/comments/:code', (req, res) => {
+	let code = req.params.code;
+
+	Lecture.getComments(code, (comments) => {
+		res.json(comments);
+	});
+});
+
 // Store new comment inside a lecture
 app.post('/comment/create', (req, res) => {
 	Lecture.addComment(req.body.joinCode, req.body.text, JSON.stringify(req.body.annotation), (comment) => {
 		res.send(comment);
 	});
+});
+
+app.post('/comment/reply', (req, res) => {
+	Comment.getByID(req.body.commentID, (comment) => {
+		if (!comment.resolved) {
+			Comment.addReply(req.body.commentID, req.body.replyText, (comment) => {
+				res.send(comment);
+			});
+		} else {
+			res.send(comment);
+		}
+	})
 });
 
 app.post('/comment/upvote', (req, res) => {

@@ -12,7 +12,7 @@ class CommentList extends Component {
         super(props);
         this.state = {};
         // Query for current comments based on lecture code when initially joining
-        axios.get('http://localhost:3003/comments/' + this.props.joinCode)
+        axios.get('http://localhost:3005/comments/' + this.props.joinCode)
             .then((response) => {
                 this.props.setInitialComments(response.data);
             })

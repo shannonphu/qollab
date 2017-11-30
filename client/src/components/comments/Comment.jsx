@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { findDOMNode } from 'react-dom';
-import $ from 'jquery'; 
+import $ from 'jquery';
+import axios from 'axios';
 
 import CommentReplyList from './CommentReplyList';
 import * as realtimeActions from '../../actions/realtime';
@@ -19,19 +20,36 @@ class Comment extends Component {
     }
 
     componentDidUpdate() {
-        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);        
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
     }
-    
-    upVoteHandler() {
-        // Increases vote count for this client's comment UI
-        this.props.upVoteComment(this.props.id, this.props.lectureCode);
 
-        // Sends event to socket server to sync across all clients
-        this.props.syncUpvote(this.props.id, this.props.lectureCode);
+    upVoteHandler() {
+        // Store upvote to DB
+        axios.post('http://localhost:3005/comment/upvote', {
+            commentID: this.props.id
+        })
+            .then(() => {
+                // Increases vote count for this client's comment UI
+                this.props.upVoteComment(this.props.id, this.props.lectureCode);
+
+                // Sends event to socket server to sync across all clients
+                this.props.syncUpvote(this.props.id, this.props.lectureCode);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     resolveHandler() {
-        this.props.resolveComment(this.props.id);
+        axios.post('http://localhost:3005/comment/resolve', {
+            commentID: this.props.id
+        })
+            .then(() => {
+                this.props.resolveComment(this.props.id);
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     render() {
