@@ -194,6 +194,7 @@ class SketchField extends Component {
                 this.props.setNeutralAnnotationState();
                 break;
             case ANNOTATION_STATE.SUBMITING:
+                this._selectedTool.configureCanvas(nextProps);            
                 this._tools[Tool.Rectangle].freezeInstance(this.props.activeAnnotation);
                 this.props.setNeutralAnnotationState();
                 break;
