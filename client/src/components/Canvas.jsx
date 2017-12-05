@@ -19,7 +19,7 @@ class Canvas extends Component {
         backgroundColor: 'transparent',
         tool: Tools.Pencil,
         controlledSize: false,
-        sketchWidth: 600,
+        sketchWidth: 850,
         sketchHeight: 600,
     };
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import CommentReplyList from './CommentReplyList';
 import * as commentsActions from '../../actions/comments';
+import * as realtimeActions from '../../actions/realtime';
 
 class Comment extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class Comment extends Component {
         this.state = {};
         this.upVoteHandler = this.upVoteHandler.bind(this);
         this.resolveHandler = this.resolveHandler.bind(this);
+        this.onClickHandler = this.onClickHandler.bind(this);
     }
 
     componentDidMount() {
@@ -21,6 +23,14 @@ class Comment extends Component {
 
     componentDidUpdate() {
         $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+    }
+
+    onClickHandler(event) {
+        this.props.unhighlightAllRects();
+        if (this.props.annotation) {
+            let annotationID = this.props.annotation._id;
+            this.props.highlightRect(annotationID);
+        }
     }
 
     upVoteHandler() {
@@ -64,7 +74,7 @@ class Comment extends Component {
             );
 
             return (
-                <li className="Comment">
+                <li className="Comment" onClick={this.onClickHandler}>
                     <div className={this.props.className}>
                         <ul style={{ "width": "100%" }}>
                             <li>
@@ -102,6 +112,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         upVoteComment: (commentID, joinCode) => dispatch(commentsActions.upVoteComment(commentID, joinCode)),
         resolveComment: id => dispatch(commentsActions.resolveComment(id)),
+        highlightRect: (annotationId) => dispatch(realtimeActions.highlightRect(annotationId)),
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),        
         syncUpvote: (commentID, joinCode) => dispatch({
             type: "socket/COMMENT_UPVOTED",
             data: {

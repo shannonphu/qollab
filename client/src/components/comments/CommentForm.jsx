@@ -49,6 +49,7 @@ class CommentForm extends Component {
                 let newComment = response.data;
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
+                this.props.unhighlightAllRects();
                 this.props.freezeCanvasObjects();      
             })
             .catch((error) => {
@@ -97,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
         deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
         removeRectFromCanvas: id => dispatch(realtimeActions.removeRectFromCanvas(id)),
         freezeCanvasObjects: () => dispatch(realtimeActions.freezeCanvasObjects()),
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
         addCommentToList: comment => dispatch(commentsActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({
