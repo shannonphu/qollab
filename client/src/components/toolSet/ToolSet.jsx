@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ShowResolvedCommentToggle from './ShowResolvedCommentsToggle';
+import FocusModeToggle from './FocusModeToggle';
 
 class ToolSet extends Component {
 
@@ -15,7 +16,8 @@ class ToolSet extends Component {
                 <i className="large material-icons">more_vert</i>
             </a>
             <ul>
-                <li><ShowResolvedCommentToggle/></li>
+                <li><ShowResolvedCommentToggle /></li>
+                <li><FocusModeToggle /></li>
                 {/* TODO: Add more functionality to the toolset. If there is only one funcionality, replace the toolset button. */}
             </ul>
         </div>
