@@ -50,16 +50,40 @@ export const replyComment = (id, lectureCode, reply) => {
     }
 }
 
-export const canvasObjectAdded = (canvas) => {
+export const setInitialCanvas = (canvas) => {
     return {
-        type: "CANVAS_OBJECT_ADDED",
+        type: "SET_INITIAL_CANVAS",
         canvas: canvas
     }
 }
 
-export const removeCanvasObject = (id) => {
+export const activateCanvasDrawingMode = () => {
     return {
-        type: "REMOVE_CANVAS_OBJECT",
+        type: "ACTIVATE_CANVAS_DRAWING_MODE"
+    }
+}
+
+export const deactivateCanvasDrawingMode = () => {
+    return {
+        type: "DEACTIVATE_CANVAS_DRAWING_MODE"
+    }
+}
+
+export const addRectToCanvas = () => {
+    return {
+        type: "CANVAS_RECT_ADDED"
+    }
+}
+
+export const removeRectFromCanvas = (id) => {
+    return {
+        type: "CANVAS_RECT_REMOVED",
         objectId: id
+    }
+}
+
+export const freezeCanvasObjects = () => {
+    return {
+        type: "FREEZE_CANVAS_OBJECTS"
     }
 }

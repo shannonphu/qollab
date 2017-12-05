@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import * as annotationActions from '../../actions/annotation';
 import * as realtimeActions from '../../actions/realtime';
 import * as commentsActions from '../../actions/comments';
 
@@ -23,6 +22,8 @@ class CommentForm extends Component {
 
         this.props.setCommentFormShown(false);
 
+        this.props.activateCanvasDrawingMode();
+
         // Clear textbox and checkbox
         this.refs.text.value = null;
         this.refs.annotationWanted.checked = false;
@@ -30,11 +31,11 @@ class CommentForm extends Component {
 
     annotationCheckboxToggled(event) {
         if (event.target.checked) {
-            this.props.addAnnotation();
+            this.props.deactivateCanvasDrawingMode();            
+            this.props.addRectToCanvas();
         } else {
-            // SketchField.jsx handles storing the new annotation ID
-            this.props.removeAnnotation(this.props.activeAnnotation);
-            this.props.removeCanvasObject(this.props.activeAnnotation._id);
+            this.props.removeRectFromCanvas(this.props.activeAnnotation._id);
+            this.props.activateCanvasDrawingMode();
         }
     }
 
@@ -48,7 +49,7 @@ class CommentForm extends Component {
                 let newComment = response.data;
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
-                this.props.submitAnnotation(commentAnnotation);                
+                this.props.freezeCanvasObjects();      
             })
             .catch((error) => {
                 throw error;
@@ -84,17 +85,18 @@ class CommentForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        activeAnnotation: state.annotationReducer.activeAnnotation,
+        activeAnnotation: state.realtimeReducer.activeAnnotation,
         commentFormShown: state.commentsReducer.commentFormShown
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAnnotation: () => dispatch(annotationActions.addAnnotation()),
-        submitAnnotation: annotation => dispatch(annotationActions.submitAnnotation(annotation)),
-        removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
-        removeCanvasObject: id => dispatch(realtimeActions.removeCanvasObject(id)),
+        addRectToCanvas: () => dispatch(realtimeActions.addRectToCanvas()),
+        activateCanvasDrawingMode: () => dispatch(realtimeActions.activateCanvasDrawingMode()),
+        deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
+        removeRectFromCanvas: id => dispatch(realtimeActions.removeRectFromCanvas(id)),
+        freezeCanvasObjects: () => dispatch(realtimeActions.freezeCanvasObjects()),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({
