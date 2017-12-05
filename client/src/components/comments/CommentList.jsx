@@ -37,6 +37,7 @@ class CommentList extends Component {
                             replies={comment.replies}
                             votes={comment.votes}
                             resolved={comment.resolved}
+                            annotation={JSON.parse(comment.annotation)}
                         />
                     ))}
                 </ul>

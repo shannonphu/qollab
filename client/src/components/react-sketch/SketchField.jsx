@@ -212,6 +212,7 @@ class SketchField extends Component {
         this._history.keep([obj, state, state]);
 
         this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
+        this.props.unhighlightAllRects();
 
         if (this.props.onChange) {
             let onChange = this.props.onChange;
@@ -534,6 +535,7 @@ const mapDispatchToProps = (dispatch) => {
         storeJoinCodeToRealtimeReducer: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         storeJoinCodeToCommentsReducer: joinCode => dispatch(commentActions.storeJoinCode(joinCode)),
         setInitialCanvas: canvas => dispatch(realtimeActions.setInitialCanvas(canvas)),
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),        
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {
                 data: canvasJSON,

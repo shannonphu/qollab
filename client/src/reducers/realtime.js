@@ -1,5 +1,9 @@
 import uuidv1 from 'uuid/v1';
 const fabric = require('fabric').fabric;
+const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.3)';
+const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.1)';
+const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 3;
+const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
 
 var RealtimeReducer = (state = {
     lectureCode: null,
@@ -32,12 +36,13 @@ var RealtimeReducer = (state = {
                 canvas: action.canvas
             }
         case 'CANVAS_RECT_ADDED':
+        {
             let rect = new fabric.Rect({
                 width: 300,
                 height: 200,
-                fill: 'rgba(104, 204, 202, 0.3)',
+                fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
                 stroke: 'darkgrey',
-                strokeWidth: 3,
+                strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
                 hasRotatingPoint: false,
                 hasControls: true,
                 hasBorders: true,
@@ -56,28 +61,68 @@ var RealtimeReducer = (state = {
             rect._id = uuidv1();
 
             state.canvas.add(rect);
-            
+
             return {
                 ...state,
                 canvas: state.canvas,
                 activeAnnotation: rect
             }
+        }
         case 'CANVAS_RECT_REMOVED':
-            let objects = state.canvas.getObjects();
-            for (let i = 0; i < objects.length; i++) {
-                let shape = objects[i];
-                if (shape._id === action.objectId) {
-                    state.canvas.remove(shape);
+        {
+            state.canvas.forEachObject((object) => {
+                if (object._id === action.objectId) {
+                    state.canvas.remove(object);
                 }
-            }
+            });
 
             return {
                 ...state,
                 canvas: state.canvas,
                 activeAnnotation: null
             };
+        }
+        case 'HIGHLIGHT_RECT':
+        {
+            state.canvas.forEachObject((object) => {
+                if (object._id === action.objectId) {
+                    object.set({ 
+                        fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                        strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                    });
+                }
+            });
+            state.canvas.renderAll();            
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        }
+        case 'UNHIGHLIGHT_RECT':
+        {
+            state.canvas.forEachObject((object) => {
+                if (object.type === 'rect') {
+                    object.set({ 
+                        fill: UNHIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                        strokeWidth: UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                    });
+                }
+            });
+            state.canvas.renderAll();
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        }
         case 'FREEZE_CANVAS_OBJECTS':
-            state.canvas.forEachObject((o) => o.selectable = o.evented = o.hasControls = false);
+            state.canvas.forEachObject((object) => {
+                object.set({
+                    selectable: false,
+                    evented: false,
+                    hasControls: false
+                });
+            });
+            state.canvas.renderAll();            
             return {
                 ...state,
                 canvas: state.canvas
@@ -94,7 +139,13 @@ var RealtimeReducer = (state = {
         case 'DEACTIVATE_CANVAS_DRAWING_MODE':
             state.canvas.isDrawingMode = false;
             state.canvas.selection = false;
-            state.canvas.forEachObject((o) => o.selectable = o.evented = o.hasControls = false);
+            state.canvas.forEachObject((o) => {
+                o.set({
+                    selectable: false,
+                    evented: false,
+                    hasControls: false
+                });
+            });
             return {
                 ...state,
                 canvas: state.canvas

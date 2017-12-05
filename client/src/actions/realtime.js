@@ -44,6 +44,19 @@ export const removeRectFromCanvas = (id) => {
     }
 }
 
+export const highlightRect = (id) => {
+    return {
+        type: "HIGHLIGHT_RECT",
+        objectId: id
+    }
+}
+
+export const unhighlightAllRects = (id) => {
+    return {
+        type: "UNHIGHLIGHT_RECT"
+    }
+}
+
 export const freezeCanvasObjects = () => {
     return {
         type: "FREEZE_CANVAS_OBJECTS"
