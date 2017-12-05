@@ -5,7 +5,7 @@ import $ from 'jquery';
 import axios from 'axios';
 
 import CommentReplyList from './CommentReplyList';
-import * as realtimeActions from '../../actions/realtime';
+import * as commentsActions from '../../actions/comments';
 
 class Comment extends Component {
     constructor(props) {
@@ -100,8 +100,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        upVoteComment: (commentID, joinCode) => dispatch(realtimeActions.upVoteComment(commentID, joinCode)),
-        resolveComment: id => dispatch(realtimeActions.resolveComment(id)),
+        upVoteComment: (commentID, joinCode) => dispatch(commentsActions.upVoteComment(commentID, joinCode)),
+        resolveComment: id => dispatch(commentsActions.resolveComment(id)),
         syncUpvote: (commentID, joinCode) => dispatch({
             type: "socket/COMMENT_UPVOTED",
             data: {

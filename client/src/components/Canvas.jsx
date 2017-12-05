@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import SketchField from './react-sketch/SketchField';
 import Tools from './react-sketch/tools';
-import { connect } from 'react-redux';
-import { ANNOTATION_STATE } from '../reducers/annotation';
 
 class Canvas extends Component {
     constructor(props) {
@@ -52,16 +50,10 @@ class Canvas extends Component {
                 height={this.state.sketchHeight}
                 defaultDataType="json"
                 onChange={this._onSketchChange}
-                tool={this.props.annotationState === ANNOTATION_STATE.EDITING ? Tools.Rectangle : this.state.tool}
+                tool={this.state.tool}
             />
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        annotationState: state.annotationReducer.annotationState
-    }
-}
-
-export default connect(mapStateToProps, null)(Canvas);
+export default Canvas;

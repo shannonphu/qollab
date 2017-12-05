@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import CommentReply from './CommentReply';
-import * as realtimeActions from '../../actions/realtime';
+import * as commentsActions from '../../actions/comments';
 
 class CommentReplyList extends Component {
     constructor(props) {
@@ -71,7 +71,7 @@ class CommentReplyList extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        replyComment: (id, lectureCode, reply) => dispatch(realtimeActions.replyComment(id, lectureCode, reply)),
+        replyComment: (id, lectureCode, reply) => dispatch(commentsActions.replyComment(id, lectureCode, reply)),
         syncReplyComment: (commentID, lectureCode, reply) => dispatch({
             type: "socket/COMMENT_REPLY_ADDED",
             data: {

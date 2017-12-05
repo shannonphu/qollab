@@ -5,7 +5,7 @@ import axios from 'axios';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import AddCommentToggle from './AddCommentToggle';
-import * as realtimeActions from '../../actions/realtime';
+import * as commentActions from '../../actions/comments';
 
 class CommentList extends Component {
     constructor(props) {
@@ -48,13 +48,13 @@ class CommentList extends Component {
 //get redux source's state and map it to component props
 function mapStateToProps(state) {
     return {
-        comments: state.realtimeReducer.comments
+        comments: state.commentsReducer.comments
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setInitialComments: (comments) => dispatch(realtimeActions.setInitialComments(comments))
+        setInitialComments: (comments) => dispatch(commentActions.setInitialComments(comments))
     }
 };
 

@@ -1,17 +1,3 @@
-export const setInitialComments = (comments) => {
-    return {
-        type: 'SET_INITIAL_COMMENTS',
-        comments: comments
-    }
-};
-
-export const addComment = (comment) => {
-    return {
-        type: 'ADD_COMMENT',
-        comment: comment
-    }
-};
-
 export const storeJoinCode = (joinCode) => {
     return {
         type: 'STORE_JOIN_CODE',
@@ -26,26 +12,40 @@ export const canvasUpdated = (canvasJSON) => {
     }
 };
 
-export const upVoteComment = (id, lectureCode) => {
-	return {
-		type: 'UPVOTE_COMMENT',
-        id: id,
-        joinCode: lectureCode
-	}
-};
-
-export const resolveComment = (id) => {
+export const setInitialCanvas = (canvas) => {
     return {
-        type: "RESOLVE_COMMENT",
-        id: id
+        type: "SET_INITIAL_CANVAS",
+        canvas: canvas
     }
-};
+}
 
-export const replyComment = (id, lectureCode, reply) => {
+export const activateCanvasDrawingMode = () => {
     return {
-        type: "REPLY_COMMENT",
-        id: id,
-        lectureCode: lectureCode,
-        reply: reply
+        type: "ACTIVATE_CANVAS_DRAWING_MODE"
+    }
+}
+
+export const deactivateCanvasDrawingMode = () => {
+    return {
+        type: "DEACTIVATE_CANVAS_DRAWING_MODE"
+    }
+}
+
+export const addRectToCanvas = () => {
+    return {
+        type: "CANVAS_RECT_ADDED"
+    }
+}
+
+export const removeRectFromCanvas = (id) => {
+    return {
+        type: "CANVAS_RECT_REMOVED",
+        objectId: id
+    }
+}
+
+export const freezeCanvasObjects = () => {
+    return {
+        type: "FREEZE_CANVAS_OBJECTS"
     }
 }
