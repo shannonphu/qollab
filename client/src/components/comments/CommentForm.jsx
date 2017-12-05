@@ -34,6 +34,7 @@ class CommentForm extends Component {
         } else {
             // SketchField.jsx handles storing the new annotation ID
             this.props.removeAnnotation(this.props.activeAnnotation);
+            this.props.removeCanvasObject(this.props.activeAnnotation._id);
         }
     }
 
@@ -93,6 +94,7 @@ const mapDispatchToProps = (dispatch) => {
         addAnnotation: () => dispatch(annotationActions.addAnnotation()),
         submitAnnotation: annotation => dispatch(annotationActions.submitAnnotation(annotation)),
         removeAnnotation: annotation => dispatch(annotationActions.removeAnnotation(annotation)),
+        removeCanvasObject: id => dispatch(realtimeActions.removeCanvasObject(id)),
         addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({

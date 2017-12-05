@@ -49,3 +49,17 @@ export const replyComment = (id, lectureCode, reply) => {
         reply: reply
     }
 }
+
+export const canvasObjectAdded = (canvas) => {
+    return {
+        type: "CANVAS_OBJECT_ADDED",
+        canvas: canvas
+    }
+}
+
+export const removeCanvasObject = (id) => {
+    return {
+        type: "REMOVE_CANVAS_OBJECT",
+        objectId: id
+    }
+}

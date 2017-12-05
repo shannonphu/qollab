@@ -1,3 +1,10 @@
+export const setCanvas = (canvas) => {
+    return {
+        type: 'SET_CANVAS',
+        canvas: canvas
+    }
+};
+
 export const addAnnotation = () => {
     return {
         type: 'ADD_ANNOTATION'
@@ -30,3 +37,10 @@ export const setNeutralAnnotationState = () => {
         type: 'SET_NEUTRAL_ANNOTATION_STATE'
     }
 };
+
+export const removeCanvasObject = (id) => {
+    return {
+        type: "REMOVE_CANVAS_OBJECT",
+        objectId: id
+    }
+}

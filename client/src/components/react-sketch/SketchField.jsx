@@ -190,16 +190,15 @@ class SketchField extends Component {
             case ANNOTATION_STATE.EDITING:
                 this._selectedTool.configureCanvas(nextProps);
                 let newAnnotation = this._selectedTool.addInstance();
-                this.props.storeAnnotation(newAnnotation);
+                this.props.canvasObjectAdded(this._fc);
                 this.props.setNeutralAnnotationState();
                 break;
             case ANNOTATION_STATE.SUBMITING:
-                this._selectedTool.configureCanvas(nextProps);            
+                this._selectedTool.configureCanvas(nextProps);
                 this._tools[Tool.Rectangle].freezeInstance(this.props.activeAnnotation);
                 this.props.setNeutralAnnotationState();
                 break;
             case ANNOTATION_STATE.REMOVING:
-                this._tools[Tool.Rectangle].removeInstance(this.props.activeAnnotation);
                 this._selectedTool.configureCanvas(nextProps);
                 this.props.setNeutralAnnotationState();
                 break;
@@ -239,6 +238,7 @@ class SketchField extends Component {
         this._history.keep([obj, state, state]);
 
         this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
+        this.props.canvasObjectAdded(this._fc);
 
         if (this.props.onChange) {
             let onChange = this.props.onChange;
@@ -564,6 +564,7 @@ const mapDispatchToProps = (dispatch) => {
         storeAnnotation: annotation => dispatch(annotationActions.storeAnnotation(annotation)),
         setNeutralAnnotationState: () => dispatch(annotationActions.setNeutralAnnotationState()),
         storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
+        canvasObjectAdded: canvas => dispatch(realtimeActions.canvasObjectAdded(canvas)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {
                 data: canvasJSON,
