@@ -17,16 +17,18 @@ class CommentForm extends Component {
         event.preventDefault();
 
         let newCommentText = this.refs.text.value;
-        let commentAnnotation = this.props.activeAnnotation;
-        this.store(newCommentText, commentAnnotation);
-
-        this.props.setCommentFormShown(false);
-
-        this.props.activateCanvasDrawingMode();
-
-        // Clear textbox and checkbox
-        this.refs.text.value = null;
-        this.refs.annotationWanted.checked = false;
+        if (newCommentText.length > 0) {
+            let commentAnnotation = this.props.activeAnnotation;
+            this.store(newCommentText, commentAnnotation);
+    
+            this.props.setCommentFormShown(false);
+    
+            this.props.activateCanvasDrawingMode();
+    
+            // Clear textbox and checkbox
+            this.refs.text.value = null;
+            this.refs.annotationWanted.checked = false;
+        }
     }
 
     annotationCheckboxToggled(event) {
@@ -70,7 +72,7 @@ class CommentForm extends Component {
                                 <label htmlFor="annotationWanted">Add Annotation</label>
                             </div>
                             <div className="row input-field">
-                                <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea"/>
+                                <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea validate"/>
                                 <label htmlFor="add_comment">Write a comment...</label>
                             </div>
                             <div className="row">

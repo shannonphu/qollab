@@ -62,3 +62,21 @@ export const freezeCanvasObjects = () => {
         type: "FREEZE_CANVAS_OBJECTS"
     }
 }
+
+export const showAnnotations = () => {
+    return {
+        type: "SHOW_ANNOTATIONS"
+    }
+}
+
+export const hideAnnotations = () => {
+    return {
+        type: "HIDE_ANNOTATIONS"
+    }
+}
+
+export const toggleFocusMode = () => {
+    return {
+        type: "TOGGLE_FOCUS_MODE"
+    }
+}

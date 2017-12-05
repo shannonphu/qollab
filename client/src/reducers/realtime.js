@@ -9,7 +9,8 @@ var RealtimeReducer = (state = {
     lectureCode: null,
     canvasJSON: null,
     canvas: null,
-    activeAnnotation: null
+    activeAnnotation: null,
+    focusModeActive: false
 }, action) => {
     switch (action.type) {
         case 'STORE_JOIN_CODE':
@@ -36,85 +37,105 @@ var RealtimeReducer = (state = {
                 canvas: action.canvas
             }
         case 'CANVAS_RECT_ADDED':
-        {
-            let rect = new fabric.Rect({
-                width: 300,
-                height: 200,
-                fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
-                stroke: 'darkgrey',
-                strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
-                hasRotatingPoint: false,
-                hasControls: true,
-                hasBorders: true,
-                selectable: true,
-                evented: true
-            });
+            {
+                if (state.focusModeActive) {
+                    return state;
+                }
 
-            rect.toObject = (function (toObject) {
-                return function () {
-                    return fabric.util.object.extend(toObject.call(this), {
-                        _id: this._id
-                    });
-                };
-            })(rect.toObject);
+                let rect = new fabric.Rect({
+                    width: 300,
+                    height: 125,
+                    fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                    stroke: 'darkgrey',
+                    strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
+                    hasRotatingPoint: false,
+                    hasControls: true,
+                    hasBorders: false,
+                    selectable: true,
+                    evented: true
+                });
 
-            rect._id = uuidv1();
+                rect.toObject = (function (toObject) {
+                    return function () {
+                        return fabric.util.object.extend(toObject.call(this), {
+                            _id: this._id
+                        });
+                    };
+                })(rect.toObject);
 
-            state.canvas.add(rect);
+                rect._id = uuidv1();
 
-            return {
-                ...state,
-                canvas: state.canvas,
-                activeAnnotation: rect
+                state.canvas.add(rect);
+
+                return {
+                    ...state,
+                    canvas: state.canvas,
+                    activeAnnotation: rect
+                }
             }
-        }
         case 'CANVAS_RECT_REMOVED':
-        {
-            state.canvas.forEachObject((object) => {
-                if (object._id === action.objectId) {
-                    state.canvas.remove(object);
+            {
+                if (state.focusModeActive) {
+                    return state;
                 }
-            });
 
-            return {
-                ...state,
-                canvas: state.canvas,
-                activeAnnotation: null
-            };
-        }
+                state.canvas.forEachObject((object) => {
+                    if (object._id === action.objectId) {
+                        state.canvas.remove(object);
+                    }
+                });
+
+                return {
+                    ...state,
+                    canvas: state.canvas,
+                    activeAnnotation: null
+                };
+            }
         case 'HIGHLIGHT_RECT':
-        {
-            state.canvas.forEachObject((object) => {
-                if (object._id === action.objectId) {
-                    object.set({ 
-                        fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
-                        strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH
-                    });
+            {
+                if (state.focusModeActive) {
+                    return state;
                 }
-            });
-            state.canvas.renderAll();            
-            return {
-                ...state,
-                canvas: state.canvas
+
+                state.canvas.forEachObject((object) => {
+                    if (object._id === action.objectId) {
+                        object.set({
+                            fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                            strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                        });
+                    }
+                });
+                state.canvas.renderAll();
+                return {
+                    ...state,
+                    canvas: state.canvas
+                }
             }
-        }
         case 'UNHIGHLIGHT_RECT':
-        {
-            state.canvas.forEachObject((object) => {
-                if (object.type === 'rect') {
-                    object.set({ 
-                        fill: UNHIGHLIGHTED_ANNOTATION_FILL_COLOR,
-                        strokeWidth: UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH
-                    });
+            {
+                if (state.focusModeActive) {
+                    return state;
                 }
-            });
-            state.canvas.renderAll();
-            return {
-                ...state,
-                canvas: state.canvas
+
+                state.canvas.forEachObject((object) => {
+                    if (object.type === 'rect') {
+                        object.set({
+                            fill: UNHIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                            strokeWidth: UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                        });
+                    }
+                });
+                state.canvas.renderAll();
+                return {
+                    ...state,
+                    canvas: state.canvas
+                }
             }
-        }
         case 'FREEZE_CANVAS_OBJECTS':
+            if (state.focusModeActive) {
+                return state;
+            }
+
             state.canvas.forEachObject((object) => {
                 object.set({
                     selectable: false,
@@ -122,7 +143,7 @@ var RealtimeReducer = (state = {
                     hasControls: false
                 });
             });
-            state.canvas.renderAll();            
+            state.canvas.renderAll();
             return {
                 ...state,
                 canvas: state.canvas
@@ -137,10 +158,14 @@ var RealtimeReducer = (state = {
                 activeAnnotation: null
             };
         case 'DEACTIVATE_CANVAS_DRAWING_MODE':
+            if (state.focusModeActive) {
+                return state;
+            }
+
             state.canvas.isDrawingMode = false;
             state.canvas.selection = false;
-            state.canvas.forEachObject((o) => {
-                o.set({
+            state.canvas.forEachObject((object) => {
+                object.set({
                     selectable: false,
                     evented: false,
                     hasControls: false
@@ -150,6 +175,47 @@ var RealtimeReducer = (state = {
                 ...state,
                 canvas: state.canvas
             };
+        case 'HIDE_ANNOTATIONS':
+            if (state.focusModeActive) {
+                return state;
+            }
+
+            state.canvas.forEachObject((object) => {
+                if (object.type === 'rect') {
+                    object.set({
+                        opacity: 0
+                    });
+                }
+            });
+            state.canvas.renderAll();
+
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        case 'SHOW_ANNOTATIONS':
+            if (!state.focusModeActive) {
+                return state;
+            }
+
+            state.canvas.forEachObject((object) => {
+                if (object.type === 'rect') {
+                    object.set({
+                        opacity: 1
+                    });
+                }
+            });
+            state.canvas.renderAll();
+
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        case 'TOGGLE_FOCUS_MODE':
+            return {
+                ...state,
+                focusModeActive: !state.focusModeActive
+            }
         default:
             return state;
     }

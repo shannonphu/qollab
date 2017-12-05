@@ -42,15 +42,26 @@ class LecturePortal extends Component {
 	}
 
 	render() {
+		let focusModeBarrier = this.props.focusModeActive ? <div className="focusModeBarrier">Entered focus mode</div> : null;
+
 		return (
 			<div className='LecturePortal row'>
 				<ToolSet />
 				<div className="row lecture-container">
 					<div className="col s6 m8"><Canvas ref={this.setCanvasRef} joinCode={this.state.joinCode} /></div>
-					<div className="col s6 m4"><CommentList ref={this.setCommentListRef} joinCode={this.state.joinCode} /></div>
+					<div className="col s6 m4">
+						{focusModeBarrier}
+						<CommentList ref={this.setCommentListRef} joinCode={this.state.joinCode} />
+					</div>
 				</div>
 			</div>
 		)
+	}
+}
+
+function mapStateToProps(state) {
+	return {
+		focusModeActive: state.realtimeReducer.focusModeActive
 	}
 }
 
@@ -60,4 +71,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapDispatchToProps)(LecturePortal);
+export default connect(mapStateToProps, mapDispatchToProps)(LecturePortal);
