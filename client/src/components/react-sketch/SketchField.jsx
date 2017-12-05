@@ -7,7 +7,6 @@ import axios from 'axios';
 
 import History from './history';
 import Pencil from './pencil';
-// import Rectangle from './rectangle';
 import Tool from './tools';
 import * as realtimeActions from '../../actions/realtime';
 import * as commentActions from '../../actions/comments';
