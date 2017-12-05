@@ -1,9 +1,7 @@
-// TODO: store canvas objects (not json) in store and canvas on render should render all the objs from the store
 import uuidv1 from 'uuid/v1';
 const fabric = require('fabric').fabric;
 
 var RealtimeReducer = (state = {
-    comments: [],
     lectureCode: null,
     canvasJSON: null,
     canvas: null,
@@ -33,11 +31,6 @@ var RealtimeReducer = (state = {
                 ...state,
                 canvas: action.canvas
             }
-        // case 'CANVAS_OBJECT_ADDED':
-        //     return {
-        //         ...state,
-        //         canvas: action.canvas
-        //     }
         case 'CANVAS_RECT_ADDED':
             let rect = new fabric.Rect({
                 width: 300,
@@ -106,89 +99,6 @@ var RealtimeReducer = (state = {
                 ...state,
                 canvas: state.canvas
             };
-        case 'SET_INITIAL_COMMENTS':
-            return {
-                ...state,
-                comments: action.comments
-            }
-        case 'ADD_COMMENT':
-            // Update client-side props
-            return {
-                ...state,
-                comments: [
-                    ...state.comments,
-                    action.comment
-                ]
-            };
-        case 'SYNC_NEW_COMMENT':
-            // Only update the comments of the lecture session the newly added comment was submitted on
-            let updatedJoinCode = action.joinCode;
-            if (state.lectureCode !== updatedJoinCode) {
-                return state;
-            }
-
-            return {
-                ...state,
-                comments: [
-                    ...state.comments,
-                    action.comment
-                ]
-            };
-        case 'UPVOTE_COMMENT':
-            if (!action.joinCode || action.joinCode !== state.lectureCode) {
-                return state;
-            }
-
-            return {
-                ...state,
-                comments: state.comments.map((comment) => {
-                    if (comment._id === action.id) {
-                        return {
-                            ...comment,
-                            votes: comment.votes + 1
-                        };
-                    }
-                    else {
-                        return comment;
-                    }
-                })
-            };
-        case 'RESOLVE_COMMENT':
-            return {
-                ...state,
-                comments: state.comments.map((comment) => {
-                    if (comment._id === action.id) {
-                        return {
-                            ...comment,
-                            resolved: true
-                        };
-                    }
-                    else {
-                        return comment;
-                    }
-                })
-            }
-        case 'REPLY_COMMENT':
-            if (action.lectureCode !== state.lectureCode) {
-                return state;
-            }
-
-            return {
-                ...state,
-                comments: state.comments.map((comment) => {
-                    if (comment._id === action.id) {
-                        return {
-                            ...comment,
-                            replies: [
-                                ...comment.replies, action.reply
-                            ]
-                        };
-                    }
-                    else {
-                        return comment;
-                    }
-                })
-            }
         default:
             return state;
     }

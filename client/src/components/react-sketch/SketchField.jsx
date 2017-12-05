@@ -10,6 +10,7 @@ import Pencil from './pencil';
 // import Rectangle from './rectangle';
 import Tool from './tools';
 import * as realtimeActions from '../../actions/realtime';
+import * as commentActions from '../../actions/comments';
 
 const fabric = require('fabric').fabric;
 
@@ -81,7 +82,8 @@ class SketchField extends Component {
         this._onObjectRotating = this._onObjectRotating.bind(this);
 
         // Link this canvas to this join code in the Redux store
-        this.props.storeJoinCode(props.joinCode);
+        this.props.storeJoinCodeToRealtimeReducer(props.joinCode);
+        this.props.storeJoinCodeToCommentsReducer(props.joinCode);
         // Get the canvas data that currently stored on the server in case we entered a session mid-way
         // and there is data to sync with.
         axios.get('http://localhost:3003/canvas/' + props.joinCode)
@@ -524,13 +526,14 @@ const mapStateToProps = (state) => {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
         canvasJSON: state.realtimeReducer.canvasJSON,
         updatedJoinCode: state.realtimeReducer.joinCode,
-        comments: state.realtimeReducer.comments
+        comments: state.commentsReducer.comments
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        storeJoinCode: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
+        storeJoinCodeToRealtimeReducer: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
+        storeJoinCodeToCommentsReducer: joinCode => dispatch(commentActions.storeJoinCode(joinCode)),
         setInitialCanvas: canvas => dispatch(realtimeActions.setInitialCanvas(canvas)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {

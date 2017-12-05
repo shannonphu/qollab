@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch) => {
         deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
         removeRectFromCanvas: id => dispatch(realtimeActions.removeRectFromCanvas(id)),
         freezeCanvasObjects: () => dispatch(realtimeActions.freezeCanvasObjects()),
-        addCommentToList: comment => dispatch(realtimeActions.addComment(comment)),
+        addCommentToList: comment => dispatch(commentsActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
         syncNewComment: (comment, joinCode) => dispatch({
             type: "socket/COMMENT_ADDED",
