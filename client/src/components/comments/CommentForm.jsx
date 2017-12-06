@@ -51,15 +51,15 @@ class CommentForm extends Component {
     }
 
     annotationCheckboxToggled() {
-        const isChecked = !this.props.annotationCheckbox;
-        this.props.setAnnotationCheckbox(isChecked);
-        if (isChecked) {
+        const isChecked = this.props.annotationCheckbox;
+        if (!isChecked) {
             this.props.deactivateCanvasDrawingMode();            
             this.props.addRectToCanvas();
         } else {
             this.props.removeRectFromCanvas(this.props.activeAnnotation._id);
             this.props.activateCanvasDrawingMode();
         }
+        this.props.setAnnotationCheckbox(!isChecked);
     }
 
     store(commentText, commentAnnotation) {
