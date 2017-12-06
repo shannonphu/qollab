@@ -39,11 +39,11 @@ class CommentForm extends Component {
         if (newCommentText.length > 0) {
             let commentAnnotation = this.props.activeAnnotation;
             this.store(newCommentText, commentAnnotation);
-    
+
             this.props.setCommentFormShown(false);
-    
+
             this.props.activateCanvasDrawingMode();
-    
+
             // Clear textbox and checkbox
             this.refs.text.value = null;
             this.props.setAnnotationCheckbox(false);
@@ -53,7 +53,7 @@ class CommentForm extends Component {
     annotationCheckboxToggled() {
         const isChecked = this.props.annotationCheckbox;
         if (!isChecked) {
-            this.props.deactivateCanvasDrawingMode();            
+            this.props.deactivateCanvasDrawingMode();
             this.props.addRectToCanvas();
         } else {
             this.props.removeRectFromCanvas(this.props.activeAnnotation._id);
@@ -73,7 +73,19 @@ class CommentForm extends Component {
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
                 this.props.unhighlightAllRects();
-                this.props.freezeCanvasObjects();      
+                this.props.freezeCanvasObjects();
+            })
+            .catch((error) => {
+                throw error;
+            });
+
+        let canvasJSON = this.props.canvas.toJSON();
+        axios.post('http://localhost:3005/canvas/set', {
+            joinCode: this.props.joinCode,
+            canvasJSON: JSON.stringify(canvasJSON)
+        })
+            .then((response) => {
+                console.log(response.data);
             })
             .catch((error) => {
                 throw error;
@@ -84,7 +96,7 @@ class CommentForm extends Component {
         const checkbox = this.props.annotationCheckbox ? <i className="material-icons">check_box</i> : <i className="material-icons">check_box_outline_blank</i>;
 
         if (!this.props.commentFormShown) {
-            return(null);
+            return (null);
         } else {
             return (
                 <li className="CommentForm">
@@ -97,7 +109,7 @@ class CommentForm extends Component {
                                 <label>Add Annotation</label>
                             </div>
                             <div className="row input-field">
-                                <input id="add_comment" type="text" ref="text"  autoComplete="off" className="materialize-textarea validate"/>
+                                <input id="add_comment" type="text" ref="text" autoComplete="off" className="materialize-textarea validate" />
                                 <label htmlFor="add_comment">Write a comment...</label>
                             </div>
                             <div className="row">
@@ -115,7 +127,8 @@ function mapStateToProps(state) {
     return {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
         commentFormShown: state.commentsReducer.commentFormShown,
-        annotationCheckbox: state.commentsReducer.annotationCheckbox
+        annotationCheckbox: state.commentsReducer.annotationCheckbox,
+        canvas: state.realtimeReducer.canvas
     }
 }
 
