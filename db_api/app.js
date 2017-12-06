@@ -8,6 +8,12 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Login with Passport.js
+const passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Connect to databse and declare database Models
 const db = require('./db/db.js');
 const User = require('./db/user.js');
@@ -97,3 +103,41 @@ app.post('/canvas/set', (req, res) => {
 server.listen(3005, () => {
 	console.log("Listening on port 3005");
 });
+
+// LOGIN FUNCTIONALITY
+GOOGLE_CONSUMER_KEY = '758504996172-t1em8jal6nt9tfa8mas49c0t9ibkaf17.apps.googleusercontent.com';
+GOOGLE_CONSUMER_SECRET = 'Kt8WmTm3X5Thi1HMFVAK-s3L';
+passport.use(new GoogleStrategy({
+	clientID: GOOGLE_CONSUMER_KEY,
+	clientSecret: GOOGLE_CONSUMER_SECRET,
+	callbackURL: "http://localhost:3005/auth/google/callback",
+	// passReqToCallback: true	
+},
+	function (token, tokenSecret, profile, done) {
+		User.findByGoogleID(profile.id, (user) => {
+			if (!user) {
+				User.insert(profile.id);
+			}
+		});
+
+		return done(null, profile);
+	}
+));
+
+// GET /auth/google
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in Google authentication will involve
+//   redirecting the user to google.com.  After authorization, Google
+//   will redirect the user back to this application at /auth/google/callback
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+
+// GET /auth/google/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/google/callback',
+	passport.authenticate('google', { failureRedirect: '/auth/google' }),
+	function (req, res) {
+		// res.redirect('/');
+	});
