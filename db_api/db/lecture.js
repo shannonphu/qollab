@@ -10,7 +10,8 @@ module.exports = (function () {
         joinCode: { type: String, required: true, unique: true },
         instructor: { type: String, required: true },
         students: [{ type: String }],
-        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }]
+        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+        canvas: String
     });
 
     /*
@@ -115,6 +116,34 @@ module.exports = (function () {
 
                 if (callback) {
                     callback(lecture.comments);
+                }
+            });
+    }
+
+    /**
+     * @summary Sets canvas JSON string when canvas updated
+     * @param {String} Join code for the lecture we want to add the comment to
+     * @param {String} JSON string representing canvas
+     * @param {function} Callback method to execute after setting canvas
+     * @returns {Lecture} 
+     * @memberof module:lectureDB
+     * @example
+     * Lecture.setCanvas("join_code", "{}", (lecture) => {
+     * 
+     * });
+     */
+    lectureSchema.statics.setCanvas = (joinCode, canvasJSON, callback) => {
+        Lecture.findOneAndUpdate(
+            { "joinCode": joinCode },
+            { "$set": { "canvas": canvasJSON } },
+            { safe: true, upsert: true, new: true },
+            (err, lecture) => {
+                if (err) {
+                    throw err;
+                }
+                
+                if (callback) {
+                    callback(lecture);
                 }
             });
     }

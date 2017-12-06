@@ -88,6 +88,12 @@ app.post('/comment/resolve', (req, res) => {
 	});
 });
 
+app.post('/canvas/set', (req, res) => {
+	Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+		res.send(lecture);
+	});
+});
+
 server.listen(3005, () => {
 	console.log("Listening on port 3005");
 });

@@ -5,10 +5,7 @@ import Tools from './react-sketch/tools';
 class Canvas extends Component {
     constructor(props) {
         super(props);
-
-        this._download = this._download.bind(this);
         this._onSketchChange = this._onSketchChange.bind(this);
-        this._setCanvasFromJSON = this._setCanvasFromJSON.bind(this);
     }
 
     state = {
@@ -23,16 +20,7 @@ class Canvas extends Component {
         sketchHeight: 600,
     };
 
-    _download() {
-        /*eslint-disable no-console*/
-        console.save(JSON.stringify(this._canvas.toJSON()), 'canvas.json');
-        /*eslint-enable no-console*/
-    }
-
     _onSketchChange() {
-    }
-
-    _setCanvasFromJSON(canvasJSON) {
     }
 
     render() {
