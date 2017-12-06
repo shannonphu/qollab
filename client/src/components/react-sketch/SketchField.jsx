@@ -83,11 +83,11 @@ class SketchField extends Component {
         // Link this canvas to this join code in the Redux store
         this.props.storeJoinCodeToRealtimeReducer(props.joinCode);
         this.props.storeJoinCodeToCommentsReducer(props.joinCode);
-        // Get the canvas data that currently stored on the server in case we entered a session mid-way
+        // Get the canvas data that currently stored in MongoDB in case we entered a session mid-way
         // and there is data to sync with.
-        axios.get('http://localhost:3003/canvas/' + props.joinCode)
+        axios.get('http://localhost:3005/lecture/' + props.joinCode)
             .then((response) => {
-                this.fromJSON(response.data);
+                this.fromJSON(response.data.canvas);
             })
             .catch((error) => {
                 throw error;
@@ -213,6 +213,16 @@ class SketchField extends Component {
 
         this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
         this.props.unhighlightAllRects();
+        axios.post('http://localhost:3005/canvas/set', {
+            joinCode: this.props.joinCode,
+            canvasJSON: JSON.stringify(this.toJSON())
+        })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                throw error;
+            });
 
         if (this.props.onChange) {
             let onChange = this.props.onChange;
@@ -535,7 +545,7 @@ const mapDispatchToProps = (dispatch) => {
         storeJoinCodeToRealtimeReducer: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         storeJoinCodeToCommentsReducer: joinCode => dispatch(commentActions.storeJoinCode(joinCode)),
         setInitialCanvas: canvas => dispatch(realtimeActions.setInitialCanvas(canvas)),
-        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),        
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {
                 data: canvasJSON,
