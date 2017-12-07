@@ -128,4 +128,8 @@ Purpose: To test creation, storing, join code generation for lecture objects
    Prerequisites: An empty mongoDB instance <br />
    Expected Result: Lecture object returned by findByJoinCode() is not null, and all of its data matches the original lecture data.
 
+# Frontend Testing #
+
+To run, load the test suite "selenium/Selenium Test Suite.html" in the Selenium IDE, an extension available for Firefox (only compatible with Firefox 54.0 and earlier versions).
+Then play the entire test suite while Qollab is running in the background.
 
