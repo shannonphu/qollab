@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 class Nav extends Component {
 
     constructor(props) {
         super(props);
         this.state = {};
-        this.login = this.login.bind(this);
-    }
-
-    login() {
-        axios.get('http://localhost:3005/auth/google')
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                throw error;
-            });
     }
 
     render() {
@@ -34,7 +22,7 @@ class Nav extends Component {
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
                             <li><a href="#"><i className="material-icons left">people</i>Students</a></li>
                             <li><a href="#"><i className="material-icons left">insert_chart</i>Poll</a></li>
-                            <li onClick={this.login}><a href='#'><i className="material-icons left">insert_chart</i>Login</a></li>
+                            <li><a href='http://localhost:3005/auth/google'><i className="material-icons left">insert_chart</i>Login</a></li>
                         </ul>
                         {/* Mobile Collapse Buttons */}
                         <ul className="side-nav" id="mobile-collapse">

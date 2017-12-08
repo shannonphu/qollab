@@ -33,7 +33,7 @@ module.exports = (function () {
         });
     }
 
-    userSchema.statics.findByGoogleID = (googleID) => {
+    userSchema.statics.findByGoogleID = (googleID, callback) => {
         User.findOne({ 'googleID': googleID })
             .populate('lectures')
             .exec(function (err, user) {

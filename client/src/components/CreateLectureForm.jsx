@@ -16,12 +16,11 @@ class CreateLectureForm extends Component {
     submitHandler(event) {
         event.preventDefault();
         let name = this.refs.name.value;
-        console.log(name);
         // Check if the input join code exists in the database
-        // TODO: Set actual instructorId
         axios.post('http://localhost:3005/create/', {
-            instructorId: 'instructorID',
             lectureName: name
+        }, {
+            withCredentials: true
         })
         .then((response) => {
             this.setState({

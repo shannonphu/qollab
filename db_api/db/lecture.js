@@ -8,8 +8,8 @@ module.exports = (function () {
     var lectureSchema = new mongoose.Schema({
         title: { type: String, required: true },
         joinCode: { type: String, required: true, unique: true },
-        instructor: { type: String, required: true },
-        students: [{ type: String }],
+        instructor: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        students: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
         comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
         canvas: String
     });
