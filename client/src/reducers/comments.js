@@ -1,5 +1,6 @@
 var CommentsReducer = (state = {
     showResolvedCommentsToggled: false,
+    sortByAnnotationCoordinates: true,
     commentFormShown: false,
     comments: [],
     lectureCode: null
