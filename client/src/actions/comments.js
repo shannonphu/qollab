@@ -4,6 +4,13 @@ export const toggleShowResolvedComments = () => {
     }
 }
 
+export const setAnnotationCheckbox = (isChecked) => {
+    return {
+        type: 'SET_ANNOTATION_CHECKBOX',
+        isChecked: isChecked
+    }
+}
+
 export const setCommentFormShown = (isShown) => {
     return {
         type: 'SET_COMMENT_FORM_SHOWN',

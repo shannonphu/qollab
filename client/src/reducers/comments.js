@@ -1,6 +1,7 @@
 var CommentsReducer = (state = {
     showResolvedCommentsToggled: false,
     commentFormShown: false,
+    annotationCheckbox: false,
     comments: [],
     lectureCode: null
 }, action) => {
@@ -15,12 +16,17 @@ var CommentsReducer = (state = {
                 ...state,
                 showResolvedCommentsToggled: !state.showResolvedCommentsToggled
             }
+        case 'SET_ANNOTATION_CHECKBOX':
+            return {
+                ...state,
+                annotationCheckbox: action.isChecked
+            }
         case 'SET_COMMENT_FORM_SHOWN':
             return {
                 ...state,
                 commentFormShown: action.isShown
             }
-            case 'SET_INITIAL_COMMENTS':
+        case 'SET_INITIAL_COMMENTS':
             return {
                 ...state,
                 comments: action.comments

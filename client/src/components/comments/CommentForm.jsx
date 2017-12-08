@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 import axios from 'axios';
+import $ from 'jquery';
 
 import * as realtimeActions from '../../actions/realtime';
 import * as commentsActions from '../../actions/comments';
@@ -11,6 +13,23 @@ class CommentForm extends Component {
         this.state = {};
         this.submitHandler = this.submitHandler.bind(this);
         this.annotationCheckboxToggled = this.annotationCheckboxToggled.bind(this);
+        this.onMountAndUpdate = this.onMountAndUpdate.bind(this);
+    }
+
+    onMountAndUpdate() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+        // Disable collapsibility
+        $(".CommentForm").click(function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    componentDidMount() {
+        this.onMountAndUpdate();
+    }
+
+    componentDidUpdate() {
+        this.onMountAndUpdate();
     }
 
     submitHandler(event) {
@@ -27,18 +46,20 @@ class CommentForm extends Component {
 
             // Clear textbox and checkbox
             this.refs.text.value = null;
-            this.refs.annotationWanted.checked = false;
+            this.props.setAnnotationCheckbox(false);
         }
     }
 
-    annotationCheckboxToggled(event) {
-        if (event.target.checked) {
+    annotationCheckboxToggled() {
+        const isChecked = this.props.annotationCheckbox;
+        if (!isChecked) {
             this.props.deactivateCanvasDrawingMode();
             this.props.addRectToCanvas();
         } else {
             this.props.removeRectFromCanvas(this.props.activeAnnotation._id);
             this.props.activateCanvasDrawingMode();
         }
+        this.props.setAnnotationCheckbox(!isChecked);
     }
 
     store(commentText, commentAnnotation) {
@@ -72,16 +93,20 @@ class CommentForm extends Component {
     }
 
     render() {
+        const checkbox = this.props.annotationCheckbox ? <i className="material-icons">check_box</i> : <i className="material-icons">check_box_outline_blank</i>;
+
         if (!this.props.commentFormShown) {
             return (null);
         } else {
             return (
                 <li className="CommentForm">
-                    <div className={this.props.className}>
+                    <div className={this.props.className} ref="disableTextSelect">
                         <form onSubmit={this.submitHandler} style={{ "width": "100%" }}>
                             <div className="row">
-                                <input type="checkbox" className="filled-in" id="annotationWanted" ref="annotationWanted" onChange={this.annotationCheckboxToggled} />
-                                <label htmlFor="annotationWanted">Add Annotation</label>
+                                <a onMouseDown={this.annotationCheckboxToggled} >
+                                    {checkbox}
+                                </a>
+                                <label>Add Annotation</label>
                             </div>
                             <div className="row input-field">
                                 <input id="add_comment" type="text" ref="text" autoComplete="off" className="materialize-textarea validate" />
@@ -102,6 +127,7 @@ function mapStateToProps(state) {
     return {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
         commentFormShown: state.commentsReducer.commentFormShown,
+        annotationCheckbox: state.commentsReducer.annotationCheckbox,
         canvas: state.realtimeReducer.canvas
     }
 }
@@ -116,6 +142,7 @@ const mapDispatchToProps = (dispatch) => {
         unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
         addCommentToList: comment => dispatch(commentsActions.addComment(comment)),
         setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
+        setAnnotationCheckbox: (isChecked) => dispatch(commentsActions.setAnnotationCheckbox(isChecked)),
         syncNewComment: (comment, joinCode) => dispatch({
             type: "socket/COMMENT_ADDED",
             data: {

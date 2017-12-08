@@ -15,14 +15,23 @@ class Comment extends Component {
         this.upVoteHandler = this.upVoteHandler.bind(this);
         this.resolveHandler = this.resolveHandler.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
+        this.onMountAndUpdate = this.onMountAndUpdate.bind(this);
+    }
+
+    onMountAndUpdate() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+        // Disable collapsibility for certain elements
+        $(".not-collapse").click(function(e) {
+            e.stopPropagation();
+        });
     }
 
     componentDidMount() {
-        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+        this.onMountAndUpdate();
     }
 
     componentDidUpdate() {
-        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+        this.onMountAndUpdate();
     }
 
     onClickHandler(event) {
