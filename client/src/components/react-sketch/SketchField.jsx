@@ -10,6 +10,7 @@ import Pencil from './pencil';
 import Tool from './tools';
 import * as realtimeActions from '../../actions/realtime';
 import * as commentActions from '../../actions/comments';
+import * as lectureActions from '../../actions/lecture';
 
 const fabric = require('fabric').fabric;
 
@@ -88,6 +89,7 @@ class SketchField extends Component {
         axios.get('http://localhost:3005/lecture/' + props.joinCode)
             .then((response) => {
                 this.fromJSON(response.data.canvas);
+                this.props.storeLecture(response.data);
             })
             .catch((error) => {
                 throw error;
@@ -546,6 +548,7 @@ const mapDispatchToProps = (dispatch) => {
         storeJoinCodeToCommentsReducer: joinCode => dispatch(commentActions.storeJoinCode(joinCode)),
         setInitialCanvas: canvas => dispatch(realtimeActions.setInitialCanvas(canvas)),
         unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
+        storeLecture: (lecture) => dispatch(lectureActions.storeLecture(lecture)),
         canvasUpdated: (canvasJSON, joinCode) => dispatch({
             type: "socket/CANVAS_UPDATED", canvasJSON: {
                 data: canvasJSON,

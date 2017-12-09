@@ -15,11 +15,12 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <Nav title="Lecture Title Placeholder" />
-        <Switch>
+        <Nav />
+        <Switch>        
           <Route exact path='/lecture/create' component={CreateLectureForm} />
           <Route path='/lecture/:joinCode' component={LecturePortal} />
-          <Route path='/join' component={JoinLectureForm} />
+          <Route path='/' component={JoinLectureForm} />
+          <Route path='/join' component={JoinLectureForm} />  
           <Redirect to='/' />
         </Switch>
       </div>
