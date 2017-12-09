@@ -6,7 +6,8 @@ module.exports = (function () {
     let mongoose = require('mongoose');
 
     var userSchema = new mongoose.Schema({
-        lectures: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lecture', unique: true }]
+        lectures: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lecture', unique: true }],
+        googleID: { type: String, unique: true, required: true }
     });
 
     /**
@@ -19,8 +20,8 @@ module.exports = (function () {
      *      console.log(newUser);
      * });
      */
-    userSchema.statics.insert = function (callback) {
-        let user = new User();
+    userSchema.statics.insert = function (googleID, callback) {
+        let user = new User({ googleID: googleID });
         user.save(function (err, data) {
             if (err) {
                 throw err;
@@ -30,6 +31,20 @@ module.exports = (function () {
                 callback(user);
             }
         });
+    }
+
+    userSchema.statics.findByGoogleID = (googleID, callback) => {
+        User.findOne({ 'googleID': googleID })
+            .populate('lectures')
+            .exec(function (err, user) {
+                if (err) {
+                    throw err;
+                }
+
+                if (callback) {
+                    callback(user);
+                }
+            });
     }
 
     /**
@@ -45,7 +60,7 @@ module.exports = (function () {
      */
     userSchema.statics.addLecture = function (id, lecture, callback) {
         User.findOneAndUpdate(
-            { "_id" : id },
+            { "_id": id },
             { $push: { "lectures": lecture._id } },
             { safe: true, upsert: true, new: true },
             function (err, user) {
@@ -71,7 +86,7 @@ module.exports = (function () {
      * });
      */
     userSchema.methods.getLectures = function (callback) {
-        User.findOne({ _id : this._id })
+        User.findOne({ _id: this._id })
             .populate('lectures')
             .exec(function (err, lectures) {
                 if (err) {

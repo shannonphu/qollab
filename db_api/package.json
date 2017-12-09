@@ -22,7 +22,10 @@
     "jest-cli": "^21.2.1",
     "mongoose": "^4.12.6",
     "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.1.1",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "^21.2.0",
