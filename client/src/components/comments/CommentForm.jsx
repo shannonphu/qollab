@@ -19,7 +19,7 @@ class CommentForm extends Component {
     onMountAndUpdate() {
         $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
         // Disable collapsibility
-        $(".CommentForm").click(function(e) {
+        $(".CommentForm").click(function (e) {
             e.stopPropagation();
         });
     }
@@ -63,6 +63,11 @@ class CommentForm extends Component {
     }
 
     store(commentText, commentAnnotation) {
+        this.props.unhighlightAllRects();
+        this.props.freezeCanvasObjects();
+        let canvasJSON = this.props.canvas.toJSON();
+        this.props.canvasUpdated(canvasJSON, this.props.lectureCode);
+
         axios.post('http://localhost:3005/comment/create', {
             joinCode: this.props.lectureCode,
             text: commentText,
@@ -72,16 +77,13 @@ class CommentForm extends Component {
                 let newComment = response.data;
                 this.props.addCommentToList(newComment);
                 this.props.syncNewComment(newComment, this.props.lectureCode);
-                this.props.unhighlightAllRects();
-                this.props.freezeCanvasObjects();
             })
             .catch((error) => {
                 throw error;
             });
 
-        let canvasJSON = this.props.canvas.toJSON();
         axios.post('http://localhost:3005/canvas/set', {
-            joinCode: this.props.joinCode,
+            joinCode: this.props.lectureCode,
             canvasJSON: JSON.stringify(canvasJSON)
         })
             .then((response) => {
@@ -147,6 +149,12 @@ const mapDispatchToProps = (dispatch) => {
             type: "socket/COMMENT_ADDED",
             data: {
                 comment: comment,
+                joinCode: joinCode
+            }
+        }),
+        canvasUpdated: (canvasJSON, joinCode) => dispatch({
+            type: "socket/CANVAS_UPDATED", canvasJSON: {
+                data: canvasJSON,
                 joinCode: joinCode
             }
         })

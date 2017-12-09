@@ -20,16 +20,16 @@ var RealtimeReducer = (state = {
             }
         case 'LOAD_CANVAS_FROM_JSON':
             // Only update the stored canvasJSON if the lecture code is for this lecture
-            let joinCode = action.canvasJSON["joinCode"];
+            let joinCode = action.joinCode;
             if (state.lectureCode !== joinCode) {
                 return state;
             }
 
-            let canvasJSON = action.canvasJSON["data"];
+            let canvasJSON = action.canvasJSON;
+            state.canvas.loadFromJSON(canvasJSON);
             return {
                 ...state,
-                joinCode: joinCode,
-                canvasJSON: canvasJSON
+                canvas: state.canvas
             }
         case 'SET_INITIAL_CANVAS':
             return {

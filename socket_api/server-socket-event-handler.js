@@ -1,5 +1,5 @@
 // Handles socket connections and event callbacks
-module.exports = function (server, canvasHistory) {
+module.exports = function (server) {
     const io = require('socket.io').listen(server);
 
     io.sockets.on('connection', function (socket) {
@@ -16,16 +16,10 @@ module.exports = function (server, canvasHistory) {
                         let json = action.canvasJSON;
                         let joinCode = json['joinCode'];
                         let canvasData = json['data'];
-                        if (!(joinCode in canvasHistory)) {
-                            canvasHistory[joinCode] = {}
-                        }
-                        canvasHistory[joinCode]["canvas"] = canvasData;
                         socket.broadcast.emit('action', {
                             type: 'LOAD_CANVAS_FROM_JSON',
-                            canvasJSON: {
-                                "joinCode": joinCode,
-                                "data": canvasData
-                            }
+                            joinCode: joinCode,
+                            canvasJSON: canvasData
                         });
                     }
                     break;

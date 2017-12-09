@@ -2,8 +2,7 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-let canvas = {};
-const socket = require('./server-socket-event-handler')(server, canvas);
+const socket = require('./server-socket-event-handler')(server);
 const axios = require('axios');
 
 // POST form data is "url-encoded", so decode that into JSON for us
@@ -23,14 +22,4 @@ app.use(function(req, res, next) {
 
 server.listen(3003, () => {
 	console.log("Listening on port 3003");
-});
-
-app.get('/canvas/:code', (req, res) => {
-	let code = req.params.code;
-	if (code in canvas) {
-		let json = canvas[code]["canvas"];
-		res.send(json);
-	} else {
-		res.send(null);
-	}
 });
