@@ -15,6 +15,9 @@
     display: inline-flex;
     vertical-align: middle;
 }
+.Comment .material-icons {
+    color: #009688;
+}
 .canvas-area {
 	border: solid 1px lightgray;
 }

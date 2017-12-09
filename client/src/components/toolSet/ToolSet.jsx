@@ -12,7 +12,7 @@ class ToolSet extends Component {
   render() {
     return (
         <div className="ToolSet fixed-action-btn">
-            <a className="btn-floating btn-large light-blue lighten-1">
+            <a className="btn-floating btn-large teal">
                 <i className="large material-icons">more_vert</i>
             </a>
             <ul>

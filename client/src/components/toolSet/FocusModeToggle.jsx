@@ -35,7 +35,7 @@ class FocusModeToggle extends Component {
         const icon = this.props.focusModeActive ? <i className="material-icons">visibility</i> : <i className="material-icons">visibility_off</i>;
         return(
             <div ref="disableTextSelect" className="FocusModeToggle">
-                <a data-tip data-for="FocusModeToggleTooltip" onClick={this.toggleFocusMode} className="btn-floating blue">
+                <a data-tip data-for="FocusModeToggleTooltip" onClick={this.toggleFocusMode} className="btn-floating teal lighten-2">
                     {icon}
                 </a>
                 <ReactTooltip place="left" type="info" effect="solid" id="FocusModeToggleTooltip" getContent={[this.getTooltipContent, 100]} />

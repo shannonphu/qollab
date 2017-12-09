@@ -11,7 +11,7 @@ class Nav extends Component {
     render() {
         return (
             <div className="navbar-fixed">
-                <nav className="light-blue lighten-1" role="navigation">
+                <nav className="teal darken-2" role="navigation">
                     <div className="nav-wrapper">
                         <div className="brand-logo center">{this.props.lecture ? this.props.lecture.title : "Qollab"}</div>
                         <ul id="nav-mobile" className="left hide-on-med-and-down">

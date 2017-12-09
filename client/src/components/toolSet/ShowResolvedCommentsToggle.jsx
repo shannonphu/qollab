@@ -25,7 +25,7 @@ class ShowResolvedCommentsToggle extends Component {
         const icon = this.props.showResolvedCommentsToggled ? <i className="material-icons">unfold_less</i> : <i className="material-icons">unfold_more</i>;
         return(
             <div ref="disableTextSelect" className="ShowResolvedCommentsToggle">
-                <a data-tip data-for="ShowResolvedCommentsToggleTooltip" onClick={this.props.toggleShowResolvedComments} className="btn-floating yellow">
+                <a data-tip data-for="ShowResolvedCommentsToggleTooltip" onClick={this.props.toggleShowResolvedComments} className="btn-floating teal lighten-3">
                     {icon}
                 </a>
                 <ReactTooltip place="left" type="info" effect="solid" id="ShowResolvedCommentsToggleTooltip" getContent={[this.getTooltipContent, 100]} />
