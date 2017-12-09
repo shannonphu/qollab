@@ -156,7 +156,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback',
 	passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res) => {
-		res.redirect('http://localhost:3000/lecture/create');
+		res.redirect('http://localhost:3000/join');
 	});
 
 function ensureAuthenticated(req, res, next) {
