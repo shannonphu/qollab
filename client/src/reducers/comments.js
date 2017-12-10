@@ -1,5 +1,6 @@
 var CommentsReducer = (state = {
     showResolvedCommentsToggled: false,
+    focusModeActive: false,    
     sortByAnnotationCoordinates: true,
     commentFormShown: false,
     annotationCheckbox: false,
@@ -11,6 +12,11 @@ var CommentsReducer = (state = {
             return {
                 ...state,
                 lectureCode: action.joinCode
+            }
+        case 'TOGGLE_FOCUS_MODE':
+            return {
+                ...state,
+                focusModeActive: !state.focusModeActive
             }
         case 'TOGGLE_SHOW_RESOLVED_COMMENTS':
             return {

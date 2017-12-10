@@ -1,16 +1,15 @@
 import uuidv1 from 'uuid/v1';
 const fabric = require('fabric').fabric;
-const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.3)';
-const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.1)';
-const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 3;
+const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(178, 223, 219, 0.5)';
+const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(224, 242, 241, 0.3)';
+const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 2;
 const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
+const ANNOTATION_STROKE_COLOR = '#80cbc4';
 
 var RealtimeReducer = (state = {
     lectureCode: null,
-    canvasJSON: null,
     canvas: null,
-    activeAnnotation: null,
-    focusModeActive: false
+    activeAnnotation: null
 }, action) => {
     switch (action.type) {
         case 'STORE_JOIN_CODE':
@@ -38,15 +37,11 @@ var RealtimeReducer = (state = {
             }
         case 'CANVAS_RECT_ADDED':
             {
-                if (state.focusModeActive) {
-                    return state;
-                }
-
                 let rect = new fabric.Rect({
                     width: 300,
                     height: 125,
                     fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
-                    stroke: 'darkgrey',
+                    stroke: ANNOTATION_STROKE_COLOR,
                     strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
                     hasRotatingPoint: false,
                     hasControls: true,
@@ -75,10 +70,6 @@ var RealtimeReducer = (state = {
             }
         case 'CANVAS_RECT_REMOVED':
             {
-                if (state.focusModeActive) {
-                    return state;
-                }
-
                 state.canvas.forEachObject((object) => {
                     if (object._id === action.objectId) {
                         state.canvas.remove(object);
@@ -93,10 +84,6 @@ var RealtimeReducer = (state = {
             }
         case 'HIGHLIGHT_RECT':
             {
-                if (state.focusModeActive) {
-                    return state;
-                }
-
                 state.canvas.forEachObject((object) => {
                     if (object._id === action.objectId) {
                         object.set({
@@ -113,10 +100,6 @@ var RealtimeReducer = (state = {
             }
         case 'UNHIGHLIGHT_RECT':
             {
-                if (state.focusModeActive) {
-                    return state;
-                }
-
                 state.canvas.forEachObject((object) => {
                     if (object.type === 'rect') {
                         object.set({
@@ -132,10 +115,6 @@ var RealtimeReducer = (state = {
                 }
             }
         case 'FREEZE_CANVAS_OBJECTS':
-            if (state.focusModeActive) {
-                return state;
-            }
-
             state.canvas.forEachObject((object) => {
                 object.set({
                     selectable: false,
@@ -158,10 +137,6 @@ var RealtimeReducer = (state = {
                 activeAnnotation: null
             };
         case 'DEACTIVATE_CANVAS_DRAWING_MODE':
-            if (state.focusModeActive) {
-                return state;
-            }
-
             state.canvas.isDrawingMode = false;
             state.canvas.selection = false;
             state.canvas.forEachObject((object) => {
@@ -176,10 +151,6 @@ var RealtimeReducer = (state = {
                 canvas: state.canvas
             };
         case 'HIDE_ANNOTATIONS':
-            if (state.focusModeActive) {
-                return state;
-            }
-
             state.canvas.forEachObject((object) => {
                 if (object.type === 'rect') {
                     object.set({
@@ -194,10 +165,6 @@ var RealtimeReducer = (state = {
                 canvas: state.canvas
             }
         case 'SHOW_ANNOTATIONS':
-            if (!state.focusModeActive) {
-                return state;
-            }
-
             state.canvas.forEachObject((object) => {
                 if (object.type === 'rect') {
                     object.set({
@@ -210,11 +177,6 @@ var RealtimeReducer = (state = {
             return {
                 ...state,
                 canvas: state.canvas
-            }
-        case 'TOGGLE_FOCUS_MODE':
-            return {
-                ...state,
-                focusModeActive: !state.focusModeActive
             }
         default:
             return state;

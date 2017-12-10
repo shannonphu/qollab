@@ -15,8 +15,20 @@
     display: inline-flex;
     vertical-align: middle;
 }
+.Comment .material-icons {
+    color: #009688;
+}
 .canvas-area {
 	border: solid 1px lightgray;
+}
+.commentlist-container {
+    overflow-y: scroll;
+    height: 100vh;
+}
+.canvas-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100vh;
 }
 li {
 	margin-bottom: 0.5rem;

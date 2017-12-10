@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import $ from 'jquery'; 
 
+import * as commentsActions from '../../actions/comments';
 import * as realtimeActions from '../../actions/realtime';
 
 class FocusModeToggle extends Component {
@@ -35,7 +36,7 @@ class FocusModeToggle extends Component {
         const icon = this.props.focusModeActive ? <i className="material-icons">visibility</i> : <i className="material-icons">visibility_off</i>;
         return(
             <div ref="disableTextSelect" className="FocusModeToggle">
-                <a data-tip data-for="FocusModeToggleTooltip" onClick={this.toggleFocusMode} className="btn-floating blue">
+                <a data-tip data-for="FocusModeToggleTooltip" onClick={this.toggleFocusMode} className="btn-floating teal lighten-2">
                     {icon}
                 </a>
                 <ReactTooltip place="left" type="info" effect="solid" id="FocusModeToggleTooltip" getContent={[this.getTooltipContent, 100]} />
@@ -46,13 +47,13 @@ class FocusModeToggle extends Component {
 
 function mapStateToProps(state) {
     return {
-        focusModeActive: state.realtimeReducer.focusModeActive
+        focusModeActive: state.commentsReducer.focusModeActive
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        toggleFocusMode: () => dispatch(realtimeActions.toggleFocusMode()),
+        toggleFocusMode: () => dispatch(commentsActions.toggleFocusMode()),
         showAnnotations: () => dispatch(realtimeActions.showAnnotations()),
         hideAnnotations: () => dispatch(realtimeActions.hideAnnotations())
     }
