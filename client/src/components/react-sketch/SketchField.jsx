@@ -151,6 +151,8 @@ class SketchField extends Component {
     _initTools(fabricCanvas) {
         this._tools = {};
         this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
+
+        this._fc.defaultCursor = 'default';
     }
 
     componentWillUnmount() {
@@ -169,17 +171,6 @@ class SketchField extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.tool !== nextProps.tool) {
             this._selectedTool = this._tools[nextProps.tool] || this._tools[Tool.Pencil];
-        }
-
-        //Bring the cursor back to default if it is changed by a tool
-        this._fc.defaultCursor = 'default';
-        if (this.props.backgroundColor !== nextProps.backgroundColor) {
-            this._backgroundColor(nextProps.backgroundColor)
-        }
-
-        // Load from canvas if it was updated by another client
-        if (this.props.joinCode === nextProps.updatedJoinCode && this.props.canvasJSON !== nextProps.canvasJSON) {
-            this.fromJSON(nextProps.canvasJSON);
         }
     }
 
