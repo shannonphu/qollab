@@ -13,8 +13,8 @@ class ToolSet extends Component {
   render() {
     return (
         <div className="ToolSet fixed-action-btn">
-            <a className="btn-floating btn-large teal">
-                <i className="large material-icons">more_vert</i>
+            <a className="btn-floating btn-medium teal">
+                <i className="material-icons">more_vert</i>
             </a>
             <ul>
                 <li><ShowResolvedCommentToggle /></li>

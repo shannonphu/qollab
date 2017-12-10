@@ -1,13 +1,13 @@
 import uuidv1 from 'uuid/v1';
 const fabric = require('fabric').fabric;
-const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.3)';
-const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(104, 204, 202, 0.1)';
-const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 3;
+const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(178, 223, 219, 0.5)';
+const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(224, 242, 241, 0.3)';
+const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 2;
 const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
+const ANNOTATION_STROKE_COLOR = '#80cbc4';
 
 var RealtimeReducer = (state = {
     lectureCode: null,
-    canvasJSON: null,
     canvas: null,
     activeAnnotation: null
 }, action) => {
@@ -41,7 +41,7 @@ var RealtimeReducer = (state = {
                     width: 300,
                     height: 125,
                     fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
-                    stroke: 'darkgrey',
+                    stroke: ANNOTATION_STROKE_COLOR,
                     strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
                     hasRotatingPoint: false,
                     hasControls: true,
