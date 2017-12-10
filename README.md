@@ -128,4 +128,41 @@ Purpose: To test creation, storing, join code generation for lecture objects
    Prerequisites: An empty mongoDB instance <br />
    Expected Result: Lecture object returned by findByJoinCode() is not null, and all of its data matches the original lecture data.
 
+# Frontend Testing #
+Location: Selenium Test Suite.html
 
+To run, load the test suite "selenium/Selenium Test Suite.html" in the Selenium IDE, an extension available for Firefox (only compatible with Firefox 54.0 and earlier versions). <br />
+Then play the entire test suite while Qollab is running in the background.
+
+### Create Lecture ###
+Location: CreateLecture.html
+
+Name: Create Lecture <br />
+Test: Enter a lecture title into the Create Lecture page and hit submit <br />
+Expected Result: Lecture code returned to user
+
+### Join Lecture ###
+Loctation: JoinLecture.html
+
+Name: Join Lecture <br />
+Test: Enter an invalid lecture code into the Join Lecture page and hit submit <br />
+Expected Result: User alerted to invalid code, not redirected <br />
+**This test currently fails because it does not output a visual error**
+
+### Integration ###
+Location: CreateAndJoinIntegration.html
+
+Name: Integration <br />
+Test: Full integration test of through several UI features in usage flow <br />
+1. Create a Lecture as described in the Create Lecture test
+2. Use the lecture code to join that same lecture, as described in the Join Lecture test but with a valid lecture code<br />
+**This step currently fails because the joined lecture is entitled "Lecture Title Placeholder" regardless of the input at Step 1**
+3. Write and submit a comment, and ensure it appears
+4. Write and submit a second comment and ensure it also appears separately
+5. Write and submit a reply to the first comment, and ensure it appears
+6. Write and submit a second reply to the first comment and ensure it also appears separately
+7. Resolve the first comment and ensure it vanishes
+8. Upvote the second comment and ensure the vote is registered
+9. Toggle on visibility of resolved comments in the bottom toolbar and ensure the first comment reappears
+10. Toggle off visibility of resolved comments in the bottom toolbar and ensure the first comment disappears <br />
+Expected Result: No steps fail, and checks pass as described

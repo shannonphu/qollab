@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3000/" />
+<title>CreateAndJoinIntegration</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CreateAndJoinIntegration</td></tr>
+</thead><tbody>
+<!--Create a lecture live to use for testing-->
+<tr>
+	<td>open</td>
+	<td>/lecture/create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=input[type=&quot;text&quot;]</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=p</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p</td>
+	<td>You can join your lecture at this code: *</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>css=p</td>
+	<td>lectureCode</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>javascript{storedVars['lectureCode'].split(': ')[1]}</td>
+	<td></td>
+</tr>
+<!--Use the lecture's generated code to join it-->
+<tr>
+	<td>type</td>
+	<td>css=input[type=&quot;number&quot;]</td>
+	<td>javascript{storedVars['lectureCode'].split(': ')[1]}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.brand-logo.center</td>
+	<td>Test</td>
+</tr>
+<!--Insert comments, and make sure they have the expected values-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=add_comment</td>
+	<td>TestComment1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=span</td>
+	<td>TestComment1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=add_comment</td>
+	<td>TestComment2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span:contains(&quot;TestComment2&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=span:contains(&quot;TestComment2&quot;)</td>
+	<td>TestComment2</td>
+</tr>
+<!--Oddly the collapsible comments treat automated clicks differently from manual clicks, but a refresh fixes this-->
+<tr>
+	<td>refresh</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<!--Reply to a comment, and make sure they show up with the exected values-->
+<tr>
+	<td>click</td>
+	<td>xpath=//div[@class='right']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=reply</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reply</td>
+	<td>Reply1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span:contains(&quot;Reply1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=reply</td>
+	<td>Reply2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span:contains(&quot;Reply2&quot;)</td>
+	<td></td>
+</tr>
+<!--Resolve a comment, and make sure it is no longer visible-->
+<tr>
+	<td>mouseDown</td>
+	<td>css=i.material-icons.not-collapse:contains(&quot;check&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>css=span:contains(&quot;TestComment1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=span</td>
+	<td>TestComment2</td>
+</tr>
+<!--Upvote a comment-->
+<tr>
+	<td>mouseDown</td>
+	<td>css=i.material-icons.not-collapse:contains(&quot;thumb_up&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=strong</td>
+	<td>1</td>
+</tr>
+<!--Toggle on visibility for resolved comments and make sure the resolved comment reappears-->
+<tr>
+	<td>mouseOver</td>
+	<td>css=i.large.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span:contains(&quot;RESOLVED&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span:contains(&quot;TestComment1&quot;)</td>
+	<td></td>
+</tr>
+<!--Toggle off visibility for resolved comments and make sure resolved comments disappear-->
+<tr>
+	<td>mouseOver</td>
+	<td>css=i.large.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>css=span:contains(&quot;RESOLVED&quot;)</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
