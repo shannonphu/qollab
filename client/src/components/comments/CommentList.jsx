@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-import AddCommentToggle from './AddCommentToggle';
 import * as commentActions from '../../actions/comments';
 
 class CommentList extends Component {
@@ -44,7 +43,6 @@ class CommentList extends Component {
 
         return (
             <div className="CommentList">
-                <AddCommentToggle />
                 <ul className="collapsible popout" data-collapsible="accordion">
                     <CommentForm className="collapsible-header z-depth-3" lectureCode={this.props.joinCode} />
                     {comments.map((comment, index) => (
