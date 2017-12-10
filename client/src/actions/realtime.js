@@ -74,9 +74,3 @@ export const hideAnnotations = () => {
         type: "HIDE_ANNOTATIONS"
     }
 }
-
-export const toggleFocusMode = () => {
-    return {
-        type: "TOGGLE_FOCUS_MODE"
-    }
-}

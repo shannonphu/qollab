@@ -4,6 +4,12 @@ export const toggleShowResolvedComments = () => {
     }
 }
 
+export const toggleFocusMode = () => {
+    return {
+        type: "TOGGLE_FOCUS_MODE"
+    }
+}
+
 export const setAnnotationCheckbox = (isChecked) => {
     return {
         type: 'SET_ANNOTATION_CHECKBOX',

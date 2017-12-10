@@ -61,7 +61,7 @@ class LecturePortal extends Component {
 
 function mapStateToProps(state) {
 	return {
-		focusModeActive: state.realtimeReducer.focusModeActive
+		focusModeActive: state.commentsReducer.focusModeActive
 	}
 }
 

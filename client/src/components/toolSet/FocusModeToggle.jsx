@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import $ from 'jquery'; 
 
+import * as commentsActions from '../../actions/comments';
 import * as realtimeActions from '../../actions/realtime';
 
 class FocusModeToggle extends Component {
@@ -46,13 +47,13 @@ class FocusModeToggle extends Component {
 
 function mapStateToProps(state) {
     return {
-        focusModeActive: state.realtimeReducer.focusModeActive
+        focusModeActive: state.commentsReducer.focusModeActive
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        toggleFocusMode: () => dispatch(realtimeActions.toggleFocusMode()),
+        toggleFocusMode: () => dispatch(commentsActions.toggleFocusMode()),
         showAnnotations: () => dispatch(realtimeActions.showAnnotations()),
         hideAnnotations: () => dispatch(realtimeActions.hideAnnotations())
     }
