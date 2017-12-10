@@ -48,8 +48,8 @@ class LecturePortal extends Component {
 			<div className='LecturePortal row'>
 				<ToolSet />
 				<div className="row lecture-container">
-					<div className="col s6 m8"><Canvas ref={this.setCanvasRef} joinCode={this.state.joinCode} /></div>
-					<div className="col s6 m4">
+					<div className="canvas-container col s6 m8"><Canvas ref={this.setCanvasRef} joinCode={this.state.joinCode} /></div>
+					<div className="commentlist-container col s6 m4">
 						{focusModeBarrier}
 						<CommentList ref={this.setCommentListRef} joinCode={this.state.joinCode} />
 					</div>

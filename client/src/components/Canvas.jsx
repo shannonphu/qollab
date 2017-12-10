@@ -17,7 +17,7 @@ class Canvas extends Component {
         tool: Tools.Pencil,
         controlledSize: false,
         sketchWidth: 850,
-        sketchHeight: 600,
+        sketchHeight: 3000,
     };
 
     _onSketchChange() {
