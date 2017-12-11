@@ -5,7 +5,7 @@ const server = http.createServer(app);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser({limit: '5mb'}));
 app.use(bodyParser.json());
 
 // Login with Passport.js
