@@ -86,8 +86,7 @@ class CommentForm extends Component {
             joinCode: this.props.lectureCode,
             canvasJSON: JSON.stringify(canvasJSON)
         })
-            .then((response) => {
-                console.log(response.data);
+            .then(() => {
             })
             .catch((error) => {
                 throw error;

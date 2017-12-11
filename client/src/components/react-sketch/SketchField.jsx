@@ -210,8 +210,7 @@ class SketchField extends Component {
             joinCode: this.props.joinCode,
             canvasJSON: JSON.stringify(this.toJSON())
         })
-            .then((response) => {
-                console.log(response.data);
+            .then(() => {
             })
             .catch((error) => {
                 throw error;

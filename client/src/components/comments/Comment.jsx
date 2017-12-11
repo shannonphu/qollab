@@ -65,6 +65,9 @@ class Comment extends Component {
         })
             .then(() => {
                 this.props.resolveComment(this.props.id);
+                if (this.props.annotation) {
+                    this.props.removeRectFromCanvas(this.props.annotation._id);                    
+                }
             })
             .catch((error) => {
                 throw error;
@@ -122,7 +125,8 @@ const mapDispatchToProps = (dispatch) => {
         upVoteComment: (commentID, joinCode) => dispatch(commentsActions.upVoteComment(commentID, joinCode)),
         resolveComment: id => dispatch(commentsActions.resolveComment(id)),
         highlightRect: (annotationId) => dispatch(realtimeActions.highlightRect(annotationId)),
-        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),        
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
+        removeRectFromCanvas: (id) => dispatch(realtimeActions.removeRectFromCanvas(id)),
         syncUpvote: (commentID, joinCode) => dispatch({
             type: "socket/COMMENT_UPVOTED",
             data: {
