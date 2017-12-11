@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import JoinLectureForm from './JoinLectureForm';
-
 class CreateLectureForm extends Component {
     constructor(props) {
         super(props)
@@ -25,7 +23,8 @@ class CreateLectureForm extends Component {
         .then((response) => {
             this.setState({
                 redirect: true,
-                lectureCode: response.data.joinCode
+                lectureCode: response.data.joinCode,
+                lectureTitle: name
             });
         })
         .catch((error) => {
@@ -37,9 +36,8 @@ class CreateLectureForm extends Component {
     render() {
         if (this.state.redirect) {            
             return (
-                <div>
-                    <p>You can join your lecture at this code: <strong>{this.state.lectureCode}</strong></p>
-                    <JoinLectureForm />
+                <div className="container">
+                    <h3>You can join {this.state.lectureTitle} at this code: <strong><a href={"/lecture/" + this.state.lectureCode}>{this.state.lectureCode}</a></strong></h3>
                 </div>
             );
         } else {

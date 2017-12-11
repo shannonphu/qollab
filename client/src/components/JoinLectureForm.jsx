@@ -15,19 +15,20 @@ class JoinLectureForm extends Component {
     submitHandler(event) {
         event.preventDefault();
         let joinCode = this.refs.joinCode.value;
+        if (joinCode.length === 0) {
+            return;
+        }
 
         // Check if the input join code exists in the database
         axios.get('http://localhost:3005/lecture/' + joinCode)
             .then((response) => {
-                console.log(response.data);
                 this.setState({
                     redirect: true,
                     joinCode: joinCode
                 });
             })
             .catch((error) => {
-                // TODO: Redirect to 'no lecture found for this join code' view
-                throw error;
+                return (<Redirect to="/join" />);
             });
     }
 
