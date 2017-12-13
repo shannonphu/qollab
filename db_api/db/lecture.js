@@ -68,6 +68,33 @@ module.exports = (function () {
         });
     }
 
+    /*
+    * Functionality:
+    *   - return lecture's joincode by objectid
+    * Usage:
+    * Lecture.getJoinCode(lectureId, (lecture) => {
+    *    // do something
+    });
+    * Returns:
+    *   - the joincode of a lecture by its id
+    */
+    lectureSchema.statics.getJoinCode = (lectureId, callback) => {
+        Lecture.findById(lectureId, function (err, lecture) {
+            if (err) {
+                throw err;
+            }
+
+            if (lecture == null) {
+                return null;
+            }
+
+            if (callback) {
+                callback(lecture.joinCode);
+            }
+            return;
+        });
+    }
+
     /**
      * @summary Adds a comment to the lecture object
      * @param {String} Join code for the lecture we want to add the comment to
@@ -141,7 +168,7 @@ module.exports = (function () {
                 if (err) {
                     throw err;
                 }
-                
+
                 if (callback) {
                     callback(lecture);
                 }

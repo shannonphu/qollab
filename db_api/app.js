@@ -1,11 +1,13 @@
 const express = require('express');
 const http = require('http');
+const cookieParser = require('cookie-parser')
 const app = express();
 const server = http.createServer(app);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
-app.use(bodyParser({limit: '5mb'}));
+app.use(cookieParser());
+app.use(bodyParser({ limit: '5mb' }));
 app.use(bodyParser.json());
 
 // Login with Passport.js
@@ -37,7 +39,7 @@ app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 	res.header('Access-Control-Allow-Credentials', 'true');
-	
+
 	if ('OPTIONS' == req.method) res.sendStatus(200);
 	else next();
 });
@@ -45,9 +47,56 @@ app.use(function (req, res, next) {
 app.get('/lecture/:joinCode', (req, res) => {
 	let joinCode = req.params.joinCode;
 	Lecture.findByJoinCode(joinCode, (lecture) => {
+		res.cookie('joinCode', joinCode, {
+			httpOnly: true
+		});
 		res.json(lecture);
 	});
 });
+
+function findLastLecture(req, res, next) {
+	if (req.user == null) {
+		return next();
+	}
+	//  Determine if cookie exists
+	//  If it exists we will directly display the most recent lecture
+	let userId = req.user._id;
+	if (userId == null) {
+		console.log('No user exists');
+		return next();
+	}
+	User.findById(userId, (err, user) => {
+		if (err) {
+			throw err;
+		}
+
+		if (user == null) {
+			console.log(`User ${userId} does not exist.`);
+			return next();
+		}
+
+		console.log('Find lecture join code.');
+		//  use the joincode associated with the current user
+		if ('joinCode' in req.cookies) {
+			res.redirect('lecture/' + res.cookies.joinCode);
+		} else {
+			let lectures = user.getLectures;
+			if (lectures.length == 0) {
+				res.redirect('http://localhost:3000/join');
+			} else {
+				let lastLecture = lectures[lectures.length - 1];
+				Lecture.getJoinCode(lastLecture.id, (joinCode) => {
+					if (joinCode != null) {
+						res.redirect('lecture/' + joinCode);
+					} else {
+						res.redirect('http://localhost:3000/join');
+					}
+				});
+			}
+		}
+	})
+
+}
 
 app.post('/create', ensureAuthenticated, (req, res) => {
 	let userID = req.user._id;
@@ -123,12 +172,12 @@ passport.use(new GoogleStrategy({
 },
 	function (token, tokenSecret, profile, done) {
 		User.findByGoogleID(profile.id, (user) => {
-			if (!user) {
+			if (user != null) {
+				return done(null, user);
+			} else {
 				User.insert(profile.id, (user) => {
 					return done(null, user);
 				});
-			} else {
-				return done(null, user);
 			}
 		});
 	}
@@ -160,7 +209,9 @@ app.get('/auth/google/callback',
 	});
 
 function ensureAuthenticated(req, res, next) {
+	console.log(req.cookies.userId);
 	if (req.user) {
+		res.cookie('userId', userId);
 		return next();
 	} else {
 		res.redirect('/auth/google');
