@@ -1,12 +1,12 @@
 # Qollab
 
 ## Table of Contents
-1. [Project Directory Structure](https://github.com/shannonphu/qollab/tree/shannon/readme-update#project-directory-structure)
-2. [Setting up environment for the first time](https://github.com/shannonphu/qollab/tree/shannon/readme-update#setting-up-environment-for-the-first-time)
-3. [Development Workflow](https://github.com/shannonphu/qollab/tree/shannon/readme-update#development-workflow)
-4. [Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#test-cases)
-    * [Backend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#backend-testing)
-    * [Frontend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#frontend-testing)
+1. [Project Directory Structure](https://github.com/shannonphu/qollab#project-directory-structure)
+2. [Setting up environment for the first time](https://github.com/shannonphu/qollab#setting-up-environment-for-the-first-time)
+3. [Development Workflow](https://github.com/shannonphu/qollab#development-workflow)
+4. Testing
+    * [Backend Testing](https://github.com/shannonphu/qollab#backend-testing)
+    * [Frontend Testing](https://github.com/shannonphu/qollab#frontend-testing)
 
 ## Project Directory Structure
 Each directory in our project refers to a microservice as part of our project, except for `selenium` which is for frontend tests. 
