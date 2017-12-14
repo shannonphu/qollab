@@ -46,7 +46,7 @@ class CreateLectureForm extends Component {
                     <h5 className="center-align">Create Your Lecture:</h5>
                     <form onSubmit={this.submitHandler}>
                         <div className="input-field">
-                            <input type="text" placeholder="Lecture Name" ref="name" style={{"text-align":"center"}} />
+                            <input type="text" placeholder="Lecture Name" ref="name" style={{"textAlign":"center"}} />
                         </div>
                         <div className="center-align">
                             <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
