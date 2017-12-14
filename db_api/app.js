@@ -128,13 +128,13 @@ app.post('/canvas/set', (req, res) => {
 });
 
 app.get('/user/current', (req, res) => {
-	if (!req.user) {
-		return res.send(null);
+	if (req.user == null) {
+		res.send(null);
+	} else {
+		User.findByGoogleID(req.user.googleID, (user) => {
+			res.send(user);
+		});
 	}
-	
-	User.findByGoogleID(req.user.googleID, (user) => {
-		res.send(user);
-	})
 });
 
 server.listen(3005, () => {
