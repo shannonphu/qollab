@@ -21,7 +21,7 @@ class Comment extends Component {
     onMountAndUpdate() {
         $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
         // Disable collapsibility for certain elements
-        $(".not-collapse").click(function(e) {
+        $(".not-collapse").click(function (e) {
             e.stopPropagation();
         });
     }
@@ -65,8 +65,10 @@ class Comment extends Component {
         })
             .then(() => {
                 this.props.resolveComment(this.props.id);
+                this.props.syncResolveComment(this.props.id, this.props.lectureCode);
                 if (this.props.annotation) {
-                    this.props.removeRectFromCanvas(this.props.annotation._id);                    
+                    this.props.removeRectFromCanvas(this.props.annotation._id);
+                    this.props.syncRemoveRectFromCanvas(this.props.annotation._id);
                 }
             })
             .catch((error) => {
@@ -132,6 +134,19 @@ const mapDispatchToProps = (dispatch) => {
             data: {
                 commentID: commentID,
                 joinCode: joinCode
+            }
+        }),
+        syncResolveComment: (commentID, joinCode) => dispatch({
+            type: "socket/COMMENT_RESOLVED",
+            data: {
+                commentID: commentID,
+                joinCode: joinCode
+            }
+        }),
+        syncRemoveRectFromCanvas: (annotationID) => dispatch({
+            type: "socket/ANNOTATION_RESOLVED",
+            data: {
+                annotationID: annotationID
             }
         })
     }
