@@ -75,30 +75,6 @@ module.exports = (function () {
         );
     }
 
-    /**
-     * @summary retrieves all lecture objects belonging to this user
-     * @param {function} callback to execute after getting all lecture objects
-     * @returns {[Lecture]} array of lectures belonging to this user
-     * @memberof module:userDB
-     * @example
-     * instructor.getLectures((lectures) => {
-     * 
-     * });
-     */
-    userSchema.methods.getLectures = function (callback) {
-        User.findOne({ _id: this._id })
-            .populate('lectures')
-            .exec(function (err, lectures) {
-                if (err) {
-                    throw err;
-                }
-
-                if (callback) {
-                    callback(lectures);
-                }
-            });
-    }
-
     let User = mongoose.model('User', userSchema);
     return User;
 }());

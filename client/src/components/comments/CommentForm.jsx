@@ -87,6 +87,8 @@ class CommentForm extends Component {
         axios.post('http://localhost:3005/canvas/set', {
             joinCode: this.props.lectureCode,
             canvasJSON: JSON.stringify(canvasJSON)
+        }, {
+            withCredentials: true
         })
             .then(() => {
             })

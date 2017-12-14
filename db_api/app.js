@@ -58,12 +58,10 @@ app.get('/lecture/:joinCode', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-	// Authentication
-	if (!req.user) {
-		return res.send({});
+	let userID = null;
+	if (req.user) {
+		userID = req.user._id;
 	}
-
-	let userID = req.user._id;
 	Lecture.insert(req.body.lectureName, userID, (lecture) => {
 		User.addLecture(userID, lecture);
 		res.json(lecture);
@@ -135,6 +133,16 @@ app.post('/canvas/set', (req, res) => {
 			res.send(lecture);
 		});
 	});
+});
+
+app.get('/user/current', (req, res) => {
+	if (!req.user) {
+		res.send(null);
+	}
+	
+	User.findByGoogleID(req.user.googleID, (user) => {
+		res.send(user);
+	})
 });
 
 server.listen(3005, () => {
