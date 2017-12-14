@@ -5,7 +5,7 @@
 2. [Setting up environment for the first time](https://github.com/shannonphu/qollab/tree/shannon/readme-update#setting-up-environment-for-the-first-time)
 3. [Development Workflow](https://github.com/shannonphu/qollab/tree/shannon/readme-update#development-workflow)
 4. [Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#test-cases)
-    * [Backend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#backend-tests)
+    * [Backend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#backend-testing)
     * [Frontend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#frontend-testing)
 
 ## Project Directory Structure
@@ -95,9 +95,7 @@ Then `git clone https://github.com/shannonphu/qollab.git`
     
     
 # Test Cases
-
-## Backend Tests
-
+## Backend Testing
 To run:
 ```
 docker-compose  -f docker-compose-test.yml up --build
