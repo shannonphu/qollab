@@ -100,7 +100,7 @@ class SketchField extends Component {
     
             let userID = user._id;
             let instructorID = lecture.instructor;
-            if (userID != instructorID) {
+            if (userID !== instructorID) {
               this.props.deactivateCanvasDrawingMode();
               setTimeout(() => {
                 this.props.freezeCanvasObjects();
