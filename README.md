@@ -1,5 +1,18 @@
 # Qollab
 
+## Project Directory Structure
+Each directory in our project refers to a microservice as part of our project, except for `selenium` which is for frontend tests. 
+* `client`
+  - A React.js and Redux service which only renders the frontend web UI. It fetches data from the other backend services we created through HTTP requests.
+* `db_api`
+  - A node.js API service that interfaces with our MongoDB database and allows the client to access the database through endpoints
+* `mongo`
+  - A Docker image for establishing a MongoDB connection
+* `selenium`
+  - Selenium tests
+* `socket_api`
+  - A node.js websocket server service to broadcast canvas, comment, and annotation updates from one client to other observing clients
+
 ## Setting up environment for the first time
 * For Mac users:
   1. Install [Homebrew](https://brew.sh/) if you haven't already. 
