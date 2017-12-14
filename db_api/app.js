@@ -57,7 +57,12 @@ app.get('/lecture/:joinCode', (req, res) => {
 	});
 });
 
-app.post('/create', ensureAuthenticated, (req, res) => {
+app.post('/create', (req, res) => {
+	// Authentication
+	if (!req.user) {
+		return res.status(401).send({});
+	}
+
 	let userID = req.user._id;
 	Lecture.insert(req.body.lectureName, userID, (lecture) => {
 		User.addLecture(userID, lecture);
@@ -112,16 +117,23 @@ app.post('/comment/resolve', (req, res) => {
 });
 
 app.post('/canvas/set', (req, res) => {
+	// Authentication
+	if (!req.user) {
+		return res.status(401).send({});
+	}
+
 	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
 		let instructorID = lecture.instructor;
-		if (req.user) {
-			let userID = req.user._id;
-			if (userID == instructorID) {
-				Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
-					res.send(lecture);
-				});
-			}
+		let userID = req.user._id;
+
+		// Authorization
+		if (userID != instructorID) {
+			return res.status(403).send({});
 		}
+
+		Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+			res.send(lecture);
+		});
 	});
 });
 
@@ -174,11 +186,3 @@ app.get('/auth/google/callback',
 	passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res) => {
 		res.redirect('http://localhost:3000/join');
 	});
-
-function ensureAuthenticated(req, res, next) {
-	if (req.user) {
-		return next();
-	} else {
-		res.redirect('/auth/google');
-	}
-}

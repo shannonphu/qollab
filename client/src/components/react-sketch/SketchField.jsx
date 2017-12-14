@@ -215,6 +215,15 @@ class SketchField extends Component {
             .then(() => {
             })
             .catch((error) => {
+              axios.get('http://localhost:3005/lecture/' + this.props.joinCode)
+              .then((response) => {
+                  this.fromJSON(response.data.canvas);
+                  this.props.storeLecture(response.data);
+              })
+              .catch((error) => {
+                  throw error;
+              });
+              
                 throw error;
             });
 
