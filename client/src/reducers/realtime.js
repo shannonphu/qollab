@@ -7,11 +7,17 @@ const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
 const ANNOTATION_STROKE_COLOR = '#80cbc4';
 
 var RealtimeReducer = (state = {
+    isInstructor: false,
     lectureCode: null,
     canvas: null,
     activeAnnotation: null
 }, action) => {
     switch (action.type) {
+        case 'SET_IS_INSTRUCTOR':
+            return {
+                ...state,
+                isInstructor: action.isInstructor
+            }
         case 'STORE_JOIN_CODE':
             return {
                 ...state,
