@@ -38,14 +38,15 @@ class JoinLectureForm extends Component {
         } else {
             return (
                 <div className='JoinLectureForm container'>
-                    <center><p>Enter Code Below:</p></center>
-                    <div className="row">
-                        <div className="input-field col s12"></div>
-                        <form onSubmit={this.submitHandler}>
-                            <input placeholder="123456" type="number" className="validate" ref="joinCode" />
-                            <button>Submit</button>
-                        </form>
-                    </div>
+                    <h5 className="center-align">Please Enter Code:</h5>
+                    <form onSubmit={this.submitHandler}>
+                        <div className="input-field">
+                            <input placeholder="123456" type="number" className="validate" ref="joinCode" style={{"text-align":"center"}}/>
+                        </div>
+                        <div className="center-align">
+                            <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                        </div>
+                    </form>
                 </div>
             )
         }

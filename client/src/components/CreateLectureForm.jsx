@@ -43,10 +43,14 @@ class CreateLectureForm extends Component {
         } else {
             return (
                 <div className='CreateLectureForm container'>
-                    <h3>Create Your Lecture:</h3>
+                    <h5 className="center-align">Create Your Lecture:</h5>
                     <form onSubmit={this.submitHandler}>
-                        <input type="text" placeholder="Lecture Name" ref="name" />
-                        <button>Submit</button>
+                        <div className="input-field">
+                            <input type="text" placeholder="Lecture Name" ref="name" style={{"text-align":"center"}} />
+                        </div>
+                        <div className="center-align">
+                            <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+                        </div>
                     </form>
                 </div>
             )
