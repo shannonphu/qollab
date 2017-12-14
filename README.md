@@ -1,11 +1,20 @@
 # Qollab
 
+## Table of Contents
+1. [Project Directory Structure](https://github.com/shannonphu/qollab/tree/shannon/readme-update#project-directory-structure)
+2. [Setting up environment for the first time](https://github.com/shannonphu/qollab/tree/shannon/readme-update#setting-up-environment-for-the-first-time)
+3. [Development Workflow](https://github.com/shannonphu/qollab/tree/shannon/readme-update#development-workflow)
+4. [Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#test-cases)
+    * [Backend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#backend-tests)
+    * [Frontend Testing](https://github.com/shannonphu/qollab/tree/shannon/readme-update#frontend-testing)
+
 ## Project Directory Structure
 Each directory in our project refers to a microservice as part of our project, except for `selenium` which is for frontend tests. 
 * `client`
   - A React.js and Redux service which only renders the frontend web UI. It fetches data from the other backend services we created through HTTP requests.
 * `db_api`
   - A node.js API service that interfaces with our MongoDB database and allows the client to access the database through endpoints
+  - Contains backend tests under `dp_api/__tests__`
 * `mongo`
   - A Docker image for establishing a MongoDB connection
 * `selenium`
@@ -85,7 +94,8 @@ Then `git clone https://github.com/shannonphu/qollab.git`
     **Do _NOT_ force push to other people's branches**
     
     
-# Test Cases #
+# Test Cases
+## Backend Tests
 To run:
 ```
 docker-compose  -f docker-compose-test.yml up --build
@@ -141,7 +151,7 @@ Purpose: To test creation, storing, join code generation for lecture objects
    Prerequisites: An empty mongoDB instance <br />
    Expected Result: Lecture object returned by findByJoinCode() is not null, and all of its data matches the original lecture data.
 
-# Frontend Testing #
+## Frontend Testing
 Location: Selenium Test Suite.html
 
 To run, load the test suite "selenium/Selenium Test Suite.html" in the Selenium IDE, an extension available for Firefox (only compatible with Firefox 54.0 and earlier versions). <br />
@@ -162,7 +172,7 @@ Test: Enter an invalid lecture code into the Join Lecture page and hit submit <b
 Expected Result: User alerted to invalid code, not redirected <br />
 **This test currently fails because it does not output a visual error**
 
-### Integration ###
+### Integration
 Location: CreateAndJoinIntegration.html
 
 Name: Integration <br />
