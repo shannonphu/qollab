@@ -35,6 +35,10 @@ module.exports = function (server, axios) {
                       joinCode: joinCode,
                       canvasJSON: canvasData
                     });
+
+                    socket.broadcast.emit('action', {
+                      type: 'FREEZE_CANVAS_OBJECTS'
+                    });
                   }
                 }))
                 .catch(error => console.log(error));

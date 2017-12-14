@@ -86,14 +86,28 @@ class SketchField extends Component {
         this.props.storeJoinCodeToCommentsReducer(props.joinCode);
         // Get the canvas data that currently stored in MongoDB in case we entered a session mid-way
         // and there is data to sync with.
-        axios.get('http://localhost:3005/lecture/' + props.joinCode)
-            .then((response) => {
-                this.fromJSON(response.data.canvas);
-                this.props.storeLecture(response.data);
-            })
-            .catch((error) => {
-                throw error;
-            });
+        axios.all([
+          axios.get('http://localhost:3005/me', {
+            withCredentials: true
+          }),
+          axios.get('http://localhost:3005/lecture/' + props.joinCode)
+        ])
+          .then((response) => {
+            let user = response[0];
+            let lecture = response[1];
+            this.fromJSON(lecture.data.canvas);
+            this.props.storeLecture(lecture.data);
+    
+            let userID = user.data._id;
+            let instructorID = lecture.data.instructor;
+            if (userID != instructorID) {
+              this.props.deactivateCanvasDrawingMode();
+              setTimeout(() => {
+                this.props.freezeCanvasObjects();
+              }, 100);
+            }
+          })
+          .catch(error => console.log(error));
     }
 
     state = {
@@ -207,31 +221,22 @@ class SketchField extends Component {
         this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
         this.props.unhighlightAllRects();
         axios.post('http://localhost:3005/canvas/set', {
-            joinCode: this.props.joinCode,
-            canvasJSON: JSON.stringify(this.toJSON())
+          joinCode: this.props.joinCode,
+          canvasJSON: JSON.stringify(this.toJSON())
         }, {
-                withCredentials: true
-            })
-            .then(() => {
-            })
-            .catch((error) => {
-              axios.get('http://localhost:3005/lecture/' + this.props.joinCode)
-              .then((response) => {
-                  this.fromJSON(response.data.canvas);
-                  this.props.storeLecture(response.data);
-              })
-              .catch((error) => {
-                  throw error;
-              });
-              
-                throw error;
-            });
-
+            withCredentials: true
+          })
+          .then(() => {
+          })
+          .catch((error) => {
+            throw error;
+          });
+    
         if (this.props.onChange) {
-            let onChange = this.props.onChange;
-            setTimeout(() => {
-                onChange();
-            }, 10);
+          let onChange = this.props.onChange;
+          setTimeout(() => {
+            onChange();
+          }, 10);
         }
     }
 
@@ -545,6 +550,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
+        freezeCanvasObjects: () => dispatch(realtimeActions.freezeCanvasObjects()),
         storeJoinCodeToRealtimeReducer: joinCode => dispatch(realtimeActions.storeJoinCode(joinCode)),
         storeJoinCodeToCommentsReducer: joinCode => dispatch(commentActions.storeJoinCode(joinCode)),
         setInitialCanvas: canvas => dispatch(realtimeActions.setInitialCanvas(canvas)),

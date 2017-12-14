@@ -42,7 +42,9 @@ class CommentForm extends Component {
 
             this.props.setCommentFormShown(false);
 
-            this.props.activateCanvasDrawingMode();
+            if (this.props.user) {
+              this.props.activateCanvasDrawingMode();
+            }
 
             // Clear textbox and checkbox
             this.refs.text.value = null;
@@ -129,7 +131,8 @@ function mapStateToProps(state) {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
         commentFormShown: state.commentsReducer.commentFormShown,
         annotationCheckbox: state.commentsReducer.annotationCheckbox,
-        canvas: state.realtimeReducer.canvas
+        canvas: state.realtimeReducer.canvas,
+        user: state.userReducer.user
     }
 }
 
