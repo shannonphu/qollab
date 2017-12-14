@@ -112,6 +112,16 @@ app.post('/canvas/set', (req, res) => {
 	});
 });
 
+app.get('/user/current', (req, res) => {
+	if (!req.user) {
+		res.send(null);
+	}
+	
+	User.findByGoogleID(req.user.googleID, (user) => {
+		res.send(user);
+	})
+});
+
 server.listen(3005, () => {
 	console.log("Listening on port 3005");
 });
@@ -159,7 +169,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback',
 	passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res) => {
-		res.redirect('http://localhost:3000/join');
+		res.redirect('http://localhost:3000/dashboard');
 	});
 
 function ensureAuthenticated(req, res, next) {
