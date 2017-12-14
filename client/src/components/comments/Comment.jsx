@@ -95,9 +95,10 @@ class Comment extends Component {
         } else {
 
             const resolveButton = this.props.resolved ? <span>RESOLVED</span> : (
+                this.props.isInstructor ? 
                 <a onMouseDown={this.resolveHandler} >
                     <i className="material-icons not-collapse">check</i>
-                </a>
+                </a> : (null)
             );
 
             return (
@@ -132,7 +133,8 @@ class Comment extends Component {
 function mapStateToProps(state) {
     return {
         showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled,
-        canvas: state.realtimeReducer.canvas
+        canvas: state.realtimeReducer.canvas,
+        isInstructor: state.realtimeReducer.isInstructor
     }
 }
 
