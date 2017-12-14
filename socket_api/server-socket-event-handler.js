@@ -1,5 +1,5 @@
 // Handles socket connections and event callbacks
-module.exports = function (server) {
+module.exports = function (server, axios) {
     const io = require('socket.io').listen(server);
 
     io.sockets.on('connection', function (socket) {
@@ -16,11 +16,32 @@ module.exports = function (server) {
                         let json = action.canvasJSON;
                         let joinCode = json['joinCode'];
                         let canvasData = json['data'];
-                        socket.broadcast.emit('action', {
-                            type: 'LOAD_CANVAS_FROM_JSON',
-                            joinCode: joinCode,
-                            canvasJSON: canvasData
-                        });
+
+                        axios.all([
+                            axios.get('http://db_api:3005/user/current/', {
+                                headers: {
+                                    Cookie: socket.request.headers.cookie
+                                }
+                            }),
+                            axios.get('http://db_api:3005/lecture/' + joinCode)
+                        ])
+                            .then(axios.spread(function (user, lecture) {
+                                let userID = user.data._id;
+                                let instructorID = lecture.data.instructor;
+
+                                if (userID == instructorID) {
+                                    socket.broadcast.emit('action', {
+                                        type: 'LOAD_CANVAS_FROM_JSON',
+                                        joinCode: joinCode,
+                                        canvasJSON: canvasData
+                                    });
+
+                                    socket.broadcast.emit('action', {
+                                        type: 'FREEZE_CANVAS_OBJECTS'
+                                    });
+                                }
+                            }))
+                            .catch(error => console.log(error));
                     }
                     break;
                 case 'socket/COMMENT_ADDED':
@@ -74,6 +95,7 @@ module.exports = function (server) {
                             joinCode: joinCode
                         });
                     }
+                    break;
                 case 'socket/ANNOTATION_RESOLVED':
                     {
                         let json = action.data;
@@ -82,7 +104,9 @@ module.exports = function (server) {
                             type: 'CANVAS_RECT_REMOVED',
                             objectId: annotationID
                         });
+
                     }
+                    break;
                 default:
                     break;
             }

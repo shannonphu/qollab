@@ -2,8 +2,8 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const socket = require('./server-socket-event-handler')(server);
 const axios = require('axios');
+const socket = require('./server-socket-event-handler')(server, axios);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');

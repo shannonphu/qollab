@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
+import * as userActions from '../actions/user';
 
 class Nav extends Component {
 
     constructor(props) {
         super(props);
         this.state = {};
+        
+        axios.get('http://localhost:3005/user/current/', {
+            withCredentials: true
+        })
+          .then((response) => {
+              this.props.setUser(response.data);
+          })
+          .catch((error) => {
+              throw error;
+          });
     }
 
     render() {
@@ -28,7 +41,7 @@ class Nav extends Component {
                             <div className="brand-logo center">{this.props.lecture ? this.props.lecture.title : "Qollab"}</div>
                             <ul className="right hide-on-med-and-down">
                                 <li><a href="/lecture/create"><i className="material-icons">add_circle</i></a></li>
-                                <li><a href='http://localhost:3005/auth/google'><i className="material-icons">account_circle</i></a></li>
+                                <li><a href='http://localhost:3005/auth/google'><i id="login-button" className="material-icons">account_circle</i></a></li>
                             </ul>
 
                             {/* Mobile Collapse Buttons */}
@@ -38,7 +51,6 @@ class Nav extends Component {
                         </div>
                     </nav>
                 </div>
-                
             </div>
         );
     }
@@ -46,8 +58,15 @@ class Nav extends Component {
 
 function mapStateToProps(state) {
     return {
-        lecture: state.lectureReducer.lecture
+        lecture: state.lectureReducer.lecture,
+        user: state.userReducer.user
     }
 }
 
-export default connect(mapStateToProps, null)(Nav);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (user) => dispatch(userActions.setUser(user))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

@@ -5,7 +5,7 @@ const server = http.createServer(app);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
-app.use(bodyParser({limit: '5mb'}));
+app.use(bodyParser({ limit: '5mb' }));
 app.use(bodyParser.json());
 
 // Login with Passport.js
@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 	res.header('Access-Control-Allow-Credentials', 'true');
-	
+
 	if ('OPTIONS' == req.method) res.sendStatus(200);
 	else next();
 });
@@ -107,14 +107,29 @@ app.post('/comment/resolve', (req, res) => {
 });
 
 app.post('/canvas/set', (req, res) => {
-	Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
-		res.send(lecture);
+	// Authentication
+	if (!req.user) {
+		return res.send({});
+	}
+
+	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
+		let instructorID = lecture.instructor;
+		let userID = req.user._id;
+
+		// Authorization
+		if (userID != instructorID) {
+			return res.send({});
+		}
+
+		Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+			res.send(lecture);
+		});
 	});
 });
 
 app.get('/user/current', (req, res) => {
 	if (!req.user) {
-		res.send(null);
+		return res.send(null);
 	}
 	
 	User.findByGoogleID(req.user.googleID, (user) => {
@@ -169,13 +184,5 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback',
 	passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res) => {
-		res.redirect('http://localhost:3000/dashboard');
+		res.redirect('http://localhost:3000/join');
 	});
-
-function ensureAuthenticated(req, res, next) {
-	if (req.user) {
-		return next();
-	} else {
-		res.redirect('/auth/google');
-	}
-}
