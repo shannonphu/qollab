@@ -111,14 +111,16 @@ app.post('/comment/resolve', (req, res) => {
 	});
 });
 
-app.post('/canvas/set', ensureAuthenticated, (req, res) => {
-	let userID = req.user._id;
+app.post('/canvas/set', (req, res) => {
 	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
 		let instructorID = lecture.instructor;
-		if (userID == instructorID) {
-			Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
-				res.send(lecture);
-			});
+		if (req.user) {
+			let userID = req.user._id;
+			if (userID == instructorID) {
+				Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+					res.send(lecture);
+				});
+			}
 		}
 	});
 });
