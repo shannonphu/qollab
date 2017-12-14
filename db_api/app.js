@@ -49,8 +49,11 @@ app.get('/lecture/:joinCode', (req, res) => {
 	});
 });
 
-app.post('/create', ensureAuthenticated, (req, res) => {
-	let userID = req.user._id;
+app.post('/create', (req, res) => {
+	let userID = null;
+	if (req.user) {
+		userID = req.user._id;
+	}
 	Lecture.insert(req.body.lectureName, userID, (lecture) => {
 		User.addLecture(userID, lecture);
 		res.json(lecture);
