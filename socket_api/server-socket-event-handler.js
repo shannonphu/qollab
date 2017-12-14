@@ -63,6 +63,26 @@ module.exports = function (server) {
                         });
                     }
                     break;
+                case 'socket/COMMENT_RESOLVED':
+                    {
+                        let json = action.data;
+                        let joinCode = json['joinCode'];
+                        let commentID = json['commentID'];
+                        socket.broadcast.emit('action', {
+                            type: 'RESOLVE_COMMENT',
+                            id: commentID,
+                            joinCode: joinCode
+                        });
+                    }
+                case 'socket/ANNOTATION_RESOLVED':
+                    {
+                        let json = action.data;
+                        let annotationID = json['annotationID'];
+                        socket.broadcast.emit('action', {
+                            type: 'CANVAS_RECT_REMOVED',
+                            objectId: annotationID
+                        });
+                    }
                 default:
                     break;
             }

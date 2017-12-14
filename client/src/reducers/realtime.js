@@ -71,7 +71,7 @@ var RealtimeReducer = (state = {
         case 'CANVAS_RECT_REMOVED':
             {
                 state.canvas.forEachObject((object) => {
-                    if (object._id === action.objectId) {
+                    if (object.type === 'rect' && object._id === action.objectId) {
                         state.canvas.remove(object);
                     }
                 });
@@ -85,7 +85,7 @@ var RealtimeReducer = (state = {
         case 'HIGHLIGHT_RECT':
             {
                 state.canvas.forEachObject((object) => {
-                    if (object._id === action.objectId) {
+                    if (object.type === 'rect' && object._id === action.objectId) {
                         object.set({
                             fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
                             strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH
