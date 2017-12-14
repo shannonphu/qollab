@@ -110,6 +110,10 @@ app.post('/canvas/set', (req, res) => {
 });
 
 app.get('/user/current', (req, res) => {
+	if (!req.user) {
+		res.send(null);
+	}
+	
 	User.findByGoogleID(req.user.googleID, (user) => {
 		res.send(user);
 	})
