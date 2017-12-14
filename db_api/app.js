@@ -60,7 +60,7 @@ app.get('/lecture/:joinCode', (req, res) => {
 app.post('/create', (req, res) => {
 	// Authentication
 	if (!req.user) {
-		return res.status(401).send({});
+		return res.send({});
 	}
 
 	let userID = req.user._id;
@@ -119,7 +119,7 @@ app.post('/comment/resolve', (req, res) => {
 app.post('/canvas/set', (req, res) => {
 	// Authentication
 	if (!req.user) {
-		return res.status(401).send({});
+		return res.send({});
 	}
 
 	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
@@ -128,7 +128,7 @@ app.post('/canvas/set', (req, res) => {
 
 		// Authorization
 		if (userID != instructorID) {
-			return res.status(403).send({});
+			return res.send({});
 		}
 
 		Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
