@@ -1,31 +1,16 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
 require('./styles/lecture.css');
 
 class LoginNotification extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            user: null
-        };
-
-        axios.get('http://localhost:3005/me/', {
-            withCredentials: true
-        })
-            .then((response) => {
-                this.setState({
-                    user: response.data
-                });
-            })
-            .catch((error) => {
-                throw error;
-            });
+        this.state = {};
     }
 
     render() {
-        if (!this.state.user) {
+        if (!this.props.user) {
             return (
                 <div className="tap-target teal accent-4" data-activates="login-button">
                     <div className="tap-target-content">
@@ -40,4 +25,10 @@ class LoginNotification extends Component {
     }
 }
 
-export default LoginNotification
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer.user
+    }
+}
+
+export default connect(mapStateToProps, null)(LoginNotification);
