@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import LoginNotification from './LoginNotification';
+
 class CreateLectureForm extends Component {
     constructor(props) {
         super(props)
@@ -38,6 +40,7 @@ class CreateLectureForm extends Component {
             return (
                 <div className="container">
                     <h3>You can join {this.state.lectureTitle} at this code: <strong><a href={"/lecture/" + this.state.lectureCode}>{this.state.lectureCode}</a></strong></h3>
+                    <LoginNotification />
                 </div>
             );
         } else {
@@ -52,6 +55,7 @@ class CreateLectureForm extends Component {
                             <button className="btn waves-effect waves-light" type="submit" name="action">Submit</button>
                         </div>
                     </form>
+                    <LoginNotification />
                 </div>
             )
         }

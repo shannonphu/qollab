@@ -28,7 +28,7 @@ class Nav extends Component {
                             <div className="brand-logo center">{this.props.lecture ? this.props.lecture.title : "Qollab"}</div>
                             <ul className="right hide-on-med-and-down">
                                 <li><a href="/lecture/create"><i className="material-icons">add_circle</i></a></li>
-                                <li><a href='http://localhost:3005/auth/google'><i className="material-icons">account_circle</i></a></li>
+                                <li><a href='http://localhost:3005/auth/google'><i id="login-button" className="material-icons">account_circle</i></a></li>
                             </ul>
 
                             {/* Mobile Collapse Buttons */}
