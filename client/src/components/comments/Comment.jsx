@@ -69,6 +69,19 @@ class Comment extends Component {
                 if (this.props.annotation) {
                     this.props.removeRectFromCanvas(this.props.annotation._id);
                     this.props.syncRemoveRectFromCanvas(this.props.annotation._id);
+
+                    let canvasJSON = this.props.canvas.toJSON();
+                    axios.post('http://localhost:3005/canvas/set', {
+                        joinCode: this.props.lectureCode,
+                        canvasJSON: JSON.stringify(canvasJSON)
+                    }, {
+                            withCredentials: true
+                        })
+                        .then(() => {
+                        })
+                        .catch((error) => {
+                            throw error;
+                        });
                 }
             })
             .catch((error) => {
@@ -118,7 +131,8 @@ class Comment extends Component {
 
 function mapStateToProps(state) {
     return {
-        showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled
+        showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled,
+        canvas: state.realtimeReducer.canvas
     }
 }
 
