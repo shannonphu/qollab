@@ -93,13 +93,13 @@ class SketchField extends Component {
           axios.get('http://localhost:3005/lecture/' + props.joinCode)
         ])
           .then((response) => {
-            let user = response[0];
-            let lecture = response[1];
-            this.fromJSON(lecture.data.canvas);
-            this.props.storeLecture(lecture.data);
+            let user = response[0].data;
+            let lecture = response[1].data;
+            this.fromJSON(lecture.canvas);
+            this.props.storeLecture(lecture);
     
-            let userID = user.data._id;
-            let instructorID = lecture.data.instructor;
+            let userID = user._id;
+            let instructorID = lecture.instructor;
             if (userID != instructorID) {
               this.props.deactivateCanvasDrawingMode();
               setTimeout(() => {

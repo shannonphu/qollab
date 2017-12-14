@@ -42,7 +42,7 @@ class CommentForm extends Component {
 
             this.props.setCommentFormShown(false);
 
-            if (this.props.user) {
+            if (this.props.user && this.props.user._id == this.props.lecture.instructor) {
               this.props.activateCanvasDrawingMode();
             }
 
@@ -134,7 +134,8 @@ function mapStateToProps(state) {
         commentFormShown: state.commentsReducer.commentFormShown,
         annotationCheckbox: state.commentsReducer.annotationCheckbox,
         canvas: state.realtimeReducer.canvas,
-        user: state.userReducer.user
+        user: state.userReducer.user,
+        lecture: state.lectureReducer.lecture
     }
 }
 
