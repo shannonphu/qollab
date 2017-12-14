@@ -1,3 +1,10 @@
+export const setIsInstructor = (isInstructor) => {
+    return {
+        type: 'SET_IS_INSTRUCTOR',
+        isInstructor: isInstructor
+    }
+};
+
 export const storeJoinCode = (joinCode) => {
     return {
         type: 'STORE_JOIN_CODE',

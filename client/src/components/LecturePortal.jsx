@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 import { connect } from 'react-redux';
 
 import Canvas from './Canvas';
@@ -16,6 +17,9 @@ class LecturePortal extends Component {
 		}
 		this.setCanvasRef = this.setCanvasRef.bind(this);
 		this.setCommentListRef = this.setCommentListRef.bind(this);
+		this.setInstructorMode = this.setInstructorMode.bind(this);
+
+		this.setInstructorMode();
 	}
 
 	componentWillMount() {
@@ -24,6 +28,7 @@ class LecturePortal extends Component {
 
 	componentWillUnmount() {
 		document.removeEventListener('click', this.onClickHandler, false);
+		this.props.setIsInstructor(false);
 	}
 
 	onClickHandler(event) {
@@ -31,6 +36,23 @@ class LecturePortal extends Component {
 			&& this.commentListRef && !this.commentListRef.contains(event.target)) {
 			this.props.unhighlightAllRects();
 		}
+	}
+
+	setInstructorMode() {
+		axios.get('http://localhost:3005/user/current', {
+			withCredentials: true
+		})
+			.then((response) => {
+				let user = response.data;
+				user.lectures.forEach ((lecture) => {
+					if (lecture.joinCode === this.state.joinCode) {
+						this.props.setIsInstructor(true);
+					}
+				});
+			})
+			.catch((error) => {
+				throw error;
+			});
 	}
 
 	setCanvasRef(node) {
@@ -67,7 +89,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects())
+		unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
+		setIsInstructor: (isInstructor) => dispatch(realtimeActions.setIsInstructor(isInstructor))
 	}
 };
 
