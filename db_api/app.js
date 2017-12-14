@@ -42,14 +42,6 @@ app.use(function (req, res, next) {
 	else next();
 });
 
-app.get('/me', (req, res) => {
-	if (req.user) {
-		res.json(req.user);
-	} else {
-		res.status(204).send({});
-	}
-});
-
 app.get('/lecture/:joinCode', (req, res) => {
 	let joinCode = req.params.joinCode;
 	Lecture.findByJoinCode(joinCode, (lecture) => {
@@ -137,7 +129,7 @@ app.post('/canvas/set', (req, res) => {
 
 app.get('/user/current', (req, res) => {
 	if (!req.user) {
-		res.send(null);
+		return res.send(null);
 	}
 	
 	User.findByGoogleID(req.user.googleID, (user) => {

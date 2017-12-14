@@ -10,7 +10,7 @@ class Nav extends Component {
         super(props);
         this.state = {};
         
-        axios.get('http://localhost:3005/me/', {
+        axios.get('http://localhost:3005/user/current/', {
             withCredentials: true
         })
           .then((response) => {

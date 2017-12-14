@@ -18,7 +18,7 @@ module.exports = function (server, axios) {
                         let canvasData = json['data'];
 
                         axios.all([
-                            axios.get('http://db_api:3005/me', {
+                            axios.get('http://db_api:3005/user/current/', {
                                 headers: {
                                     Cookie: socket.request.headers.cookie
                                 }

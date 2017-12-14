@@ -87,7 +87,7 @@ class SketchField extends Component {
         // Get the canvas data that currently stored in MongoDB in case we entered a session mid-way
         // and there is data to sync with.
         axios.all([
-          axios.get('http://localhost:3005/me', {
+          axios.get('http://localhost:3005/user/current/', {
             withCredentials: true
           }),
           axios.get('http://localhost:3005/lecture/' + props.joinCode)
