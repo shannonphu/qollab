@@ -42,7 +42,7 @@ class CommentForm extends Component {
 
             this.props.setCommentFormShown(false);
 
-            if (this.props.user && this.props.user._id == this.props.lecture.instructor) {
+            if (this.props.user && this.props.user._id === this.props.lecture.instructor) {
               this.props.activateCanvasDrawingMode();
             }
 

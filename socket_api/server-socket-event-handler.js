@@ -29,17 +29,15 @@ module.exports = function (server, axios) {
                                 let userID = user.data._id;
                                 let instructorID = lecture.data.instructor;
 
-                                if (userID == instructorID) {
-                                    socket.broadcast.emit('action', {
-                                        type: 'LOAD_CANVAS_FROM_JSON',
-                                        joinCode: joinCode,
-                                        canvasJSON: canvasData
-                                    });
+                                socket.broadcast.emit('action', {
+                                    type: 'LOAD_CANVAS_FROM_JSON',
+                                    joinCode: joinCode,
+                                    canvasJSON: canvasData
+                                });
 
-                                    socket.broadcast.emit('action', {
-                                        type: 'FREEZE_CANVAS_OBJECTS'
-                                    });
-                                }
+                                socket.broadcast.emit('action', {
+                                    type: 'FREEZE_CANVAS_OBJECTS'
+                                });
                             }))
                             .catch(error => console.log(error));
                     }
