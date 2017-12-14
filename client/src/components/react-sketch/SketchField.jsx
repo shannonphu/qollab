@@ -209,7 +209,9 @@ class SketchField extends Component {
         axios.post('http://localhost:3005/canvas/set', {
             joinCode: this.props.joinCode,
             canvasJSON: JSON.stringify(this.toJSON())
-        })
+        }, {
+                withCredentials: true
+            })
             .then(() => {
             })
             .catch((error) => {

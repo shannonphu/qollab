@@ -5,7 +5,7 @@ const server = http.createServer(app);
 
 // POST form data is "url-encoded", so decode that into JSON for us
 const bodyParser = require('body-parser');
-app.use(bodyParser({limit: '5mb'}));
+app.use(bodyParser({ limit: '5mb' }));
 app.use(bodyParser.json());
 
 // Login with Passport.js
@@ -37,9 +37,17 @@ app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 	res.header('Access-Control-Allow-Credentials', 'true');
-	
+
 	if ('OPTIONS' == req.method) res.sendStatus(200);
 	else next();
+});
+
+app.get('/me', (req, res) => {
+	if (req.user) {
+		res.json(req.user);
+	} else {
+		res.status(204).send({});
+	}
 });
 
 app.get('/lecture/:joinCode', (req, res) => {
@@ -103,9 +111,15 @@ app.post('/comment/resolve', (req, res) => {
 	});
 });
 
-app.post('/canvas/set', (req, res) => {
-	Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
-		res.send(lecture);
+app.post('/canvas/set', ensureAuthenticated, (req, res) => {
+	let userID = req.user._id;
+	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
+		let instructorID = lecture.instructor;
+		if (userID == instructorID) {
+			Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+				res.send(lecture);
+			});
+		}
 	});
 });
 
