@@ -28,34 +28,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>css=p</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=p</td>
-	<td>You can join your lecture at this code: *</td>
+	<td>waitForText</td>
+	<td>css=h3</td>
+	<td>You can join Test at this code: *</td>
 </tr>
 <tr>
 	<td>storeText</td>
-	<td>css=p</td>
+	<td>css=h3</td>
 	<td>lectureCode</td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>javascript{storedVars['lectureCode'].split(': ')[1]}</td>
-	<td></td>
-</tr>
-<!--Use the lecture's generated code to join it-->
-<tr>
-	<td>type</td>
-	<td>css=input[type=&quot;number&quot;]</td>
-	<td>javascript{storedVars['lectureCode'].split(': ')[1]}</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>css=button</td>
+	<td>xpath=//h3//strong//a</td>
 	<td></td>
 </tr>
 <tr>
@@ -65,13 +49,18 @@
 </tr>
 <!--Insert comments, and make sure they have the expected values-->
 <tr>
+	<td>mouseOver</td>
+	<td>css=i.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td></td>
+</tr>
+<tr>
 	<td>waitForElementPresent</td>
-	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td>css=i.material-icons:contains(&quot;comment&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td>css=i.material-icons:contains(&quot;comment&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -95,8 +84,18 @@
 	<td>TestComment1</td>
 </tr>
 <tr>
+	<td>mouseOver</td>
+	<td>css=i.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=i.material-icons:contains(&quot;comment&quot;)</td>
+	<td></td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>xpath=//a[@class='btn-floating waves-effect waves-light']</td>
+	<td>css=i.material-icons:contains(&quot;comment&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -118,17 +117,6 @@
 	<td>assertText</td>
 	<td>css=span:contains(&quot;TestComment2&quot;)</td>
 	<td>TestComment2</td>
-</tr>
-<!--Oddly the collapsible comments treat automated clicks differently from manual clicks, but a refresh fixes this-->
-<tr>
-	<td>refresh</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>10000</td>
-	<td></td>
 </tr>
 <!--Reply to a comment, and make sure they show up with the exected values-->
 <tr>
@@ -201,17 +189,17 @@
 <!--Toggle on visibility for resolved comments and make sure the resolved comment reappears-->
 <tr>
 	<td>mouseOver</td>
-	<td>css=i.large.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td>css=i.material-icons:contains(&quot;more_vert&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td>css=i.material-icons:contains(&quot;unfold_more&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td>css=i.material-icons:contains(&quot;unfold_more&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -227,17 +215,17 @@
 <!--Toggle off visibility for resolved comments and make sure resolved comments disappear-->
 <tr>
 	<td>mouseOver</td>
-	<td>css=i.large.material-icons:contains(&quot;more_vert&quot;)</td>
+	<td>css=i.material-icons:contains(&quot;more_vert&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td>css=i.material-icons:contains(&quot;unfold_less&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=a[class=&quot;btn-floating yellow&quot;]</td>
+	<td>css=i.material-icons:contains(&quot;unfold_less&quot;)</td>
 	<td></td>
 </tr>
 <tr>
