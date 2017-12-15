@@ -13,4 +13,15 @@ services:
       - "3005:3005"
     links:
       - db_mongo
-  
+  socket_api:
+    build: ./socket_api
+    ports:
+      - "3003:3003"
+  web_client:
+    build: ./client
+    command: npm test
+    ports:
+      - "3000:3000"
+    links:
+      - socket_api
+      - db_api
