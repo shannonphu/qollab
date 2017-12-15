@@ -70,7 +70,7 @@ class CommentForm extends Component {
         let canvasJSON = this.props.canvas.toJSON();
         this.props.canvasUpdated(canvasJSON, this.props.lectureCode);
 
-        axios.post('http://db_api:3005/comment/create', {
+        axios.post('http://qollab.westus2.cloudapp.azure.com:3005/comment/create', {
             joinCode: this.props.lectureCode,
             text: commentText,
             annotation: commentAnnotation
@@ -84,7 +84,7 @@ class CommentForm extends Component {
                 throw error;
             });
 
-        axios.post('http://db_api:3005/canvas/set', {
+        axios.post('http://qollab.westus2.cloudapp.azure.com:3005/canvas/set', {
             joinCode: this.props.lectureCode,
             canvasJSON: JSON.stringify(canvasJSON)
         }, {

@@ -33,7 +33,7 @@ const seedData = require('./db/seed.js');
 // CORS setting with OPTIONS pre-flight handling
 // * Fixes the No 'Access-Control-Allow-Origin' header is present on the requested resource error
 app.use(function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'http://web_client:3003');
+	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 	res.header('Access-Control-Allow-Credentials', 'true');
@@ -147,7 +147,7 @@ GOOGLE_CONSUMER_SECRET = 'Kt8WmTm3X5Thi1HMFVAK-s3L';
 passport.use(new GoogleStrategy({
 	clientID: GOOGLE_CONSUMER_KEY,
 	clientSecret: GOOGLE_CONSUMER_SECRET,
-	callbackURL: "http://db_api:3005/auth/google/callback"
+	callbackURL: "http://qollab.westus2.cloudapp.azure.com:3005/auth/google/callback"
 },
 	function (token, tokenSecret, profile, done) {
 		User.findByGoogleID(profile.id, (user) => {
@@ -184,5 +184,5 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback',
 	passport.authenticate('google', { failureRedirect: '/auth/google' }), (req, res) => {
-		res.redirect('http://web_client:3003/dashboard');
+		res.redirect('http://qollab.westus2.cloudapp.azure.com/dashboard');
 	});

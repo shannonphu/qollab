@@ -18,12 +18,12 @@ module.exports = function (server, axios) {
                         let canvasData = json['data'];
 
                         axios.all([
-                            axios.get('http://db_api:3005/user/current/', {
+                            axios.get('http://qollab.westus2.cloudapp.azure.com:3005/user/current/', {
                                 headers: {
                                     Cookie: socket.request.headers.cookie
                                 }
                             }),
-                            axios.get('http://db_api:3005/lecture/' + joinCode)
+                            axios.get('http://qollab.westus2.cloudapp.azure.com:3005/lecture/' + joinCode)
                         ])
                             .then(axios.spread(function (user, lecture) {
                                 let userID = user.data._id;

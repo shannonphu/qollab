@@ -8,7 +8,7 @@ class InstructorDashboard extends Component {
 		super(props);
 		this.state = {};
 
-		axios.get('http://db_api:3005/user/current', {
+		axios.get('http://qollab.westus2.cloudapp.azure.com:3005/user/current', {
 			withCredentials: true
 		})
 			.then((response) => {

@@ -23,7 +23,7 @@ class CommentReplyList extends Component {
     store() {
         let commentId = this.props.commentId;
         
-        axios.post('http://db_api:3005/comment/reply', {
+        axios.post('http://qollab.westus2.cloudapp.azure.com:3005/comment/reply', {
             commentID: commentId,
             replyText: this.state.reply
         })

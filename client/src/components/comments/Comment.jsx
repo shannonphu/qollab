@@ -44,7 +44,7 @@ class Comment extends Component {
 
     upVoteHandler() {
         // Store upvote to DB
-        axios.post('http://db_api:3005/comment/upvote', {
+        axios.post('http://qollab.westus2.cloudapp.azure.com:3005/comment/upvote', {
             commentID: this.props.id
         })
             .then(() => {
@@ -60,7 +60,7 @@ class Comment extends Component {
     }
 
     resolveHandler() {
-        axios.post('http://db_api:3005/comment/resolve', {
+        axios.post('http://qollab.westus2.cloudapp.azure.com:3005/comment/resolve', {
             commentID: this.props.id
         })
             .then(() => {
@@ -71,7 +71,7 @@ class Comment extends Component {
                     this.props.syncRemoveRectFromCanvas(this.props.annotation._id);
 
                     let canvasJSON = this.props.canvas.toJSON();
-                    axios.post('http://db_api:3005/canvas/set', {
+                    axios.post('http://qollab.westus2.cloudapp.azure.com:3005/canvas/set', {
                         joinCode: this.props.lectureCode,
                         canvasJSON: JSON.stringify(canvasJSON)
                     }, {
