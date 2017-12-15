@@ -142,8 +142,8 @@ server.listen(3005, () => {
 });
 
 // LOGIN FUNCTIONALITY
-GOOGLE_CONSUMER_KEY = '758504996172-t1em8jal6nt9tfa8mas49c0t9ibkaf17.apps.googleusercontent.com';
-GOOGLE_CONSUMER_SECRET = 'Kt8WmTm3X5Thi1HMFVAK-s3L';
+GOOGLE_CONSUMER_KEY = '819019656637-58laf588pbslhrk6ho329j9eqvpv25tm.apps.googleusercontent.com';
+GOOGLE_CONSUMER_SECRET = 'PDBw58D9JoH3_HKHMofjLnM7';
 passport.use(new GoogleStrategy({
 	clientID: GOOGLE_CONSUMER_KEY,
 	clientSecret: GOOGLE_CONSUMER_SECRET,

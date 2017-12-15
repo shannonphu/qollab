@@ -9,7 +9,7 @@ import App from './App.jsx';
 
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
-const socket = io('http://socket_api/');
+const socket = io('http://qollab.westus2.cloudapp.azure.com:3003/');
 const socketIoMiddleware = createSocketIoMiddleware(socket, "socket/");
 const store = applyMiddleware(socketIoMiddleware)(createStore)(reducers);
 store.dispatch({type:'socket/hello', data:'Hello!'});
