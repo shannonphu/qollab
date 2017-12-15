@@ -1,15 +1,7 @@
-import React from 'react';
 var testDBURL = 'mongodb://db_mongo';
-var Comment = require('../db/comment.js');
-var mongoose = require('mongoose')
-
-
-const testComment = {
-    text: "Hello, World!",
-    resolved: false,
-    replies: [],
-    votes: 0
-}
+var mongoose = require('mongoose');
+const commentDefinition = require('../db/comment.js');
+const Comment = commentDefinition.model;
 
 beforeAll(() => {
     mongoose.connect(testDBURL)
@@ -23,56 +15,70 @@ afterAll((done) => {
     mongoose.disconnect(done);
 });
 
-describe('Creating a comment', () => {
-    test('Test creating comment', done => {
-        return Comment.insert(testComment.text, (newComment) => {
-               var query = Comment.findOne({})
-               query.exec(function (err, data) {
-                   if (err) throw err;
-                   expect(data.text).toEqual(testComment.text)
-                   expect(data.resolved).toEqual(testComment.resolved)
-                   expect(data.replies.length).toEqual(testComment.replies.length)
-                   expect(data.votes).toEqual(testComment.votes)
-                   done();
-               })
-           });
-      });
-      
-})
+test('Creating a new comment (not inserted yet)', () => {
+    let comment = Comment.create("commentText", null);
+    expect(comment.text).toEqual('commentText');
+    expect(comment.resolved).toEqual(false);
+    expect(comment.replies.length).toEqual(0);
+    expect(comment.votes).toEqual(0);
+});
 
-describe('Interacting with a comment', () => {
-    var comment = new Comment({text: "Hi"});
-    comment.addReply("reply1")
-    for (var i = 0; i < 5; i++){
-        comment.upvote()
+test('Inserting a new comment (and persisting)', done => {
+    function callback(newComment) {
+        expect(newComment.text).toEqual('commentText')
+        expect(newComment.resolved).toEqual(false)
+        expect(newComment.replies.length).toEqual(0)
+        expect(newComment.votes).toEqual(0)
+        done();
     }
-    test('Test comment upvoting', () => {
-        expect(comment.votes).toBe(5);
-    });
-    test('Test reply is added', () => {
-        expect(comment.replies[0]).toBe("reply1");
-    });
-    test('Test multiple replies', () => {
-        comment.addReply("reply2")
-        expect(comment.replies.length).toBe(2);
-        expect(comment.replies[1]).toBe("reply2");
-    });
-})
 
-describe('Resolving a comment', () => {
-    var comment = new Comment({text: "Hi"});
-    comment.upvote();
-    comment.resolve();
+    Comment.insert("commentText", null, callback);
+});
 
-    test('Test comment marked as resolved', () => {
-        expect(comment.resolved).toBe(true);
+test('Get a comments ID', done => {
+    function callback(newComment) {
+        expect(newComment.text).toEqual('specialComment');
+        expect(newComment.resolved).toEqual(false);
+        expect(newComment.replies.length).toEqual(0);
+        expect(newComment.votes).toEqual(0);
+        done();
+    }
+
+    Comment.insert("specialComment", null, (comment) => {
+        Comment.getByID(comment._id, callback);
     });
-    test('Test cannot upvote resolved comment', () => {
-        comment.upvote();
-        expect(comment.votes).toBe(1);
+});
+
+test('Resolving a comment', done => {
+    function callback(comment) {
+        expect(comment.resolved).toEqual(true);
+        done();
+    }
+
+    Comment.insert("commentText", null, (comment) => {
+        Comment.resolve(comment._id, callback);
     });
-    test('Test cannot reply to resolved comment', () => {
-        comment.addReply('reply');
-        expect(comment.replies.length).toBe(0);
+});
+
+test('Upvoting a comment', done => {
+    function callback(comment) {
+        expect(comment.votes).toEqual(2);
+        done();
+    }
+
+    Comment.insert("commentText", null, (comment) => {
+        Comment.upvote(comment._id);
+        Comment.upvote(comment._id, callback);
     });
-})
+});
+
+test('Replying to a comment', done => {
+    function callback(comment) {
+        expect(comment.replies.length).toEqual(1);
+        done();
+    }
+
+    Comment.insert("commentText", null, (comment) => {
+        Comment.addReply(comment._id, "reply1", callback);
+    });
+});

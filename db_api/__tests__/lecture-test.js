@@ -1,9 +1,6 @@
-
-import React from 'react';
 var testDBURL = 'mongodb://db_mongo';
 var Lecture = require('../db/lecture.js');
-var mongoose = require('mongoose')
-
+var mongoose = require('mongoose');
 
 beforeAll(() => {
     mongoose.connect(testDBURL)
@@ -17,33 +14,66 @@ afterAll((done) => {
     mongoose.disconnect(done);
 });
 
-describe('Creating a Lecture', () => {
-    test('Test creating lecture', done => {
-        return Lecture.insert('Math', '12345',  (lecture) => {
-               var query = Lecture.findOne({})
-               query.exec(function (err, data) {
-                   if (err) throw err;
-                   expect(data.title).toEqual('Math')
-                   expect(data.instructor).toEqual('12345')
-                   expect(data.students.length).toEqual(0)
-                   expect(data.joinCode.length).toEqual(6)
-                   done();
-               })
-           });
-      });
+test('Creating a lecture', done => {
+    function callback(data) {
+        expect(data.title).toEqual('Math')
+        expect(data.instructor).toEqual(null)
+        expect(data.students.length).toEqual(0)
+        expect(data.joinCode.length).toEqual(6)
+        done();
+    }
+
+    Lecture.insert('Math', null, callback);
 });
 
-describe('Creating a Lecture', () => {
-      test('Test finding lecture by join code', done => {
-          return Lecture.insert('Math', '12345', (l) =>  {
-              Lecture.findByJoinCode(l.joinCode, (lecture) => {
-                     expect(lecture.title).toEqual('Math')
-                     expect(lecture.instructor).toEqual('12345')
-                     expect(lecture.students.length).toEqual(0)
-                     expect(lecture.joinCode.length).toEqual(6)
-                     done();
-                 })
-             })
-         });
+test('Getting a lecture join code', done => {
+    function callback(data) {
+        expect(data.title).toEqual('Math')
+        expect(data.instructor).toEqual(null)
+        expect(data.students.length).toEqual(0)
+        expect(data.joinCode.length).toEqual(6)
+        done();
+    }
 
-})
+    Lecture.insert('Math', null, (lecture) => {
+        Lecture.findByJoinCode(lecture.joinCode, callback);
+    });
+});
+
+test('Adding comment to lecture - return comment', done => {
+    function callback(comment) {
+        expect(comment.text).toEqual('commentText');
+        expect(comment.annotation).toEqual(null);
+        done();
+    }
+
+    Lecture.insert('COM SCI 130', null, (lecture) => {
+        Lecture.addComment(lecture.joinCode, "commentText", null, callback);
+    });
+});
+
+test('Get lecture comments', done => {
+    function callback(comments) {
+        expect(comments.length).toEqual(1);
+        expect(comments[0].text).toEqual("commentText");
+        expect(comments[0].annotation).toEqual(null);
+        done();
+    }
+
+    Lecture.insert('COM SCI 130', null, (lecture) => {
+        Lecture.addComment(lecture.joinCode, "commentText", null, () => {
+            Lecture.getComments(lecture.joinCode, callback);            
+        });
+    });
+});
+
+test('Set canvas for lecture', done => {
+    function callback(lecture) {
+        expect(lecture.canvas).toEqual("{objects:[]}");
+        done();
+    }
+
+    Lecture.insert('COM SCI 130', null, (lecture) => {
+        Lecture.setCanvas(lecture.joinCode, "{objects:[]}", callback);
+    });
+});

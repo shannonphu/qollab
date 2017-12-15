@@ -98,87 +98,111 @@ Then `git clone https://github.com/shannonphu/qollab.git`
 ## Backend Testing
 To run:
 ```
-docker-compose  -f docker-compose-test.yml up --build
+docker-compose -f docker-compose-test.yml up --build
 ```
-### Test Suite 1 ###
-Location: db_api/\_\_tests\_\_/comment-test.js <br />
-Purpose: To test commenting functionality
-#### Creating a comment ####
-1. Name: Test creating comment <br />
-   Test: Create and insert a comment into the database <br />
-   Prerequisites: An empty mongoDB instance <br />
-   Expected Result: Comment object retrieved from database is identical to input <br />
+### Test Suite 1: Comments
+__Location__: db_api/\_\_tests\_\_/comment-test.js 
 
-#### Interacting with a comment ####
-1. Name: Test comment upvoting <br />
-   Test: Upvote a comment 5 times <br />
-   Prerequisites: A fresh comment object <br />
-   Expected Result: The number of votes is 5 <br />
-2. Name: Test reply is added <br />
-   Test: Use addReply() to reply to a comment <br />
-   Prerequisites: A fresh comment object <br />
-   Expected Result: The only reply to the comment is the input <br />
-3. Name: Test multiple replies <br />
-   Test: Use addReply() to reply to a comment twice <br />
-   Prerequisites: A fresh comment object <br />
-   Expected Result: There are two replies, the last reply is the second reply added. <br />
+__Purpose__: To test Comment's backend persistant storage
 
-#### Resolving a comment ####
-1. Name: Test comment marked as resolved <br />
-   Test: Instructor markes comment as resolved <br />
-   Prerequisites: A comment object <br />
-   Expected Result: comment.resolved evaluates to true <br />
-2. Name: Test cannot upvote resolved comment <br />
-   Test: Attempt to upvote a resolved comment <br />
-   Prerequisites: A resolved comment with one upvote <br />
-   Expected Result: The number of upvotes remains at 1  <br />
-3. Name: Test cannot reply to resolved comment <br />
-   Test: Attempt to reply to a resolved comment <br />
-   Prerequisites: A resolved comment with no comments <br />
-   Expected Result: There remains no comments <br />
+1. Creating a new comment (not inserted yet)
+    * Test: Create a model instance of the Comment, uses `create()`
+    * Prerequisites: An empty mongoDB DB
+    * Expected Result: Comment object retrieved from database is identical to input
+2. Inserting a new comment (and persisting)
+    * Test: Creates and saves a new Comment in the DB, uses `insert()`
+    * Prerequisites: An empty mongoDB DB
+    * Expected Result: Comment object retrieved from database is identical to input
+3. Get a comments ID
+    * Test: Uses `getByID()`
+    * Prerequisites: A fresh comment object 
+    * Expected Result:  Comment object retrieved from database is identical to the comment just inserted
+4. Resolving a comment
+    * Test: Uses `resolve`
+    * Prerequisites: A fresh comment object 
+    * Expected Result: Should resolve the comment just inserted
+5. Upvoting a comment
+    * Test: Uses `upvote()`
+    * Prerequisites: A fresh comment object 
+    * Expected Result: Increments the comments votes by one
+6. Replying to a comment
+    * Test: Uses `addReply()`
+    * Prerequisites: A fresh comment object 
+    * Expected Result: Adds to the comment's array of text replies
 
 
-### Test Suite 2 ###
-Location: db_api/\_\_tests\_\_/lecture-test.js <br />
-Purpose: To test creation, storing, join code generation for lecture objects
+### Test Suite 2: Lectures
+__Location__: db_api/\_\_tests\_\_/lecture-test.js 
 
-1. Name: Test creating lecture <br />
-   Test: Create and insert a lecture object into the database <br />
-   Prerequisites: An empty mongoDB instance <br />
-   Expected Result: Lecture object retrieved from database has title, instructor id fields is identical to input, no students, and a random code that is 6 characters long. <br />
-2. Name: Test finding lecture by join code <br />
-   Test: Create a lecture object, generating a join code, then attempting to retrieve that lecture with the findByJoinCode() method. <br />
-   Prerequisites: An empty mongoDB instance <br />
-   Expected Result: Lecture object returned by findByJoinCode() is not null, and all of its data matches the original lecture data.
+__Purpose__: To test creation, storing, join code generation for lecture objects
+
+1. Creating a lecture
+    * Test: Uses `insert()`
+    * Prerequisites: An empty DB
+    * Expected Result: Lecture object retrieved from database has title, instructor id fields is identical to input, no students, and a random code that is 6 characters long. 
+2. Getting a lecture join code
+    * Test: Uses `findByJoinCode()`
+    * Prerequisites: A newly inserted lecture object
+    * Expected Result: Returns lecture object with this join code
+3. Adding comment to lecture - return comment
+    * Test: Uses `addComment()`
+    * Prerequisites: A newly inserted lecture object
+    * Expected Result: Returns newly added comment into this lecture
+4. Get lecture comments
+    * Test: Uses `getComments()`
+    * Prerequisites: A newly inserted lecture object
+    * Expected Result: Returns array of lecture's comments
+5. Set canvas for lecture
+    * Test: Uses `setCanvas()`
+    * Prerequisites: A newly inserted lecture object
+    * Expected Result: Updates canvas in the lecture object with a string of JSON representing the canvas
+
+### Test Suite 3: Users
+__Location__: db_api/\_\_tests\_\_/user-test.js 
+
+__Purpose__: To test User's backend persistant storage
+
+1. Inserting a new user
+    * Test: Uses `insert()`
+    * Prerequisites: An empty DB
+    * Expected Result: new user with the google ID and no lectures is inserted into the DB
+2. Find a user by Google ID
+    * Test: Uses `findByGoogleID()`
+    * Prerequisites: A newly inserted user object
+    * Expected Result: Returns a User object with the correct google ID
+3. Add lecture to user
+    * Test: Uses `addLecture()`
+    * Prerequisites: A newly inserted user object
+    * Expected Result: Appends the lecture ID to the user's array of lecture IDs
 
 ## Frontend Testing
 Location: Selenium Test Suite.html
 
-To run, load the test suite "selenium/Selenium Test Suite.html" in the Selenium IDE, an extension available for Firefox (only compatible with Firefox 54.0 and earlier versions). <br />
+To run, load the test suite "selenium/Selenium Test Suite.html" in the Selenium IDE, an extension available for Firefox (only compatible with Firefox 54.0 and earlier versions). 
 Then play the entire test suite while Qollab is running in the background.
 
 ### Create Lecture ###
 Location: CreateLecture.html
 
-Name: Create Lecture <br />
-Test: Enter a lecture title into the Create Lecture page and hit submit <br />
+Name: Create Lecture 
+Test: Enter a lecture title into the Create Lecture page and hit submit 
 Expected Result: Lecture code returned to user
 
 ### Join Lecture ###
 Loctation: JoinLecture.html
 
-Name: Join Lecture <br />
-Test: Enter an invalid lecture code into the Join Lecture page and hit submit <br />
-Expected Result: User alerted to invalid code, not redirected <br />
+Name: Join Lecture 
+Test: Enter an invalid lecture code into the Join Lecture page and hit submit 
+Expected Result: User alerted to invalid code, not redirected 
 **This test currently fails because it does not output a visual error**
 
 ### Integration
 Location: CreateAndJoinIntegration.html
 
-Name: Integration <br />
-Test: Full integration test of through several UI features in usage flow <br />
+Name: Integration 
+Test: Full integration test of through several UI features in usage flow 
 1. Create a Lecture as described in the Create Lecture test
-2. Use the lecture code to join that same lecture, as described in the Join Lecture test but with a valid lecture code<br />
+2. Use the lecture code to join that same lecture, as described in the Join Lecture test but with a valid lecture code
 **This step currently fails because the joined lecture is entitled "Lecture Title Placeholder" regardless of the input at Step 1**
 3. Write and submit a comment, and ensure it appears
 4. Write and submit a second comment and ensure it also appears separately
@@ -187,5 +211,5 @@ Test: Full integration test of through several UI features in usage flow <br />
 7. Resolve the first comment and ensure it vanishes
 8. Upvote the second comment and ensure the vote is registered
 9. Toggle on visibility of resolved comments in the bottom toolbar and ensure the first comment reappears
-10. Toggle off visibility of resolved comments in the bottom toolbar and ensure the first comment disappears <br />
+10. Toggle off visibility of resolved comments in the bottom toolbar and ensure the first comment disappears 
 Expected Result: No steps fail, and checks pass as described
