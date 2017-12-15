@@ -1,6 +1,6 @@
 var testDBURL = 'mongodb://db_mongo';
 var Lecture = require('../db/lecture.js');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 beforeAll(() => {
     mongoose.connect(testDBURL)
