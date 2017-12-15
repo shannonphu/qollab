@@ -4,6 +4,10 @@ import uuidv1 from 'uuid/v1';
  * "Abstract" like base class for a Canvas tool
  */
 class FabricCanvasTool {
+    /**
+     * @constructor
+     * @param {Canvas} canvas 
+     */
     constructor(canvas) {
         this._canvas = canvas;
     }

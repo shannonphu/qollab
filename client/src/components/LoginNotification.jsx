@@ -3,12 +3,23 @@ import { connect } from 'react-redux';
 
 require('./styles/lecture.css');
 
+/**
+ * Component for login notification
+ */
 class LoginNotification extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
     }
 
+    /**
+     * renders the LoginNotification
+     * @returns html details of the login notification
+     */
     render() {
         if (!this.props.user) {
             return (

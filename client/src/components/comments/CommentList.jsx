@@ -6,7 +6,14 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import * as commentActions from '../../actions/comments';
 
+/**
+ * CommentList
+ */
 class CommentList extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -20,6 +27,9 @@ class CommentList extends Component {
             });
     }
 
+    /**
+     * @summary renders the whole comment list
+     */
     render() {
         var comments = this.props.comments;
 
@@ -64,7 +74,10 @@ class CommentList extends Component {
     }
 }
 
-//get redux source's state and map it to component props
+/**
+ * @summary get redux source's state and map it to component props
+ * @returns the props
+ */
 function mapStateToProps(state) {
     return {
         comments: state.commentsReducer.comments,
@@ -72,6 +85,11 @@ function mapStateToProps(state) {
     }
 }
 
+/**
+ * maps the dispatch to component props
+ * @param {*} dispatch 
+ * @return the map from dispatch to props
+ */
 const mapDispatchToProps = (dispatch) => {
     return {
         setInitialComments: (comments) => dispatch(commentActions.setInitialComments(comments))

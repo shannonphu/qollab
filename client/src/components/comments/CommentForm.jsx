@@ -7,7 +7,14 @@ import $ from 'jquery';
 import * as realtimeActions from '../../actions/realtime';
 import * as commentsActions from '../../actions/comments';
 
+/**
+ *  CommentForm 
+ */
 class CommentForm extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -32,6 +39,10 @@ class CommentForm extends Component {
         this.onMountAndUpdate();
     }
 
+    /**
+     * @summary handles the submit comment action
+     * @param {*} event the submit event
+     */
     submitHandler(event) {
         event.preventDefault();
 
@@ -52,6 +63,9 @@ class CommentForm extends Component {
         }
     }
 
+    /**
+     * @summary handles the action of toggling the check box of annotation
+     */
     annotationCheckboxToggled() {
         const isChecked = this.props.annotationCheckbox;
         if (!isChecked) {
@@ -64,6 +78,11 @@ class CommentForm extends Component {
         this.props.setAnnotationCheckbox(!isChecked);
     }
 
+    /**
+     * @summary stores the comment with text and annotation
+     * @param {String} commentText the text of the comment
+     * @param {String} commentAnnotation the annotation associated with the commment
+     */
     store(commentText, commentAnnotation) {
         this.props.unhighlightAllRects();
         this.props.freezeCanvasObjects();
@@ -97,6 +116,9 @@ class CommentForm extends Component {
             });
     }
 
+    /**
+     * @returns the html for rendering
+     */
     render() {
         const checkbox = this.props.annotationCheckbox ? <i className="material-icons">check_box</i> : <i className="material-icons">check_box_outline_blank</i>;
 
@@ -128,6 +150,11 @@ class CommentForm extends Component {
     }
 }
 
+/**
+ * get redux source's state and map it to component props
+ * @param {*} state 
+ * @returns the props
+ */
 function mapStateToProps(state) {
     return {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
@@ -139,6 +166,11 @@ function mapStateToProps(state) {
     }
 }
 
+/**
+ * maps the dispatch to props
+ * @param {*} dispatch 
+ * @returns the props
+ */
 const mapDispatchToProps = (dispatch) => {
     return {
         addRectToCanvas: () => dispatch(realtimeActions.addRectToCanvas()),

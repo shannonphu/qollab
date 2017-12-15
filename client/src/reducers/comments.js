@@ -1,3 +1,9 @@
+/**
+ * Reducer for handling actions on Comments
+ * @param {*} state initial state
+ * @param {*} action actions
+ * @returns new state
+ */
 var CommentsReducer = (state = {
     showResolvedCommentsToggled: false,
     focusModeActive: false,    

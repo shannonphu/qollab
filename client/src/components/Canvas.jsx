@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import SketchField from './react-sketch/SketchField';
 import Tools from './react-sketch/tools';
 
+/**
+ * Canvas Component
+ */
 class Canvas extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this._onSketchChange = this._onSketchChange.bind(this);
@@ -23,6 +30,10 @@ class Canvas extends Component {
     _onSketchChange() {
     }
 
+    /**
+     * renders the canvas
+     * @returns html details of the canvas
+     */
     render() {
         return (
             <SketchField

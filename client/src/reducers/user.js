@@ -1,3 +1,9 @@
+/**
+ * Reducer for handling actions on Users 
+ * @param {*} state initial state
+ * @param {*} action 
+ * @returns new state
+ */
 var UserReducer = (state = {
     user: null
 }, action) => {

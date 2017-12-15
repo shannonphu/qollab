@@ -1,3 +1,9 @@
+/**
+ * Reducer for handling actions on Lectures 
+ * @param {*} state initial state
+ * @param {*} action 
+ * @returns new state
+ */
 var LectureReducer = (state = {
     lecture: null
 }, action) => {

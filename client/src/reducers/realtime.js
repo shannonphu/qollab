@@ -5,7 +5,12 @@ const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(224, 242, 241, 0.3)';
 const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 2;
 const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
 const ANNOTATION_STROKE_COLOR = '#80cbc4';
-
+/**
+ * Reducer for handling real-time actions
+ * @param {*} state initial state
+ * @param {*} action 
+ * @returns new state
+ */
 var RealtimeReducer = (state = {
     isInstructor: false,
     lectureCode: null,

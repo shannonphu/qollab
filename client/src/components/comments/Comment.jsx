@@ -7,8 +7,14 @@ import axios from 'axios';
 import CommentReplyList from './CommentReplyList';
 import * as commentsActions from '../../actions/comments';
 import * as realtimeActions from '../../actions/realtime';
-
+/**
+ * Comment
+ */
 class Comment extends Component {
+    /**
+     * @constructor Construct the Comment component
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -18,6 +24,9 @@ class Comment extends Component {
         this.onMountAndUpdate = this.onMountAndUpdate.bind(this);
     }
 
+    /**
+     * @summary Action to mount and update comments
+     */
     onMountAndUpdate() {
         $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
         // Disable collapsibility for certain elements
@@ -34,6 +43,11 @@ class Comment extends Component {
         this.onMountAndUpdate();
     }
 
+    /**
+     * @method onClickHandler
+     * @param {*} event the click event
+     * @summary if there is an annotation in this area: on clicking, highlight the annotataion
+     */
     onClickHandler(event) {
         this.props.unhighlightAllRects();
         if (this.props.annotation) {
@@ -42,6 +56,10 @@ class Comment extends Component {
         }
     }
 
+    /**
+     * handles the upvote functionality
+     * @summary stores the upvote to DB and shows to all users
+     */
     upVoteHandler() {
         // Store upvote to DB
         axios.post('http://localhost:3005/comment/upvote', {
@@ -59,6 +77,10 @@ class Comment extends Component {
             });
     }
 
+    /**
+     * handles the resolve functionality
+     * @summary change sthe comment to resolve state and broadcasts the change to users 
+     */
     resolveHandler() {
         axios.post('http://localhost:3005/comment/resolve', {
             commentID: this.props.id
@@ -89,6 +111,10 @@ class Comment extends Component {
             });
     }
 
+    /**
+     * renders the comment object
+     * @returns the html for rendering
+     */
     render() {
         if (this.props.resolved && !this.props.showResolvedCommentsToggled) {
             return (null);
@@ -130,6 +156,11 @@ class Comment extends Component {
     }
 }
 
+/**
+ * @summary get redux source's state and map it to component props
+ * @param {*} state the state of the comment
+ * @returns props of the comment
+ */
 function mapStateToProps(state) {
     return {
         showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled,
@@ -138,6 +169,11 @@ function mapStateToProps(state) {
     }
 }
 
+/**
+ * Maps dispatch to props
+ * @param {*} dispatch the dispatch of the comment
+ * @returns the props of the comment 
+ */
 const mapDispatchToProps = (dispatch) => {
     return {
         upVoteComment: (commentID, joinCode) => dispatch(commentsActions.upVoteComment(commentID, joinCode)),

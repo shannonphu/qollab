@@ -3,7 +3,14 @@ import axios from 'axios';
 
 import LoginNotification from './LoginNotification';
 
+/**
+ * CreateLectureForm component for creating a new lecture
+ */
 class CreateLectureForm extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -13,6 +20,10 @@ class CreateLectureForm extends Component {
         this.submitHandler = this.submitHandler.bind(this)
     }
 
+    /**
+     * handles the submitting action for creating a lecture
+     * @param {*} event 
+     */
     submitHandler(event) {
         event.preventDefault();
         let name = this.refs.name.value;
@@ -35,6 +46,10 @@ class CreateLectureForm extends Component {
         });
     }
 
+    /**
+     * renders the form
+     * @returns the html details of the render
+     */
     render() {
         if (this.state.redirect) {            
             return (

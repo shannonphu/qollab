@@ -1,10 +1,14 @@
 /**
- * @module Mongoose Model for user
+ * Mongoose Model for user
+ * @module userSchema
  */
 
 module.exports = (function () {
     let mongoose = require('mongoose');
 
+    /**
+     * @memberof module:commentSchema
+     */
     var userSchema = new mongoose.Schema({
         lectures: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lecture', unique: true }],
         googleID: { type: String, unique: true, required: true }
@@ -14,7 +18,7 @@ module.exports = (function () {
      * @summary inserts a new User object into our database
      * @param {function} callback to execute after inserting user into database
      * @returns {Object} The atual user mongoDB object
-     * @memberof module:userDB
+     * @memberof module:userSchema
      * @example
      * User.insert((newUser) => {
      *      console.log(newUser);
@@ -33,6 +37,12 @@ module.exports = (function () {
         });
     }
 
+    /**
+     * @summary find User by googleID
+     * @param {String} googleID the googleID associated with the user
+     * @param {function} callback the callback function to execute after the DB query
+     * @memberof module:userSchema
+     */
     userSchema.statics.findByGoogleID = (googleID, callback) => {
         User.findOne({ 'googleID': googleID })
             .populate('lectures')
@@ -52,7 +62,7 @@ module.exports = (function () {
      * @param {Lecture} lecture object to insert into user
      * @param {function} callback to execute after inserting lecture into user
      * @returns {User} The atual user mongoDB object
-     * @memberof module:userDB
+     * @memberof module:userSchema
      * @example
      * instructor.addLecture(newLecture, (updatedInstructor) => {
      * 

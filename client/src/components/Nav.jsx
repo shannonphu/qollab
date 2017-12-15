@@ -4,8 +4,15 @@ import axios from 'axios';
 
 import * as userActions from '../actions/user';
 
+/**
+ * NavBar Component
+ */
 class Nav extends Component {
 
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -21,6 +28,10 @@ class Nav extends Component {
           });
     }
 
+    /**
+     * renders the Navigation bar
+     * @returns html details of the Nav Bar
+     */
     render() {
         return (
             <div className="Nav">
@@ -56,6 +67,10 @@ class Nav extends Component {
     }
 }
 
+/**
+ * maps the states to component props
+ * @param {*} state 
+ */
 function mapStateToProps(state) {
     return {
         lecture: state.lectureReducer.lecture,
@@ -63,6 +78,10 @@ function mapStateToProps(state) {
     }
 }
 
+/**
+ * maps the dispatch to component props
+ * @param {*} dispatch 
+ */
 const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user) => dispatch(userActions.setUser(user))

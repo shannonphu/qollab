@@ -5,7 +5,14 @@ import axios from 'axios';
 import CommentReply from './CommentReply';
 import * as commentsActions from '../../actions/comments';
 
+/**
+ * CommentReplyList Component
+ */
 class CommentReplyList extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -15,11 +22,18 @@ class CommentReplyList extends Component {
         this.handleReplyValueChange = this.handleReplyValueChange.bind(this);
     }
 
+    /**
+     * handles the submission of the reply
+     * @param {*} event 
+     */
     handleSubmitReply(event) {
         event.preventDefault();
         this.store();        
     }
 
+    /**
+     * @summary stores the updated reply list to corresponding comment
+     */
     store() {
         let commentId = this.props.commentId;
         
@@ -38,10 +52,18 @@ class CommentReplyList extends Component {
             });
     }
 
+    /**
+     * handles the editing of a reply
+     * @param {*} event 
+     */
     handleReplyValueChange(event) {
         this.setState({reply: event.target.value});
     }
 
+    /**
+     * @summary renders the Comment reply list
+     * @returns the html detail of the reply list
+     */
     render() {
         return (
             <div className="CommentReplyList collapsible-body">
@@ -69,6 +91,11 @@ class CommentReplyList extends Component {
     }
 }
 
+/**
+ * mpas the dispatch to component props
+ * @param {*} dispatch 
+ * @returns the props
+ */
 const mapDispatchToProps = (dispatch) => {
     return {
         replyComment: (id, lectureCode, reply) => dispatch(commentsActions.replyComment(id, lectureCode, reply)),
