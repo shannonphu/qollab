@@ -2,9 +2,10 @@
 
 ## Table of Contents
 1. [Project Directory Structure](https://github.com/shannonphu/qollab#project-directory-structure)
-2. [Setting up environment for the first time](https://github.com/shannonphu/qollab#setting-up-environment-for-the-first-time)
-3. [Development Workflow](https://github.com/shannonphu/qollab#development-workflow)
-4. Testing
+2. [Documentation](https://shannonphu.github.io/qollab/docs/)
+3. [Setting up environment for the first time](https://github.com/shannonphu/qollab#setting-up-environment-for-the-first-time)
+4. [Development Workflow](https://github.com/shannonphu/qollab#development-workflow)
+5. Testing
     * [Backend Testing](https://github.com/shannonphu/qollab#backend-testing)
     * [Frontend Testing](https://github.com/shannonphu/qollab#frontend-testing)
 
