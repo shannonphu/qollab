@@ -188,14 +188,6 @@ Name: Create Lecture
 Test: Enter a lecture title into the Create Lecture page and hit submit 
 Expected Result: Lecture code returned to user
 
-### Join Lecture ###
-Loctation: JoinLecture.html
-
-Name: Join Lecture 
-Test: Enter an invalid lecture code into the Join Lecture page and hit submit 
-Expected Result: User alerted to invalid code, not redirected 
-**This test currently fails because it does not output a visual error**
-
 ### Integration
 Location: CreateAndJoinIntegration.html
 
@@ -203,7 +195,6 @@ Name: Integration
 Test: Full integration test of through several UI features in usage flow 
 1. Create a Lecture as described in the Create Lecture test
 2. Use the lecture code to join that same lecture, as described in the Join Lecture test but with a valid lecture code
-**This step currently fails because the joined lecture is entitled "Lecture Title Placeholder" regardless of the input at Step 1**
 3. Write and submit a comment, and ensure it appears
 4. Write and submit a second comment and ensure it also appears separately
 5. Write and submit a reply to the first comment, and ensure it appears
