@@ -52,7 +52,7 @@ test('Adding comment to lecture - return comment', done => {
     });
 });
 
-test('Adding comment to lecture - return lecture', done => {
+test('Get lecture comments', done => {
     function callback(comments) {
         expect(comments.length).toEqual(1);
         expect(comments[0].text).toEqual("commentText");

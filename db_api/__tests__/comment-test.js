@@ -23,7 +23,7 @@ test('Creating a new comment (not inserted yet)', () => {
     expect(comment.votes).toEqual(0);
 });
 
-test('Inserting a new comment', done => {
+test('Inserting a new comment (and persisting)', done => {
     function callback(newComment) {
         expect(newComment.text).toEqual('commentText')
         expect(newComment.resolved).toEqual(false)
