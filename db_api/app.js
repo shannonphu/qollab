@@ -107,23 +107,13 @@ app.post('/comment/resolve', (req, res) => {
 });
 
 app.post('/canvas/set', (req, res) => {
-	// Authentication
-	if (!req.user) {
-		return res.send({});
-	}
-
 	Lecture.findByJoinCode(req.body.joinCode, (lecture) => {
-		let instructorID = lecture.instructor;
-		let userID = req.user._id;
-
-		// Authorization
-		if (userID != instructorID) {
-			return res.send({});
-		}
-
-		Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
-			res.send(lecture);
-		});
+        let instructorID = lecture.instructor;
+        if (!instructorID || instructorID && req.user && req.user._id == instructorID) {
+            Lecture.setCanvas(req.body.joinCode, req.body.canvasJSON, (lecture) => {
+                res.send(lecture);
+            });
+        }
 	});
 });
 

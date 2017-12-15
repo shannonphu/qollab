@@ -16,30 +16,15 @@ module.exports = function (server, axios) {
                         let json = action.canvasJSON;
                         let joinCode = json['joinCode'];
                         let canvasData = json['data'];
+                        socket.broadcast.emit('action', {
+                            type: 'LOAD_CANVAS_FROM_JSON',
+                            joinCode: joinCode,
+                            canvasJSON: canvasData
+                        });
 
-                        axios.all([
-                            axios.get('http://db_api:3005/user/current/', {
-                                headers: {
-                                    Cookie: socket.request.headers.cookie
-                                }
-                            }),
-                            axios.get('http://db_api:3005/lecture/' + joinCode)
-                        ])
-                            .then(axios.spread(function (user, lecture) {
-                                let userID = user.data._id;
-                                let instructorID = lecture.data.instructor;
-
-                                socket.broadcast.emit('action', {
-                                    type: 'LOAD_CANVAS_FROM_JSON',
-                                    joinCode: joinCode,
-                                    canvasJSON: canvasData
-                                });
-
-                                socket.broadcast.emit('action', {
-                                    type: 'FREEZE_CANVAS_OBJECTS'
-                                });
-                            }))
-                            .catch(error => console.log(error));
+                        socket.broadcast.emit('action', {
+                            type: 'FREEZE_CANVAS_OBJECTS'
+                        });
                     }
                     break;
                 case 'socket/COMMENT_ADDED':
