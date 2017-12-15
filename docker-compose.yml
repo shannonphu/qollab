@@ -23,7 +23,7 @@ services:
     container_name: "web_client"
     build: ./client
     ports:
-      - "3000:3000"
+      - "80:3000"
     links:
       - "socket_api:socket_api"
       - "db_api:db_api"
