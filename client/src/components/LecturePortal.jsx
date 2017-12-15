@@ -39,7 +39,7 @@ class LecturePortal extends Component {
 	}
 
 	setInstructorMode() {
-		axios.get('http://localhost:3005/user/current', {
+		axios.get('http://db_api:3005/user/current', {
 			withCredentials: true
 		})
 			.then((response) => {

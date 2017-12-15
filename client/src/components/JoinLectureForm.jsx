@@ -20,7 +20,7 @@ class JoinLectureForm extends Component {
         }
 
         // Check if the input join code exists in the database
-        axios.get('http://localhost:3005/lecture/' + joinCode)
+        axios.get('http://db_api:3005/lecture/' + joinCode)
             .then((response) => {
                 this.setState({
                     redirect: true,

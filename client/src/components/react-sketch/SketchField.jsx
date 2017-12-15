@@ -87,10 +87,10 @@ class SketchField extends Component {
         // Get the canvas data that currently stored in MongoDB in case we entered a session mid-way
         // and there is data to sync with.
         axios.all([
-          axios.get('http://localhost:3005/user/current/', {
+          axios.get('http://db_api:3005/user/current/', {
             withCredentials: true
           }),
-          axios.get('http://localhost:3005/lecture/' + props.joinCode)
+          axios.get('http://db_api:3005/lecture/' + props.joinCode)
         ])
           .then((response) => {
             let user = response[0].data;
@@ -220,7 +220,7 @@ class SketchField extends Component {
 
         this.props.canvasUpdated(this.toJSON(), this.props.joinCode);
         this.props.unhighlightAllRects();
-        axios.post('http://localhost:3005/canvas/set', {
+        axios.post('http://db_api:3005/canvas/set', {
           joinCode: this.props.joinCode,
           canvasJSON: JSON.stringify(this.toJSON())
         }, {

@@ -17,7 +17,7 @@ class CreateLectureForm extends Component {
         event.preventDefault();
         let name = this.refs.name.value;
         // Check if the input join code exists in the database
-        axios.post('http://localhost:3005/create/', {
+        axios.post('http://db_api:3005/create/', {
             lectureName: name
         }, {
             withCredentials: true

@@ -1,25 +1,29 @@
 version: '3'
 services:
   db_mongo:
+    container_name: "db_mongo"
     build: ./mongo
     ports:
       - "27017:27017"
     logging: 
       driver: "none"
   db_api:
+    container_name: "db_api"
     build: ./db_api
     ports:
       - "3005:3005"
     links:
-      - db_mongo
+      - "db_mongo:db_mongo"
   socket_api:
+    container_name: "socket_api"
     build: ./socket_api
     ports:
       - "3003:3003"
   web_client:
+    container_name: "web_client"
     build: ./client
     ports:
       - "3000:3000"
     links:
-      - socket_api
-      - db_api
+      - "socket_api:socket_api"
+      - "db_api:db_api"
