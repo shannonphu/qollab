@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/src/components/comments/CommentForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/src/components/comments/CommentForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
+import axios from 'axios';
+import $ from 'jquery';
+
+import * as realtimeActions from '../../actions/realtime';
+import * as commentsActions from '../../actions/comments';
+
+/**
+ *  CommentForm 
+ */
+class CommentForm extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.submitHandler = this.submitHandler.bind(this);
+        this.annotationCheckboxToggled = this.annotationCheckboxToggled.bind(this);
+        this.onMountAndUpdate = this.onMountAndUpdate.bind(this);
+    }
+
+    onMountAndUpdate() {
+        $(findDOMNode(this.refs.disableTextSelect)).attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+        // Disable collapsibility
+        $(".CommentForm").click(function (e) {
+            e.stopPropagation();
+        });
+    }
+
+    componentDidMount() {
+        this.onMountAndUpdate();
+    }
+
+    componentDidUpdate() {
+        this.onMountAndUpdate();
+    }
+
+    /**
+     * @summary handles the submit comment action
+     * @param {*} event the submit event
+     */
+    submitHandler(event) {
+        event.preventDefault();
+
+        let newCommentText = this.refs.text.value;
+        if (newCommentText.length > 0) {
+            let commentAnnotation = this.props.activeAnnotation;
+            this.store(newCommentText, commentAnnotation);
+
+            this.props.setCommentFormShown(false);
+
+            if (this.props.user &amp;&amp; this.props.user._id === this.props.lecture.instructor) {
+              this.props.activateCanvasDrawingMode();
+            }
+
+            // Clear textbox and checkbox
+            this.refs.text.value = null;
+            this.props.setAnnotationCheckbox(false);
+        }
+    }
+
+    /**
+     * @summary handles the action of toggling the check box of annotation
+     */
+    annotationCheckboxToggled() {
+        const isChecked = this.props.annotationCheckbox;
+        if (!isChecked) {
+            this.props.deactivateCanvasDrawingMode();
+            this.props.addRectToCanvas();
+        } else {
+            this.props.removeRectFromCanvas(this.props.activeAnnotation._id);
+            this.props.activateCanvasDrawingMode();
+        }
+        this.props.setAnnotationCheckbox(!isChecked);
+    }
+
+    /**
+     * @summary stores the comment with text and annotation
+     * @param {String} commentText the text of the comment
+     * @param {String} commentAnnotation the annotation associated with the commment
+     */
+    store(commentText, commentAnnotation) {
+        this.props.unhighlightAllRects();
+        this.props.freezeCanvasObjects();
+        let canvasJSON = this.props.canvas.toJSON();
+        this.props.canvasUpdated(canvasJSON, this.props.lectureCode);
+
+        axios.post('http://localhost:3005/comment/create', {
+            joinCode: this.props.lectureCode,
+            text: commentText,
+            annotation: commentAnnotation
+        })
+            .then((response) => {
+                let newComment = response.data;
+                this.props.addCommentToList(newComment);
+                this.props.syncNewComment(newComment, this.props.lectureCode);
+            })
+            .catch((error) => {
+                throw error;
+            });
+
+        axios.post('http://localhost:3005/canvas/set', {
+            joinCode: this.props.lectureCode,
+            canvasJSON: JSON.stringify(canvasJSON)
+        }, {
+            withCredentials: true
+        })
+            .then(() => {
+            })
+            .catch((error) => {
+                throw error;
+            });
+    }
+
+    /**
+     * @returns the html for rendering
+     */
+    render() {
+        const checkbox = this.props.annotationCheckbox ? &lt;i className="material-icons">check_box&lt;/i> : &lt;i className="material-icons">check_box_outline_blank&lt;/i>;
+
+        if (!this.props.commentFormShown) {
+            return (null);
+        } else {
+            return (
+                &lt;li className="CommentForm">
+                    &lt;div className={this.props.className} ref="disableTextSelect">
+                        &lt;form onSubmit={this.submitHandler} style={{ "width": "100%" }}>
+                            &lt;div className="row">
+                                &lt;a onMouseDown={this.annotationCheckboxToggled} >
+                                    {checkbox}
+                                &lt;/a>
+                                &lt;label>Add Annotation&lt;/label>
+                            &lt;/div>
+                            &lt;div className="row input-field">
+                                &lt;input id="add_comment" type="text" ref="text" autoComplete="off" className="materialize-textarea validate" />
+                                &lt;label htmlFor="add_comment">Write a comment...&lt;/label>
+                            &lt;/div>
+                            &lt;div className="row">
+                                &lt;button className="btn-small btn waves-effect waves-light" type="submit" name="action">Submit&lt;/button>
+                            &lt;/div>
+                        &lt;/form>
+                    &lt;/div>
+                &lt;/li>
+            );
+        }
+    }
+}
+
+/**
+ * get redux source's state and map it to component props
+ * @param {*} state 
+ * @returns the props
+ */
+function mapStateToProps(state) {
+    return {
+        activeAnnotation: state.realtimeReducer.activeAnnotation,
+        commentFormShown: state.commentsReducer.commentFormShown,
+        annotationCheckbox: state.commentsReducer.annotationCheckbox,
+        canvas: state.realtimeReducer.canvas,
+        user: state.userReducer.user,
+        lecture: state.lectureReducer.lecture
+    }
+}
+
+/**
+ * maps the dispatch to props
+ * @param {*} dispatch 
+ * @returns the props
+ */
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addRectToCanvas: () => dispatch(realtimeActions.addRectToCanvas()),
+        activateCanvasDrawingMode: () => dispatch(realtimeActions.activateCanvasDrawingMode()),
+        deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
+        removeRectFromCanvas: id => dispatch(realtimeActions.removeRectFromCanvas(id)),
+        freezeCanvasObjects: () => dispatch(realtimeActions.freezeCanvasObjects()),
+        unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
+        addCommentToList: comment => dispatch(commentsActions.addComment(comment)),
+        setCommentFormShown: (isShown) => dispatch(commentsActions.setCommentFormShown(isShown)),
+        setAnnotationCheckbox: (isChecked) => dispatch(commentsActions.setAnnotationCheckbox(isChecked)),
+        syncNewComment: (comment, joinCode) => dispatch({
+            type: "socket/COMMENT_ADDED",
+            data: {
+                comment: comment,
+                joinCode: joinCode
+            }
+        }),
+        canvasUpdated: (canvasJSON, joinCode) => dispatch({
+            type: "socket/CANVAS_UPDATED", canvasJSON: {
+                data: canvasJSON,
+                joinCode: joinCode
+            }
+        })
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions.html">actions</a></li><li><a href="module-commentSchema.html">commentSchema</a></li><li><a href="module-lectureSchema.html">lectureSchema</a></li><li><a href="module-userSchema.html">userSchema</a></li></ul><h3>Classes</h3><ul><li><a href="AddCommentToggle.html">AddCommentToggle</a></li><li><a href="App.html">App</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Comment.html">Comment</a></li><li><a href="CommentForm.html">CommentForm</a></li><li><a href="CommentList.html">CommentList</a></li><li><a href="CommentReply.html">CommentReply</a></li><li><a href="CommentReplyList.html">CommentReplyList</a></li><li><a href="Construct%2520the%2520Comment%2520component.html">Construct the Comment component</a></li><li><a href="CreateLectureForm.html">CreateLectureForm</a></li><li><a href="FabricCanvasTool.html">FabricCanvasTool</a></li><li><a href="FocusModeToggle.html">FocusModeToggle</a></li><li><a href="for%2520the%2520LecturePortal%2520component.html">for the LecturePortal component</a></li><li><a href="History.html">History</a></li><li><a href="InstructorDashboard.html">InstructorDashboard</a></li><li><a href="JoinLectureForm.html">JoinLectureForm</a></li><li><a href="LecturePortal.html">LecturePortal</a></li><li><a href="LoginNotification.html">LoginNotification</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Pencil.html">Pencil</a></li><li><a href="ShowResolvedCommentsToggle.html">ShowResolvedCommentsToggle</a></li><li><a href="SketchField.html">SketchField</a></li><li><a href="ToolSet.html">ToolSet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommentsReducer">CommentsReducer</a></li><li><a href="global.html#LectureReducer">LectureReducer</a></li><li><a href="global.html#mapDispatchToProps">mapDispatchToProps</a></li><li><a href="global.html#mapStateToProps">mapStateToProps</a></li><li><a href="global.html#onClickHandler">onClickHandler</a></li><li><a href="global.html#RealtimeReducer">RealtimeReducer</a></li><li><a href="global.html#reducers">reducers</a></li><li><a href="global.html#UserReducer">UserReducer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 14 2017 21:39:03 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

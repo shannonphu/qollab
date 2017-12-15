@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
+/**
+ * JoinLectureForm component
+ */
 class JoinLectureForm extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -12,6 +19,10 @@ class JoinLectureForm extends Component {
         this.submitHandler = this.submitHandler.bind(this)
     }
 
+    /**
+     * handler for the submission of the request for joining a lecture
+     * @param {*} event 
+     */
     submitHandler(event) {
         event.preventDefault();
         let joinCode = this.refs.joinCode.value;
@@ -32,6 +43,10 @@ class JoinLectureForm extends Component {
             });
     }
 
+    /**
+     * renders the join lecture form
+     * @returns the html detail of the form
+     */
     render() {
         if (this.state.redirect) {
             return (<Redirect to={"/lecture/" + this.state.joinCode} />);

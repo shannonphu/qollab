@@ -7,6 +7,9 @@ import InstructorDashboard from './components/InstructorDashboard';
 import JoinLectureForm from './components/JoinLectureForm';
 import CreateLectureForm from './components/CreateLectureForm';
 
+/**
+ * The main app component
+ */
 class App extends Component {
   constructor(props) {
     super(props)

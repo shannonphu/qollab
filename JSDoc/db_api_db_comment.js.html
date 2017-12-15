@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: db_api/db/comment.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: db_api/db/comment.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file 
+ * @module commentSchema
+ */
+module.exports = (function () {
+    let mongoose = require('mongoose');
+
+    /**
+     * The db schema for comment
+     * @memberof module:commentSchema
+     */
+    var commentSchema = new mongoose.Schema({
+        text: { type: String, required: true },
+        annotation: { type: String, default: null },
+        resolved: { type: Boolean, default: false },
+        replies: [String],
+        votes: { type: Number, default: 0 }
+    });
+
+    /**
+     * @summary create a comment with annotation
+     * @param {String} text the comment text
+     * @param {String} annotation the associated annotation
+     * @returns {Comment} the new comment
+     * @memberof module:commentSchema
+     */
+    commentSchema.statics.create = (text, annotation) => {
+        let comment = new Comment({
+            text: text,
+            annotation: annotation
+        });
+
+        return comment;
+    }
+
+    /**
+     * @summary inserts a new Comment object into our database
+     * @param {String} text the Comment text
+     * @param {String} annotation the associated annotation
+     * @param {function} callback the callback function after DB query
+     * @returns {Comment} the actual Comment mongoDB object
+     * @memberof module:commentSchema
+     * @example
+     * Comment.insert("comment_text", annotationJSON, (newComment) => {
+     *       console.log(newComment);
+     */
+    commentSchema.statics.insert = function (text, annotation, callback) {
+        let comment = Comment.create(text, annotation);
+        comment.save(function (err, data) {
+            if (err) {
+                throw err;
+            }
+
+            if (callback) {
+                callback(data);
+            }
+        });
+    }
+
+    /**
+     * @summary get Comment object by its ID
+     * @param {String} id the Comment id associated with the wanted object
+     * @param {function} callback the callback function to execute after DB queries
+     * @memberof module:commentSchema
+     * @example
+     * Comment.getByID(commentId, (comment) => {}
+     * 
+     * });
+     */
+    commentSchema.statics.getByID = function (id, callback) {
+        Comment.findById(id, (err, comment) => {
+            if (err) {
+                throw err;
+            }
+
+            if (callback) {
+                callback(comment);
+            }
+        });
+    }
+
+    /**
+     * @summary adds text reply to comment
+     * @param {String} id the comment's ID that we want to reply to
+     * @param {String} text the reply text
+     * @param {function} callback to execute after replying to the comment
+     * @returns {Comment} comment just upvoted
+     * @memberof module:commentSchema
+     * @example
+     * Comment.addReply(commentId, "This is a reply.", (comment) => {
+     * 
+     * });
+     */
+    commentSchema.statics.addReply = function (id, text, callback) {
+        Comment.findOneAndUpdate(
+            { "_id" : id },
+            { $push: { "replies": text } },
+            { safe: true, upsert: true, new: true },
+            function (err, comment) {
+                if (err) {
+                    throw err;
+                }
+
+                if (callback) {
+                    callback(comment);
+                }
+            }
+        );
+    }
+
+    /**
+     * @summary increments the comment's number of votes
+     * @param {String} the comment's ID that we want to upvote
+     * @param {function} callback to execute after upvoting this comment
+     * @returns {Comment} comment just upvoted
+     * @memberof module:commentSchema
+     * @example
+     * Comment.upvote(commentId, (comment) => {
+     * 
+     * });
+     */
+    commentSchema.statics.upvote = function (id, callback) {
+        Comment.findOneAndUpdate(
+            { "_id": id },
+            { "$inc": { "votes": 1 } },
+            { safe: true, upsert: true, new: true },
+            (err, comment) => {
+                if (err) {
+                    throw err;
+                }
+                
+                if (callback) {
+                    callback(comment);
+                }
+            });
+    }
+
+    /**
+     * @summary sets this comment's resolve flag to true
+     * @param {String} the comment's ID that we want to resolve
+     * @param {function} callback to execute after resolving this comment
+     * @returns {Comment} comment we just resolved
+     * @memberof module:commentSchema
+     * @example
+     * Comment.resolve(commentId, (comment) => {
+     * 
+     * });
+     */
+    commentSchema.statics.resolve = function (id, callback) {
+        Comment.findOneAndUpdate(
+            { "_id": id },
+            { "$set": { "resolved": true } },
+            { safe: true, upsert: true, new: true },
+            (err, comment) => {
+                if (err) {
+                    throw err;
+                }
+
+                if (callback) {
+                    callback(comment);
+                }
+            });
+    }
+
+    let Comment = mongoose.model('Comment', commentSchema);
+
+    return {
+        schema: commentSchema,
+        model: Comment
+    };
+}());</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions.html">actions</a></li><li><a href="module-commentSchema.html">commentSchema</a></li><li><a href="module-lectureSchema.html">lectureSchema</a></li><li><a href="module-userSchema.html">userSchema</a></li></ul><h3>Classes</h3><ul><li><a href="AddCommentToggle.html">AddCommentToggle</a></li><li><a href="App.html">App</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Comment.html">Comment</a></li><li><a href="CommentForm.html">CommentForm</a></li><li><a href="CommentList.html">CommentList</a></li><li><a href="CommentReply.html">CommentReply</a></li><li><a href="CommentReplyList.html">CommentReplyList</a></li><li><a href="Construct%2520the%2520Comment%2520component.html">Construct the Comment component</a></li><li><a href="CreateLectureForm.html">CreateLectureForm</a></li><li><a href="FabricCanvasTool.html">FabricCanvasTool</a></li><li><a href="FocusModeToggle.html">FocusModeToggle</a></li><li><a href="for%2520the%2520LecturePortal%2520component.html">for the LecturePortal component</a></li><li><a href="History.html">History</a></li><li><a href="InstructorDashboard.html">InstructorDashboard</a></li><li><a href="JoinLectureForm.html">JoinLectureForm</a></li><li><a href="LecturePortal.html">LecturePortal</a></li><li><a href="LoginNotification.html">LoginNotification</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Pencil.html">Pencil</a></li><li><a href="ShowResolvedCommentsToggle.html">ShowResolvedCommentsToggle</a></li><li><a href="SketchField.html">SketchField</a></li><li><a href="ToolSet.html">ToolSet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommentsReducer">CommentsReducer</a></li><li><a href="global.html#LectureReducer">LectureReducer</a></li><li><a href="global.html#mapDispatchToProps">mapDispatchToProps</a></li><li><a href="global.html#mapStateToProps">mapStateToProps</a></li><li><a href="global.html#onClickHandler">onClickHandler</a></li><li><a href="global.html#RealtimeReducer">RealtimeReducer</a></li><li><a href="global.html#reducers">reducers</a></li><li><a href="global.html#UserReducer">UserReducer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 14 2017 21:39:03 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

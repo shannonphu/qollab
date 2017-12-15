@@ -3,8 +3,15 @@ import ShowResolvedCommentToggle from './ShowResolvedCommentsToggle';
 import FocusModeToggle from './FocusModeToggle';
 import AddCommentToggle from './AddCommentToggle';
 
+/**
+ * ToolSet component
+ */
 class ToolSet extends Component {
 
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
   constructor(props) {
     super(props);
     this.state = {};

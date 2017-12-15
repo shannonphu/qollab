@@ -9,7 +9,14 @@ import * as realtimeActions from '../actions/realtime';
 
 require('./styles/lecture.css');
 
+/**
+ * LecturePortal component
+ */
 class LecturePortal extends Component {
+	/**
+	 * @constructor for the LecturePortal component
+	 * @param {Object} props 
+	 */
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -22,15 +29,25 @@ class LecturePortal extends Component {
 		this.setInstructorMode();
 	}
 
+	/**
+	 * Mount the component to the document observer
+	 */
 	componentWillMount() {
 		document.addEventListener('click', this.onClickHandler, false);
 	}
 
+	/**
+	 * Unmount the component from the observer
+	 */
 	componentWillUnmount() {
 		document.removeEventListener('click', this.onClickHandler, false);
 		this.props.setIsInstructor(false);
 	}
 
+	/**
+	 * handles the click event
+	 * @param {*} event 
+	 */
 	onClickHandler(event) {
 		if (this.canvasRef && !this.canvasRef.contains(event.target)
 			&& this.commentListRef && !this.commentListRef.contains(event.target)) {
@@ -38,6 +55,9 @@ class LecturePortal extends Component {
 		}
 	}
 
+	/**
+	 * gives the user the access of an instructor
+	 */
 	setInstructorMode() {
 		axios.get('http://localhost:3005/user/current', {
 			withCredentials: true

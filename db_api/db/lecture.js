@@ -1,3 +1,7 @@
+/**
+ * @file
+ * @module lectureSchema
+ */
 const commentDefinition = require('./comment.js');
 const commentSchema = commentDefinition.schema;
 const Comment = commentDefinition.model;
@@ -5,6 +9,10 @@ const Comment = commentDefinition.model;
 module.exports = (function () {
     let mongoose = require('mongoose');
 
+    /**
+     * The db schema for lecture
+     * @memberof module:lectureSchema
+     */
     var lectureSchema = new mongoose.Schema({
         title: { type: String, required: true },
         joinCode: { type: String, required: true, unique: true },
@@ -13,17 +21,18 @@ module.exports = (function () {
         comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
         canvas: String
     });
-
-    /*
-    * Functionality:
-    *   - inserts a new Lecture object into our database
-    * Usage:
-    *   Lecture.insert("lecture_title", "instructor_id", (newLecture) => {
-    *       console.log(newLecture);
-    *   });
-    * Returns:
-    *   - the actual Lecture mongoDB model
-    */
+    
+    /**
+     * @summary inserts a new Lecture object into our database
+     * @param {String} title the title of the lecture
+     * @param {String} instructorId the instructor id
+     * @param {function} callback the callback function to execute after the DB query
+     * @returns {Lecture} the actual Lecture mongoDB model
+     * @memberof module:lectureSchema
+     * @example Lecture.insert("lecture_title", "instructor_id", (newLecture) => {
+     *       console.log(newLecture);
+     * });
+     */
     lectureSchema.statics.insert = function (title, instructorId, callback) {
         // TODO: check if a lecture already has this code
         let code = generateCode();
@@ -41,16 +50,16 @@ module.exports = (function () {
         });
     }
 
-    /*
-    * Functionality:
-    *   - finds the Lecture associated with this join code
-    * Usage:
-    * Lecture.findByJoinCode(someJoinCode, (lecture) => {
-    *    // do something
-    });
-    * Returns:
-    *   - the actual Lecture mongoDB model
-    */
+    /**
+     * @summary finds the Lecture associated with this join code
+     * @param {String} joinCode the join code associated with the lecture
+     * @param {function} callback method to execute after the DB query
+     * @returns {Lecture} the actual Lecture mongoDB model
+     * @memberof module:lectureSchema
+     * @example Lecture.findByJoinCode(someJoinCode, (lecture) => {
+     *    // do something
+     * });
+     */
     lectureSchema.statics.findByJoinCode = function (joinCode, callback) {
         Lecture.findOne({ joinCode: joinCode }, function (err, lecture) {
             if (err) {
@@ -70,12 +79,12 @@ module.exports = (function () {
 
     /**
      * @summary Adds a comment to the lecture object
-     * @param {String} Join code for the lecture we want to add the comment to
-     * @param {String} Comment text for new comment
-     * @param {String} Annotation ID for annotation linked to comment
-     * @param {function} Callback method to execute after DB queries
+     * @param {String} joinCode code for the lecture we want to add the comment to
+     * @param {String} commentText text for new comment
+     * @param {String} annotation ID for annotation linked to comment
+     * @param {function} callback method to execute after DB queries
      * @returns {Comment} 
-     * @memberof module:lectureDB
+     * @memberof module:lectureSchema
      * @example
      * Lecture.addComment("join_code", "comment_text", "annotation_id", (comment) => {
      * 
@@ -99,8 +108,8 @@ module.exports = (function () {
      * @summary Gets all comments in this lecture
      * @param {String} Join code for the lecture we want to add the comment to
      * @param {function} Callback method to execute after DB queries
-     * @returns {[Comment]} 
-     * @memberof module:lectureDB
+     * @returns {Comment} 
+     * @memberof module:lectureSchema
      * @example
      * Lecture.getComments("join_code", (comments) => {
      * 
@@ -126,7 +135,7 @@ module.exports = (function () {
      * @param {String} JSON string representing canvas
      * @param {function} Callback method to execute after setting canvas
      * @returns {Lecture} 
-     * @memberof module:lectureDB
+     * @memberof module:lectureSchema
      * @example
      * Lecture.setCanvas("join_code", "{}", (lecture) => {
      * 
@@ -148,10 +157,10 @@ module.exports = (function () {
             });
     }
 
-    /*
-    * Functionality:
-    *   - generates a 6 digit numerical code randomly
-    */
+    /**
+     * @summary generates a 6 digit numerical code randomly
+     * @memberof module:lectureSchema
+     */
     let generateCode = function () {
         let code = Math.floor(100000 + Math.random() * 900000);
         return code.toString();

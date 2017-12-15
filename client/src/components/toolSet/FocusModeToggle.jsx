@@ -7,7 +7,14 @@ import $ from 'jquery';
 import * as commentsActions from '../../actions/comments';
 import * as realtimeActions from '../../actions/realtime';
 
+/**
+ * toggle for focus mode
+ */
 class FocusModeToggle extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.getTooltipContent = this.getTooltipContent.bind(this);

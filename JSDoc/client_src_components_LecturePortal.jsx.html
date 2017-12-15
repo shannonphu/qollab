@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/src/components/LecturePortal.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/src/components/LecturePortal.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react'
+import axios from 'axios';
+import { connect } from 'react-redux';
+
+import Canvas from './Canvas';
+import CommentList from './comments/CommentList';
+import ToolSet from './toolSet/ToolSet';
+import * as realtimeActions from '../actions/realtime';
+
+require('./styles/lecture.css');
+
+/**
+ * LecturePortal component
+ */
+class LecturePortal extends Component {
+	/**
+	 * @constructor for the LecturePortal component
+	 * @param {Object} props 
+	 */
+	constructor(props) {
+		super(props)
+		this.state = {
+			joinCode: this.props.match.params.joinCode
+		}
+		this.setCanvasRef = this.setCanvasRef.bind(this);
+		this.setCommentListRef = this.setCommentListRef.bind(this);
+		this.setInstructorMode = this.setInstructorMode.bind(this);
+
+		this.setInstructorMode();
+	}
+
+	/**
+	 * Mount the component to the document observer
+	 */
+	componentWillMount() {
+		document.addEventListener('click', this.onClickHandler, false);
+	}
+
+	/**
+	 * Unmount the component from the observer
+	 */
+	componentWillUnmount() {
+		document.removeEventListener('click', this.onClickHandler, false);
+		this.props.setIsInstructor(false);
+	}
+
+	/**
+	 * handles the click event
+	 * @param {*} event 
+	 */
+	onClickHandler(event) {
+		if (this.canvasRef &amp;&amp; !this.canvasRef.contains(event.target)
+			&amp;&amp; this.commentListRef &amp;&amp; !this.commentListRef.contains(event.target)) {
+			this.props.unhighlightAllRects();
+		}
+	}
+
+	/**
+	 * gives the user the access of an instructor
+	 */
+	setInstructorMode() {
+		axios.get('http://localhost:3005/user/current', {
+			withCredentials: true
+		})
+			.then((response) => {
+				let user = response.data;
+				user.lectures.forEach ((lecture) => {
+					if (lecture.joinCode === this.state.joinCode) {
+						this.props.setIsInstructor(true);
+					}
+				});
+			})
+			.catch((error) => {
+				throw error;
+			});
+	}
+
+	setCanvasRef(node) {
+		this.canvasRef = node;
+	}
+
+	setCommentListRef(node) {
+		this.commentListRef = node;
+	}
+
+	render() {
+		let focusModeBarrier = this.props.focusModeActive ? &lt;div className="focusModeBarrier">Entered focus mode&lt;/div> : null;
+
+		return (
+			&lt;div className='LecturePortal row'>
+				&lt;ToolSet />
+				&lt;div className="row lecture-container">
+					&lt;div className="canvas-container col s6 m8">&lt;Canvas ref={this.setCanvasRef} joinCode={this.state.joinCode} />&lt;/div>
+					&lt;div className="commentlist-container col s6 m4">
+						{focusModeBarrier}
+						&lt;CommentList ref={this.setCommentListRef} joinCode={this.state.joinCode} />
+					&lt;/div>
+				&lt;/div>
+			&lt;/div>
+		)
+	}
+}
+
+function mapStateToProps(state) {
+	return {
+		focusModeActive: state.commentsReducer.focusModeActive
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		unhighlightAllRects: () => dispatch(realtimeActions.unhighlightAllRects()),
+		setIsInstructor: (isInstructor) => dispatch(realtimeActions.setIsInstructor(isInstructor))
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LecturePortal);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions.html">actions</a></li><li><a href="module-commentSchema.html">commentSchema</a></li><li><a href="module-lectureSchema.html">lectureSchema</a></li><li><a href="module-userSchema.html">userSchema</a></li></ul><h3>Classes</h3><ul><li><a href="AddCommentToggle.html">AddCommentToggle</a></li><li><a href="App.html">App</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Comment.html">Comment</a></li><li><a href="CommentForm.html">CommentForm</a></li><li><a href="CommentList.html">CommentList</a></li><li><a href="CommentReply.html">CommentReply</a></li><li><a href="CommentReplyList.html">CommentReplyList</a></li><li><a href="Construct%2520the%2520Comment%2520component.html">Construct the Comment component</a></li><li><a href="CreateLectureForm.html">CreateLectureForm</a></li><li><a href="FabricCanvasTool.html">FabricCanvasTool</a></li><li><a href="FocusModeToggle.html">FocusModeToggle</a></li><li><a href="for%2520the%2520LecturePortal%2520component.html">for the LecturePortal component</a></li><li><a href="History.html">History</a></li><li><a href="InstructorDashboard.html">InstructorDashboard</a></li><li><a href="JoinLectureForm.html">JoinLectureForm</a></li><li><a href="LecturePortal.html">LecturePortal</a></li><li><a href="LoginNotification.html">LoginNotification</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Pencil.html">Pencil</a></li><li><a href="ShowResolvedCommentsToggle.html">ShowResolvedCommentsToggle</a></li><li><a href="SketchField.html">SketchField</a></li><li><a href="ToolSet.html">ToolSet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommentsReducer">CommentsReducer</a></li><li><a href="global.html#LectureReducer">LectureReducer</a></li><li><a href="global.html#mapDispatchToProps">mapDispatchToProps</a></li><li><a href="global.html#mapStateToProps">mapStateToProps</a></li><li><a href="global.html#onClickHandler">onClickHandler</a></li><li><a href="global.html#RealtimeReducer">RealtimeReducer</a></li><li><a href="global.html#reducers">reducers</a></li><li><a href="global.html#UserReducer">UserReducer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 14 2017 21:39:03 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

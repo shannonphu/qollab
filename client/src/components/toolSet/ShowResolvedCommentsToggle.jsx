@@ -6,7 +6,14 @@ import $ from 'jquery';
 
 import * as commentsActions from '../../actions/comments';
 
+/**
+ * toggle for showing/hiding resolved comments
+ */
 class ShowResolvedCommentsToggle extends Component {
+    /**
+     * @constructor
+     * @param {Object} props 
+     */
     constructor(props) {
         super(props);
         this.state = {};
@@ -34,12 +41,20 @@ class ShowResolvedCommentsToggle extends Component {
     }
 }
 
+/**
+ * get redux source's state and map it to component props
+ * @param {*} state 
+ */
 function mapStateToProps(state) {
     return {
         showResolvedCommentsToggled: state.commentsReducer.showResolvedCommentsToggled
     }
 }
 
+/**
+ * map dispatch to component props
+ * @param {*} dispatch 
+ */
 function mapDispatchToProps(dispatch) {
     return {
         toggleShowResolvedComments: () => dispatch(commentsActions.toggleShowResolvedComments())

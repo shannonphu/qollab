@@ -1,6 +1,14 @@
+/**
+ * @file 
+ * @module commentSchema
+ */
 module.exports = (function () {
     let mongoose = require('mongoose');
 
+    /**
+     * The db schema for comment
+     * @memberof module:commentSchema
+     */
     var commentSchema = new mongoose.Schema({
         text: { type: String, required: true },
         annotation: { type: String, default: null },
@@ -9,6 +17,13 @@ module.exports = (function () {
         votes: { type: Number, default: 0 }
     });
 
+    /**
+     * @summary create a comment with annotation
+     * @param {String} text the comment text
+     * @param {String} annotation the associated annotation
+     * @returns {Comment} the new comment
+     * @memberof module:commentSchema
+     */
     commentSchema.statics.create = (text, annotation) => {
         let comment = new Comment({
             text: text,
@@ -18,16 +33,17 @@ module.exports = (function () {
         return comment;
     }
 
-    /*
-    * Functionality:
-    *   - inserts a new Comment object into our database
-    * Usage:
-    *   Comment.insert("comment_text", annotationJSON, (newComment) => {
-    *       console.log(newComment);
-    *   });
-    * Returns:
-    *   - the actual Comment mongoDB object
-    */
+    /**
+     * @summary inserts a new Comment object into our database
+     * @param {String} text the Comment text
+     * @param {String} annotation the associated annotation
+     * @param {function} callback the callback function after DB query
+     * @returns {Comment} the actual Comment mongoDB object
+     * @memberof module:commentSchema
+     * @example
+     * Comment.insert("comment_text", annotationJSON, (newComment) => {
+     *       console.log(newComment);
+     */
     commentSchema.statics.insert = function (text, annotation, callback) {
         let comment = Comment.create(text, annotation);
         comment.save(function (err, data) {
@@ -41,6 +57,16 @@ module.exports = (function () {
         });
     }
 
+    /**
+     * @summary get Comment object by its ID
+     * @param {String} id the Comment id associated with the wanted object
+     * @param {function} callback the callback function to execute after DB queries
+     * @memberof module:commentSchema
+     * @example
+     * Comment.getByID(commentId, (comment) => {}
+     * 
+     * });
+     */
     commentSchema.statics.getByID = function (id, callback) {
         Comment.findById(id, (err, comment) => {
             if (err) {
@@ -55,11 +81,11 @@ module.exports = (function () {
 
     /**
      * @summary adds text reply to comment
-     * @param {String} the comment's ID that we want to reply to
-     * @param {String} the reply text
+     * @param {String} id the comment's ID that we want to reply to
+     * @param {String} text the reply text
      * @param {function} callback to execute after replying to the comment
      * @returns {Comment} comment just upvoted
-     * @memberof module:commentDB
+     * @memberof module:commentSchema
      * @example
      * Comment.addReply(commentId, "This is a reply.", (comment) => {
      * 
@@ -87,7 +113,7 @@ module.exports = (function () {
      * @param {String} the comment's ID that we want to upvote
      * @param {function} callback to execute after upvoting this comment
      * @returns {Comment} comment just upvoted
-     * @memberof module:commentDB
+     * @memberof module:commentSchema
      * @example
      * Comment.upvote(commentId, (comment) => {
      * 
@@ -114,7 +140,7 @@ module.exports = (function () {
      * @param {String} the comment's ID that we want to resolve
      * @param {function} callback to execute after resolving this comment
      * @returns {Comment} comment we just resolved
-     * @memberof module:commentDB
+     * @memberof module:commentSchema
      * @example
      * Comment.resolve(commentId, (comment) => {
      * 

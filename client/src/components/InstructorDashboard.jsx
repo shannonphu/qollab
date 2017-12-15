@@ -3,7 +3,14 @@ import axios from 'axios';
 
 require('./styles/lecture.css');
 
+/**
+ * Dashboard for instructors
+ */
 class InstructorDashboard extends Component {
+	/**
+	 * @constructor
+	 * @param {Object} props 
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -21,6 +28,10 @@ class InstructorDashboard extends Component {
 			});
 	}
 
+	/**
+	 * renders the dashboard
+	 * @returns the html-form details of the dashboard
+	 */
 	render() {
 		if (!this.state.user) {
 			return (null);

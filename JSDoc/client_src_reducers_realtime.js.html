@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/src/reducers/realtime.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/src/reducers/realtime.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import uuidv1 from 'uuid/v1';
+const fabric = require('fabric').fabric;
+const HIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(178, 223, 219, 0.5)';
+const UNHIGHLIGHTED_ANNOTATION_FILL_COLOR = 'rgba(224, 242, 241, 0.3)';
+const HIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 2;
+const UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH = 1;
+const ANNOTATION_STROKE_COLOR = '#80cbc4';
+/**
+ * Reducer for handling real-time actions
+ * @param {*} state initial state
+ * @param {*} action 
+ * @returns new state
+ */
+var RealtimeReducer = (state = {
+    isInstructor: false,
+    lectureCode: null,
+    canvas: null,
+    activeAnnotation: null
+}, action) => {
+    switch (action.type) {
+        case 'SET_IS_INSTRUCTOR':
+            return {
+                ...state,
+                isInstructor: action.isInstructor
+            }
+        case 'STORE_JOIN_CODE':
+            return {
+                ...state,
+                lectureCode: action.joinCode
+            }
+        case 'LOAD_CANVAS_FROM_JSON':
+            // Only update the stored canvasJSON if the lecture code is for this lecture
+            let joinCode = action.joinCode;
+            if (state.lectureCode !== joinCode) {
+                return state;
+            }
+
+            let canvasJSON = action.canvasJSON;
+            state.canvas.loadFromJSON(canvasJSON);
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        case 'SET_INITIAL_CANVAS':
+            return {
+                ...state,
+                canvas: action.canvas
+            }
+        case 'CANVAS_RECT_ADDED':
+            {
+                let rect = new fabric.Rect({
+                    width: 300,
+                    height: 125,
+                    fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                    stroke: ANNOTATION_STROKE_COLOR,
+                    strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH,
+                    hasRotatingPoint: false,
+                    hasControls: true,
+                    hasBorders: false,
+                    selectable: true,
+                    evented: true
+                });
+
+                rect.toObject = (function (toObject) {
+                    return function () {
+                        return fabric.util.object.extend(toObject.call(this), {
+                            _id: this._id
+                        });
+                    };
+                })(rect.toObject);
+
+                rect._id = uuidv1();
+
+                state.canvas.add(rect);
+
+                return {
+                    ...state,
+                    canvas: state.canvas,
+                    activeAnnotation: rect
+                }
+            }
+        case 'CANVAS_RECT_REMOVED':
+            {
+                state.canvas.forEachObject((object) => {
+                    if (object &amp;&amp; object.type === 'rect' &amp;&amp; object._id === action.objectId) {
+                        state.canvas.remove(object);
+                        state.canvas.renderAll();
+                        return {
+                            ...state,
+                            canvas: state.canvas,
+                            activeAnnotation: null
+                        };
+                    }
+                });
+
+                return {
+                    ...state
+                };
+            }
+        case 'HIGHLIGHT_RECT':
+            {
+                state.canvas.forEachObject((object) => {
+                    if (object.type === 'rect' &amp;&amp; object._id === action.objectId) {
+                        object.set({
+                            fill: HIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                            strokeWidth: HIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                        });
+                    }
+                });
+                state.canvas.renderAll();
+                return {
+                    ...state,
+                    canvas: state.canvas
+                }
+            }
+        case 'UNHIGHLIGHT_RECT':
+            {
+                state.canvas.forEachObject((object) => {
+                    if (object.type === 'rect') {
+                        object.set({
+                            fill: UNHIGHLIGHTED_ANNOTATION_FILL_COLOR,
+                            strokeWidth: UNHIGHLIGHTED_ANNOTATION_STROKE_WIDTH
+                        });
+                    }
+                });
+                state.canvas.renderAll();
+                return {
+                    ...state,
+                    canvas: state.canvas
+                }
+            }
+        case 'FREEZE_CANVAS_OBJECTS':
+            state.canvas.forEachObject((object) => {
+                object.set({
+                    selectable: false,
+                    evented: false,
+                    hasControls: false
+                });
+            });
+            state.canvas.renderAll();
+            return {
+                ...state,
+                canvas: state.canvas
+            };
+        case 'ACTIVATE_CANVAS_DRAWING_MODE':
+            state.canvas.isDrawingMode = true;
+            state.canvas.freeDrawingBrush.width = 5;
+            state.canvas.freeDrawingBrush.color = 'black';
+            return {
+                ...state,
+                canvas: state.canvas,
+                activeAnnotation: null
+            };
+        case 'DEACTIVATE_CANVAS_DRAWING_MODE':
+            state.canvas.isDrawingMode = false;
+            state.canvas.selection = false;
+            state.canvas.forEachObject((object) => {
+                object.set({
+                    selectable: false,
+                    evented: false,
+                    hasControls: false
+                });
+            });
+            return {
+                ...state,
+                canvas: state.canvas
+            };
+        case 'HIDE_ANNOTATIONS':
+            state.canvas.forEachObject((object) => {
+                if (object.type === 'rect') {
+                    object.set({
+                        opacity: 0
+                    });
+                }
+            });
+            state.canvas.renderAll();
+
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        case 'SHOW_ANNOTATIONS':
+            state.canvas.forEachObject((object) => {
+                if (object.type === 'rect') {
+                    object.set({
+                        opacity: 1
+                    });
+                }
+            });
+            state.canvas.renderAll();
+
+            return {
+                ...state,
+                canvas: state.canvas
+            }
+        default:
+            return state;
+    }
+}
+
+export default RealtimeReducer;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions.html">actions</a></li><li><a href="module-commentSchema.html">commentSchema</a></li><li><a href="module-lectureSchema.html">lectureSchema</a></li><li><a href="module-userSchema.html">userSchema</a></li></ul><h3>Classes</h3><ul><li><a href="AddCommentToggle.html">AddCommentToggle</a></li><li><a href="App.html">App</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Comment.html">Comment</a></li><li><a href="CommentForm.html">CommentForm</a></li><li><a href="CommentList.html">CommentList</a></li><li><a href="CommentReply.html">CommentReply</a></li><li><a href="CommentReplyList.html">CommentReplyList</a></li><li><a href="Construct%2520the%2520Comment%2520component.html">Construct the Comment component</a></li><li><a href="CreateLectureForm.html">CreateLectureForm</a></li><li><a href="FabricCanvasTool.html">FabricCanvasTool</a></li><li><a href="FocusModeToggle.html">FocusModeToggle</a></li><li><a href="for%2520the%2520LecturePortal%2520component.html">for the LecturePortal component</a></li><li><a href="History.html">History</a></li><li><a href="InstructorDashboard.html">InstructorDashboard</a></li><li><a href="JoinLectureForm.html">JoinLectureForm</a></li><li><a href="LecturePortal.html">LecturePortal</a></li><li><a href="LoginNotification.html">LoginNotification</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Pencil.html">Pencil</a></li><li><a href="ShowResolvedCommentsToggle.html">ShowResolvedCommentsToggle</a></li><li><a href="SketchField.html">SketchField</a></li><li><a href="ToolSet.html">ToolSet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommentsReducer">CommentsReducer</a></li><li><a href="global.html#LectureReducer">LectureReducer</a></li><li><a href="global.html#mapDispatchToProps">mapDispatchToProps</a></li><li><a href="global.html#mapStateToProps">mapStateToProps</a></li><li><a href="global.html#onClickHandler">onClickHandler</a></li><li><a href="global.html#RealtimeReducer">RealtimeReducer</a></li><li><a href="global.html#reducers">reducers</a></li><li><a href="global.html#UserReducer">UserReducer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 14 2017 21:39:03 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

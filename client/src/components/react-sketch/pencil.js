@@ -1,5 +1,7 @@
 import FabricCanvasTool from './fabrictool'
-
+/**
+ * Pencil on canvas
+ */
 class Pencil extends FabricCanvasTool {
     configureCanvas(props) {
         this._canvas.isDrawingMode = true;

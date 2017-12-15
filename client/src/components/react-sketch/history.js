@@ -1,7 +1,12 @@
 /**
- * Maintains the history of an object
+ *Maintains the history of an object
  */
 class History {
+    /**
+     * @constructor
+     * @param {int} undoLimit 
+     * @param {boolean} debug 
+     */
     constructor(undoLimit = 10, debug = false) {
         this.undoLimit = undoLimit;
         this.undoList = [];
@@ -120,6 +125,9 @@ class History {
         this.print();
     }
 
+    /**
+     * prints the history for debugging
+     */
     print() {
         if (this.debug) {
             /*eslint-disable no-console*/

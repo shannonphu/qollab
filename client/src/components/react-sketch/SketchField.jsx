@@ -59,6 +59,11 @@ class SketchField extends Component {
         heightCorrection: 0
     };
 
+    /**
+     * @constructor
+     * @param {Object} props 
+     * @param {Context} context 
+     */
     constructor(props, context) {
         super(props, context);
         // internal functions
@@ -115,6 +120,10 @@ class SketchField extends Component {
         action: true
     };
 
+    /**
+     * executed after the component is mounted
+     * initializes canvas and selected tools and binds events
+     */
     componentDidMount() {
         let {
             tool,
@@ -162,6 +171,10 @@ class SketchField extends Component {
         }
     }
 
+    /**
+     * initializes pencil to canvas
+     * @param {Canvas} fabricCanvas 
+     */
     _initTools(fabricCanvas) {
         this._tools = {};
         this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
@@ -169,10 +182,19 @@ class SketchField extends Component {
         this._fc.defaultCursor = 'default';
     }
 
+    /**
+     * executed before the component gets unmounted
+     * unregister the resizing from the window observer
+     */
     componentWillUnmount() {
         window.removeEventListener('resize', this._resize);
     }
 
+    /**
+     * executed after the component gets updated
+     * @param {Object} prevProps 
+     * @param {State} prevState 
+     */
     componentDidUpdate(prevProps, prevState) {
         if (this.state.parentWidth !== prevState.parentWidth
             || this.props.width !== prevProps.width
@@ -182,6 +204,11 @@ class SketchField extends Component {
         }
     }
 
+    /**
+     * executed before the component receive its next props
+     * handles the change of tool
+     * @param {Object} nextProps 
+     */
     componentWillReceiveProps(nextProps) {
         if (this.props.tool !== nextProps.tool) {
             this._selectedTool = this._tools[nextProps.tool] || this._tools[Tool.Pencil];
@@ -486,6 +513,11 @@ class SketchField extends Component {
         return discarded;
     }
 
+    /**
+     * set background from data url
+     * @param {String} dataUrl 
+     * @param {*} options 
+     */
     setBackgroundFromDataUrl(dataUrl, options = {}) {
         let canvas = this._fc;
         if (options.stretched) {
@@ -512,6 +544,10 @@ class SketchField extends Component {
         img.src = dataUrl;
     }
 
+    /**
+     * renders the sketchfield
+     * @returns html detail of the render
+     */
     render() {
         let {
             className,
@@ -539,6 +575,11 @@ class SketchField extends Component {
     }
 }
 
+/**
+ * maps states to props
+ * @param {*} state 
+ * @returns the props
+ */
 const mapStateToProps = (state) => {
     return {
         activeAnnotation: state.realtimeReducer.activeAnnotation,
@@ -548,6 +589,11 @@ const mapStateToProps = (state) => {
     }
 }
 
+/**
+ * maps the dispatch to props
+ * @param {*} dispatch 
+ * @returns the props
+ */
 const mapDispatchToProps = (dispatch) => {
     return {
         deactivateCanvasDrawingMode: () => dispatch(realtimeActions.deactivateCanvasDrawingMode()),
