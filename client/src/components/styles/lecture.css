@@ -1,0 +1,52 @@
+.lecture-container {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+.ToolSet {
+	bottom: 12px;
+}
+.btn-small {
+    padding: 0 0.5rem;
+}
+.row {
+	margin-bottom: 0px;
+}
+.material-icons {
+    display: inline-flex;
+    vertical-align: middle;
+}
+.Comment .material-icons {
+    color: #009688;
+}
+.canvas-area {
+	border: solid 1px lightgray;
+}
+.commentlist-container {
+    overflow-y: scroll;
+    height: 100vh;
+}
+.canvas-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100vh;
+}
+li {
+	margin-bottom: 0.5rem;
+}
+.focusModeBarrier {
+	height: 100%;
+    position: absolute;
+    width: 33%;
+    z-index: 10;
+    padding-top: 200px;
+    background-color: rgba(255,255,255,0.95);
+    text-align: center;
+}
+.tap-target {
+    color: #fff;
+}
+    
+.tap-target-content > h5, .tap-target-content > p {
+    margin-left: 50px;
+    margin-right: 50px;
+}

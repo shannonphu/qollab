@@ -1,0 +1,40 @@
+{
+  "name": "qollab",
+  "version": "1.0.0",
+  "description": "interactive virtual classroom with collaborative whiteboard",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shannonphu/qollab.git"
+  },
+  "author": "Team Eggertarts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shannonphu/qollab/issues"
+  },
+  "homepage": "https://github.com/shannonphu/qollab#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jest-cli": "^21.2.1",
+    "mongoose": "^4.12.6",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^21.2.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.2.0",
+    "jest": "^21.2.1",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.1.1",
+    "regenerator-runtime": "^0.11.0"
+  }
+}
