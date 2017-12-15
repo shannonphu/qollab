@@ -103,7 +103,7 @@ docker-compose -f docker-compose-test.yml up --build
 ### Test Suite 1: Comments
 __Location__: db_api/\_\_tests\_\_/comment-test.js 
 
-__Purpose__: To test Comment's backend persist storage
+__Purpose__: To test Comment's backend persistant storage
 
 1. Creating a new comment (not inserted yet)
     * Test: Create a model instance of the Comment, uses `create()`
@@ -131,7 +131,7 @@ __Purpose__: To test Comment's backend persist storage
     * Expected Result: Adds to the comment's array of text replies
 
 
-### Test Suite 2
+### Test Suite 2: Lectures
 __Location__: db_api/\_\_tests\_\_/lecture-test.js 
 
 __Purpose__: To test creation, storing, join code generation for lecture objects
@@ -156,6 +156,24 @@ __Purpose__: To test creation, storing, join code generation for lecture objects
     * Test: Uses `setCanvas()`
     * Prerequisites: A newly inserted lecture object
     * Expected Result: Updates canvas in the lecture object with a string of JSON representing the canvas
+
+### Test Suite 3: Users
+__Location__: db_api/\_\_tests\_\_/user-test.js 
+
+__Purpose__: To test User's backend persistant storage
+
+1. Inserting a new user
+    * Test: Uses `insert()`
+    * Prerequisites: An empty DB
+    * Expected Result: new user with the google ID and no lectures is inserted into the DB
+2. Find a user by Google ID
+    * Test: Uses `findByGoogleID()`
+    * Prerequisites: A newly inserted user object
+    * Expected Result: Returns a User object with the correct google ID
+3. Add lecture to user
+    * Test: Uses `addLecture()`
+    * Prerequisites: A newly inserted user object
+    * Expected Result: Appends the lecture ID to the user's array of lecture IDs
 
 ## Frontend Testing
 Location: Selenium Test Suite.html
