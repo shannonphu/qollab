@@ -33,7 +33,7 @@ const seedData = require('./db/seed.js');
 // CORS setting with OPTIONS pre-flight handling
 // * Fixes the No 'Access-Control-Allow-Origin' header is present on the requested resource error
 app.use(function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Origin', 'http://qollab.westus2.cloudapp.azure.com');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
 	res.header('Access-Control-Allow-Credentials', 'true');
